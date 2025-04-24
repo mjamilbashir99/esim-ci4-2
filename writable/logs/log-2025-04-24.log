@@ -1,0 +1,15 @@
+CRITICAL - 2025-04-24 07:05:01 --> ErrorException: Undefined variable $status
+[Method: GET, Route: /]
+in APPPATH\Views\welcome_message.php on line 7.
+ 1 APPPATH\Views\welcome_message.php(7): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $status', 'D:\\Tmg_projects\\ci4-hotel-bed\\bookingEngine\\app\\Views\\welcome_message.php', 7)
+ 2 SYSTEMPATH\View\View.php(224): include('D:\\Tmg_projects\\ci4-hotel-bed\\bookingEngine\\app\\Views\\welcome_message.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('welcome_message', [], true)
+ 5 APPPATH\Controllers\Home.php(16): view('welcome_message')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Tmg_projects\\ci4-hotel-bed\\bookingEngine\\public\\index.php')
