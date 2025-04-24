@@ -353,3 +353,28 @@ Stack trace:
 #8 C:\xampp\htdocs\hotel\ci4-hotel-bed\bookingEngine\public\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 #9 C:\xampp\htdocs\hotel\ci4-hotel-bed\bookingEngine\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
 #10 {main}
+CRITICAL - 2025-04-24 13:34:57 --> ErrorException: Trying to access array offset on value of type null
+[Method: GET, Route: testDatabaseConnection]
+in APPPATH\Controllers\Home.php on line 46.
+ 1 APPPATH\Controllers\Home.php(46): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Trying to access array offset on value of type null', 'C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\app\\Controllers\\Home.php', 46)
+ 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->testDatabaseConnection()
+ 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 8 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\public\\index.php')
+CRITICAL - 2025-04-24 13:44:42 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "register.php"
+[Method: GET, Route: /]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('register.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('register', [], true)
+ 3 APPPATH\Libraries\Template.php(11): view('register', [...])
+ 4 APPPATH\Controllers\Home.php(35): App\Libraries\Template->render('register', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->index()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\public\\index.php')

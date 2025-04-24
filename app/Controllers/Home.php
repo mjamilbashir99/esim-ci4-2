@@ -3,9 +3,11 @@
 namespace App\Controllers;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Database\Exceptions\DatabaseException;
+use App\Libraries\Template;
 
 class Home extends BaseController
 {
+    protected $template;
     // public function index(): ResponseInterface
     // {
     //     helper('hotelbeds');
@@ -13,8 +15,20 @@ class Home extends BaseController
     //     return $this->response->setJSON($result);
     // }
 
-    public function index(){
-        return view('welcome_message');
+
+    public function __construct()
+    {
+        $this->template = new Template();
+    }
+
+
+    public function index()
+    {
+        $data = [
+            'title' => 'Register',
+        ];
+
+        return $this->template->render('welcome_message', $data);
     }
 
     public function testDatabaseConnection()

@@ -1,21 +1,21 @@
-<!-- app/Views/layouts/default.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?= esc($title ?? 'My App') ?></title>
-    <link rel="stylesheet" href="<?= base_url('css/styles.css') ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= isset($title) ? $title : 'My Website' ?></title>
 </head>
 <body>
+    <header>
+        <h1>My Website</h1>
+    </header>
 
-    <?= view('partials/header') ?>
+    <div class="content">
+        <?= $content ?>
+    </div>
 
-    <main>
-        <?= $this->renderSection('content') ?>
-    </main>
-
-    <?= view('partials/footer') ?>
-
+    <footer>
+        <p>&copy; 2025 Your Website</p>
+    </footer>
 </body>
 </html>
