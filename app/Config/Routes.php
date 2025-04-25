@@ -16,6 +16,8 @@ use CodeIgniter\Router\RouteCollection;
     $routes->post('hotel-api/1.0/hotels', 'Auth\AuthController::searchNearbyHotels');
     $routes->get('home', 'Auth\AuthController::index');
 
+    $routes->get('get-city-suggestions', 'Home\HomeController::getCitySuggestions');
+
     
 
 

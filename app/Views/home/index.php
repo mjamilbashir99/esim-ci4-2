@@ -24,61 +24,17 @@
         <h3 class="h3 py-5">Serach Flights</h3>
         <div class="search-box p-4">
           <div class="row g-2 align-items-center">
-            <!-- From Country -->
+            <!-- Destination -->
             <div class="col-md-12">
               <div class="search-dropdown mx-auto col-md-12">
                 <input
-                  type="text"
-                  id="searchInput"
-                  class="form-control form-control-lg col-md-12"
-                  placeholder="Destination"
-                  onfocus="showDropdown()"
-                  style="font-size: 1rem"
+                    type="text"
+                    id="searchInput"
+                    class="form-control form-control-lg col-md-12"
+                    placeholder="Destination"
+                    style="font-size: 1rem"
                 />
-
-                <div class="dropdown-panel mt-1 d-none" id="suggestions">
-                  <div class="dropdown-header">Popular destinations nearby</div>
-
-                  <div class="dropdown-item-custom">
-                    <i class="fas fa-location-dot"></i>
-                    <div class="dropdown-texts">
-                      <div class="title">Baltic Sea</div>
-                      <div class="subtitle">Germany</div>
-                    </div>
-                  </div>
-
-                  <div class="dropdown-item-custom">
-                    <i class="fas fa-location-dot"></i>
-                    <div class="dropdown-texts">
-                      <div class="title">North Sea Coast Germany</div>
-                      <div class="subtitle">Germany</div>
-                    </div>
-                  </div>
-
-                  <div class="dropdown-item-custom">
-                    <i class="fas fa-location-dot"></i>
-                    <div class="dropdown-texts">
-                      <div class="title">Sylt</div>
-                      <div class="subtitle">Germany</div>
-                    </div>
-                  </div>
-
-                  <div class="dropdown-item-custom">
-                    <i class="fas fa-location-dot"></i>
-                    <div class="dropdown-texts">
-                      <div class="title">Lake Constance</div>
-                      <div class="subtitle">Germany</div>
-                    </div>
-                  </div>
-
-                  <div class="dropdown-item-custom">
-                    <i class="fas fa-location-dot"></i>
-                    <div class="dropdown-texts">
-                      <div class="title">Hamburg</div>
-                      <div class="subtitle">Germany</div>
-                    </div>
-                  </div>
-                </div>
+                <div id="suggestions" class="list-group mt-2"></div>
               </div>
             </div>
 
@@ -209,3 +165,149 @@
         </div>
       </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Set today's date in YYYY-MM-DD
+      const today = new Date().toISOString().split("T")[0];
+
+      // Initialize Check-in Datepicker
+      flatpickr("#checkin", {
+        dateFormat: "d M Y",
+        minDate: "today",
+        onChange: function (selectedDates, dateStr) {
+          // When check-in is selected, restrict checkout to same or later
+          const checkout = document.querySelector("#checkout")._flatpickr;
+          if (checkout) {
+            checkout.set("minDate", dateStr);
+          }
+        },
+      });
+
+      // Initialize Check-out Datepicker
+      flatpickr("#checkout", {
+        dateFormat: "d M Y",
+        minDate: "today",
+      });
+      let passengers = {
+        adults: 1,
+        children: 0,
+        infants: 0,
+        rooms: 1, // Default 1 room
+      };
+
+      function updatePassenger(type, delta) {
+        passengers[type] = Math.max(0, passengers[type] + delta);
+
+        // Ensure at least 1 room for the case of room decrement
+        if (type === "adults" && passengers.adults < 1) passengers.adults = 1;
+        if (type === "rooms" && passengers.rooms < 1) passengers.rooms = 1;
+
+        // Update individual counters
+        document.getElementById("adultsCount").textContent = passengers.adults;
+        document.getElementById("childrenCount").textContent =
+          passengers.children;
+        document.getElementById("infantsCount").textContent =
+          passengers.infants;
+        document.getElementById("roomsCount").textContent = passengers.rooms;
+
+        // Build the summary string
+        let summary = `${passengers.adults} Adult${
+          passengers.adults > 1 ? "s" : ""
+        }`;
+        if (passengers.children > 0)
+          summary += `, ${passengers.children} Child${
+            passengers.children > 1 ? "ren" : ""
+          }`;
+        if (passengers.infants > 0)
+          summary += `, ${passengers.infants} Infant${
+            passengers.infants > 1 ? "s" : ""
+          }`;
+        summary += `, ${passengers.rooms} Room${
+          passengers.rooms > 1 ? "s" : ""
+        }`;
+
+        document.getElementById("passengerInput").value = summary;
+      }
+
+      // Initialize the page with the default count displayed
+      updatePassenger("rooms", 0); // Ensure rooms start with the default value of 1
+
+      // Toggle dropdown visibility
+      document
+        .getElementById("passengerInput")
+        .addEventListener("click", function () {
+          const dropdown = document.getElementById("passengerDropdown");
+          dropdown.style.display =
+            dropdown.style.display === "none" ? "block" : "none";
+        });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+        const dropdown = document.getElementById("passengerDropdown");
+        const input = document.getElementById("passengerInput");
+        if (!dropdown.contains(e.target) && e.target !== input) {
+          dropdown.style.display = "none";
+        }
+      });
+
+      const cityOptions = document.querySelectorAll(".dropdown-item-custom");
+
+      cityOptions.forEach((option) => {
+        option.addEventListener("click", function () {
+          const cityName = this.querySelector(".title").textContent;
+          document.getElementById("searchInput").value = cityName;
+
+          // Optional: hide dropdown after selection
+          document.getElementById("suggestions").classList.add("d-none");
+        });
+      });
+
+      function showDropdown() {
+        document.getElementById("suggestions").classList.remove("d-none");
+      }
+
+      // Optional: Hide dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest(".search-dropdown")) {
+          document.getElementById("suggestions").classList.add("d-none");
+        }
+      });
+    </script>
+
+    <!-- For Destination suggestion -->
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function () {
+            let query = this.value;
+
+            if (query.length >= 2) {
+                fetch(`/get-city-suggestions?term=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const suggestionsBox = document.getElementById('suggestions');
+                        suggestionsBox.innerHTML = '';
+
+                        if (data.length > 0) {
+                            data.forEach(city => {
+                                let item = document.createElement('a');
+                                item.classList.add('list-group-item', 'list-group-item-action');
+                                item.textContent = `${city.city_name}, ${city.state_name}, ${city.country_name}`;
+                                
+                               
+                                item.addEventListener('click', () => {
+                                    document.getElementById('searchInput').value = `${city.city_name}, ${city.state_name}, ${city.country_name}`;
+                                    suggestionsBox.innerHTML = ''; 
+                                });
+
+                                suggestionsBox.appendChild(item);
+                            });
+                        }
+                    });
+            } else {
+                document.getElementById('suggestions').innerHTML = '';
+            }
+        });
+
+    </script>

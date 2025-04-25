@@ -48,21 +48,48 @@ class AuthController extends BaseController
         
         if (isset($result['response']['hotels'])) {
             foreach ($result['response']['hotels'] as $hotel) {
-                $hotelModel = new HotelModel();
-                $hotelToInsert = [
-                    'hotel_code' => $hotel['code'],
+                // For db insertioon of hotels
+                // $hotelModel = new HotelModel();
+                // $hotelToInsert = [
+                //     'hotel_code' => $hotel['code'],
+                //     'name' => $hotel['name']['content'] ?? '',
+                //     'country_code' => $hotel['countryCode'] ?? '',
+                //     'destination_code' => $hotel['destinationCode'] ?? '',
+                //     'category' => $hotel['categoryCode'] ?? '',
+                //     'latitude' => $hotel['coordinates']['latitude'] ?? '',
+                //     'longitude' => $hotel['coordinates']['longitude'] ?? '',
+                //     'address' => $hotel['address']['content'] ?? '', 
+                //     'description' => $hotel['description']['content'] ?? '',
+                //     'rating' => $hotel['S2C'] ?? '',
+                // ];
+
+                // $hotelModel->insert($hotelToInsert);
+
+                $hotelDetails = [
+                    'code' => $hotel['code'],
                     'name' => $hotel['name']['content'] ?? '',
-                    'country_code' => $hotel['countryCode'] ?? '',
-                    'destination_code' => $hotel['destinationCode'] ?? '',
-                    'category' => $hotel['categoryCode'] ?? '',
-                    'latitude' => $hotel['coordinates']['latitude'] ?? '',
-                    'longitude' => $hotel['coordinates']['longitude'] ?? '',
-                    'address' => $hotel['address']['content'] ?? '', 
                     'description' => $hotel['description']['content'] ?? '',
-                    'rating' => $hotel['S2C'] ?? '',
+                    'country_code' => $hotel['countryCode'] ?? '',
+                    'state_code' => $hotel['stateCode'] ?? '',
+                    'destination_code' => $hotel['destinationCode'] ?? '',
+                    'coordinates' => [
+                        'latitude' => $hotel['coordinates']['latitude'] ?? '',
+                        'longitude' => $hotel['coordinates']['longitude'] ?? ''
+                    ],
+                    'categoryCode' =>  $hotel['categoryCode'] ?? '',
+                    'address' => [
+                        'content' => $hotel['address']['content'] ?? '',
+                        'street' => $hotel['address']['street'] ?? '',
+                        'number' => $hotel['address']['number'] ?? '',
+                    ],
+                    'postalCode' =>  $hotel['postalCode'] ?? '',
+                    'city' => [
+                        'content' => $hotel['city']['content'] ?? '',
+                    ],
+                    "S2C" => $hotel['S2C'] ?? '',
+
                 ];
 
-                $hotelModel->insert($hotelToInsert);
 
                 $imagesData = [];
                 if (isset($hotel['images'])) {
