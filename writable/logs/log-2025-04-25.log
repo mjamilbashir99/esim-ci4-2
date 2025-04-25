@@ -1,0 +1,60 @@
+CRITICAL - 2025-04-25 06:36:12 --> Error: Call to undefined function App\Controllers\Auth\check_hotelbeds_status()
+[Method: GET, Route: hotelBedsApi]
+in APPPATH\Controllers\Auth\AuthController.php on line 33.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth\AuthController->hotelBedsApi()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth\AuthController))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 7 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\public\\index.php')
+CRITICAL - 2025-04-25 07:15:38 --> ParseError: syntax error, unexpected token "public", expecting "]"
+[Method: GET, Route: hotelBedsApi]
+in APPPATH\Controllers\Auth\AuthController.php on line 142.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(295): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\app\\Controllers\\Auth\\AuthController.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(271): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\Auth\\AuthController')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\Auth\\AuthController')
+ 4 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Auth\\AuthController', true)
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\public\\index.php')
+CRITICAL - 2025-04-25 07:21:14 --> ParseError: syntax error, unexpected token ";", expecting "]"
+[Method: GET, Route: hotelBedsApi]
+in APPPATH\Controllers\Auth\AuthController.php on line 102.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(295): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\app\\Controllers\\Auth\\AuthController.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(271): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\Auth\\AuthController')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\Auth\\AuthController')
+ 4 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Auth\\AuthController', true)
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\public\\index.php')
+CRITICAL - 2025-04-25 08:07:34 --> CodeIgniter\Database\Exceptions\DataException: Allowed fields must be specified for model: "App\Models\HotelModel"
+[Method: GET, Route: hotelBedsApi]
+in SYSTEMPATH\Model.php on line 822.
+ 1 SYSTEMPATH\Model.php(822): CodeIgniter\Database\Exceptions\DataException::forInvalidAllowedFields('App\\Models\\HotelModel')
+ 2 SYSTEMPATH\BaseModel.php(820): CodeIgniter\Model->doProtectFieldsForInsert([...])
+ 3 SYSTEMPATH\Model.php(800): CodeIgniter\BaseModel->insert([...], true)
+ 4 APPPATH\Controllers\Auth\AuthController.php(62): CodeIgniter\Model->insert([...])
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth\AuthController->hotelBedsApi()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth\AuthController))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\public\\index.php')
+CRITICAL - 2025-04-25 11:06:54 --> Error: Call to undefined function App\Controllers\Auth\fetch_hotelbeds_hotels_by_geolocation()
+[Method: POST, Route: hotel-api/1.0/hotels]
+in APPPATH\Controllers\Auth\AuthController.php on line 154.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth\AuthController->searchNearbyHotels()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth\AuthController))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 7 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\hotel\\ci4-hotel-bed\\bookingEngine\\public\\index.php')
