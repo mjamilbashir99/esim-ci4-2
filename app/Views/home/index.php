@@ -20,151 +20,168 @@
     </section>
 
     <main class="py-5">
-      <div class="container">
-        <h3 class="h3 py-5">Serach Flights</h3>
-        <div class="search-box p-4">
-          <div class="row g-2 align-items-center">
-            <!-- Destination -->
-            <div class="col-md-12">
-              <div class="search-dropdown mx-auto col-md-12">
-                <input
-                    type="text"
-                    id="searchInput"
-                    class="form-control form-control-lg col-md-12"
-                    placeholder="Destination"
-                    style="font-size: 1rem"
-                />
-                <div id="suggestions" class="list-group mt-2"></div>
-              </div>
-            </div>
+        <div class="container">
+            <h3 class="h3 py-5">Search Flights</h3>
+            <form id="searchForm" onsubmit="handleSubmit(event)">
+                <div class="search-box p-4">
+                    <div class="row g-2 align-items-center">
+                        <!-- Destination -->
+                        <div class="col-md-12">
+                            <div class="search-dropdown mx-auto col-md-12">
+                                <input
+                                    type="text"
+                                    id="searchInput"
+                                    name="destination"
+                                    class="form-control form-control-lg col-md-12"
+                                    placeholder="Destination"
+                                    style="font-size: 1rem"
+                                />
+                                <div id="suggestions" class="list-group mt-2"></div>
+                            </div>
+                        </div>
 
-            <!-- Date Range -->
-            <div class="col-md-5">
-              <div class="row">
-                <div class="col-md-6">
-                  <input
-                    type="text"
-                    id="checkin"
-                    class="form-control"
-                    placeholder="Select check-in date"
-                  />
-                </div>
+                        <!-- Date Range -->
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input
+                                        type="text"
+                                        id="checkin"
+                                        name="checkin"
+                                        class="form-control"
+                                        placeholder="Select check-in date"
+                                    />
+                                </div>
 
-                <div class="col-md-6" style="padding-left: 0px !important">
-                  <input
-                    type="text"
-                    id="checkout"
-                    class="form-control"
-                    placeholder="Select check-out date"
-                  />
-                </div>
-              </div>
-            </div>
+                                <div class="col-md-6" style="padding-left: 0px !important">
+                                    <input
+                                        type="text"
+                                        id="checkout"
+                                        name="checkout"
+                                        class="form-control"
+                                        placeholder="Select check-out date"
+                                    />
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Passengers -->
-            <div class="col-md-4 position-relative">
-              <input
-                type="text"
-                class="form-control"
-                id="passengerInput"
-                readonly
-                placeholder="1 Passenger"
-              />
-              <div
-                id="passengerDropdown"
-                class="p-3 mt-1 bg-white position-absolute w-100"
-                style="display: none; z-index: 999"
-              >
-                <div
-                  class="d-flex justify-content-between align-items-center mb-2"
-                >
-                  <span>Adults</span>
-                  <div>
-                    <button
-                      class="btn btn-sm btn-outline-secondary"
-                      onclick="updatePassenger('adults', -1)"
-                    >
-                      −
-                    </button>
-                    <span id="adultsCount" class="mx-2">1</span>
-                    <button
-                      class="btn btn-sm btn-outline-secondary"
-                      onclick="updatePassenger('adults', 1)"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <div
-                  class="d-flex justify-content-between align-items-center mb-2"
-                >
-                  <span>Children</span>
-                  <div>
-                    <button
-                      class="btn btn-sm btn-outline-secondary"
-                      onclick="updatePassenger('children', -1)"
-                    >
-                      −
-                    </button>
-                    <span id="childrenCount" class="mx-2">0</span>
-                    <button
-                      class="btn btn-sm btn-outline-secondary"
-                      onclick="updatePassenger('children', 1)"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                  <span>Infants</span>
-                  <div>
-                    <button
-                      class="btn btn-sm btn-outline-secondary"
-                      onclick="updatePassenger('infants', -1)"
-                    >
-                      −
-                    </button>
-                    <span id="infantsCount" class="mx-2">0</span>
-                    <button
-                      class="btn btn-sm btn-outline-secondary"
-                      onclick="updatePassenger('infants', 1)"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
+                        <!-- Passengers -->
+                        <div class="col-md-4 position-relative">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="passengerInput"
+                                name="passenger"
+                                readonly
+                                placeholder="1 Passenger"
+                            />
+                            <div
+                                id="passengerDropdown"
+                                class="p-3 mt-1 bg-white position-absolute w-100"
+                                style="display: none; z-index: 999"
+                            >
+                                <div
+                                    class="d-flex justify-content-between align-items-center mb-2"
+                                >
+                                    <span>Adults</span>
+                                    <div>
+                                        <button
+                                            class="btn btn-sm btn-outline-secondary"
+                                            type="button"
+                                            onclick="updatePassenger('adults', -1)"
+                                        >
+                                            −
+                                        </button>
+                                        <span id="adultsCount" class="mx-2">1</span>
+                                        <button
+                                            class="btn btn-sm btn-outline-secondary"
+                                            type="button"
+                                            onclick="updatePassenger('adults', 1)"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    class="d-flex justify-content-between align-items-center mb-2"
+                                >
+                                    <span>Children</span>
+                                    <div>
+                                        <button
+                                            class="btn btn-sm btn-outline-secondary"
+                                            type="button"
+                                            onclick="updatePassenger('children', -1)"
+                                        >
+                                            −
+                                        </button>
+                                        <span id="childrenCount" class="mx-2">0</span>
+                                        <button
+                                            class="btn btn-sm btn-outline-secondary"
+                                            type="button"
+                                            onclick="updatePassenger('children', 1)"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Infants</span>
+                                    <div>
+                                        <button
+                                            class="btn btn-sm btn-outline-secondary"
+                                            type="button"
+                                            onclick="updatePassenger('infants', -1)"
+                                        >
+                                            −
+                                        </button>
+                                        <span id="infantsCount" class="mx-2">0</span>
+                                        <button
+                                            class="btn btn-sm btn-outline-secondary"
+                                            type="button"
+                                            onclick="updatePassenger('infants', 1)"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
 
-                <div
-                  class="d-flex justify-content-between align-items-center mt-3 border-top pt-2"
-                >
-                  <span>Rooms</span>
-                  <div>
-                    <button
-                      class="btn btn-sm btn-outline-secondary"
-                      onclick="updatePassenger('rooms', -1)"
-                    >
-                      −
-                    </button>
-                    <span id="roomsCount" class="mx-2">1</span>
-                    <button
-                      class="btn btn-sm btn-outline-secondary"
-                      onclick="updatePassenger('rooms', 1)"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+                                <div
+                                    class="d-flex justify-content-between align-items-center mt-3 border-top pt-2"
+                                >
+                                    <span>Rooms</span>
+                                    <div>
+                                        <button
+                                            class="btn btn-sm btn-outline-secondary"
+                                            type="button"
+                                            onclick="updatePassenger('rooms', -1)"
+                                        >
+                                            −
+                                        </button>
+                                        <span id="roomsCount" class="mx-2">1</span>
+                                        <button
+                                            class="btn btn-sm btn-outline-secondary"
+                                            type="button"
+                                            onclick="updatePassenger('rooms', 1)"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Search Button -->
-            <div class="col-md-3">
-              <button class="btn btn-search">Search</button>
-            </div>
-          </div>
+                        <!-- Search Button -->
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-search">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
     </main>
+
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     
@@ -277,7 +294,7 @@
       });
     </script>
 
-    <!-- For Destination suggestion -->
+    <!-- For Destination suggestion
     <script>
         document.getElementById('searchInput').addEventListener('input', function () {
             let query = this.value;
@@ -310,4 +327,68 @@
             }
         });
 
+    </script> -->
+
+
+    <!-- For Destination suggestion -->
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function () {
+            let query = this.value;
+
+            if (query.length >= 2) {
+                fetch(`/get-city-suggestions?term=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const suggestionsBox = document.getElementById('suggestions');
+                        suggestionsBox.innerHTML = '';
+
+                        if (data.length > 0) {
+                            data.forEach(city => {
+                                let item = document.createElement('a');
+                                item.classList.add('list-group-item', 'list-group-item-action');
+                                item.textContent = `${city.city_name}, ${city.state_name}, ${city.country_name}`;
+                                
+                                item.addEventListener('click', () => {
+                                    document.getElementById('searchInput').value = `${city.city_name}, ${city.state_name}, ${city.country_name}`;
+                                    suggestionsBox.innerHTML = ''; 
+                                });
+
+                                suggestionsBox.appendChild(item);
+                            });
+                        }
+                    });
+            } else {
+                document.getElementById('suggestions').innerHTML = '';
+            }
+        });
+
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const destination = form.destination.value;
+            const checkin = form.checkin.value;
+            const checkout = form.checkout.value;
+            const passenger = form.passenger.value;
+            const rooms = document.getElementById('roomsCount').textContent;
+
+            alert(`Destination: ${destination}\nCheck-in: ${checkin}\nCheck-out: ${checkout}\nPassenger: ${passenger}\nRooms: ${rooms}`);
+        }
+
+        function updatePassenger(type, delta) {
+            const countElement = document.getElementById(type + 'Count');
+            let count = parseInt(countElement.textContent);
+            count += delta;
+
+            if (count < 0) count = 0;
+
+            countElement.textContent = count;
+            
+            const passengerInput = document.getElementById('passengerInput');
+            const adultsCount = document.getElementById('adultsCount').textContent;
+            const childrenCount = document.getElementById('childrenCount').textContent;
+            const infantsCount = document.getElementById('infantsCount').textContent;
+
+            passengerInput.value = `${adultsCount} Adults, ${childrenCount} Children, ${infantsCount} Infants`;
+        }
     </script>
