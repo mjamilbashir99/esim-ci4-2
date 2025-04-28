@@ -331,7 +331,7 @@
 
 
     <!-- For Destination suggestion -->
-    <script>
+    <!-- <script>
         document.getElementById('searchInput').addEventListener('input', function () {
             let query = this.value;
 
@@ -391,4 +391,90 @@
 
             passengerInput.value = `${adultsCount} Adults, ${childrenCount} Children, ${infantsCount} Infants`;
         }
+    </script> -->
+
+
+    <script>
+
+        document.getElementById('searchInput').addEventListener('input', function () {
+                    let query = this.value;
+
+                    if (query.length >= 2) {
+                        fetch(`/get-city-suggestions?term=${query}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                const suggestionsBox = document.getElementById('suggestions');
+                                suggestionsBox.innerHTML = '';
+
+                                if (data.length > 0) {
+                                    data.forEach(city => {
+                                        let item = document.createElement('a');
+                                        item.classList.add('list-group-item', 'list-group-item-action');
+                                        item.textContent = `${city.city_name}, ${city.state_name}, ${city.country_name}`;
+                                        
+                                        item.addEventListener('click', () => {
+                                            // document.getElementById('searchInput').value = `${city.city_name}, ${city.state_name}, ${city.country_name}`;
+                                            document.getElementById('searchInput').value = city.city_name;
+                                            suggestionsBox.innerHTML = ''; 
+                                        });
+
+                                        suggestionsBox.appendChild(item);
+                                    });
+                                }
+                            });
+                    } else {
+                        document.getElementById('suggestions').innerHTML = '';
+                    }
+                });
+                function handleSubmit(event) {
+                    event.preventDefault();
+
+                    const form = event.target;
+                    const destination = form.destination.value;
+                    const checkin = form.checkin.value;
+                    const checkout = form.checkout.value;
+                    const passenger = form.passenger.value;
+
+                    const adults = document.getElementById('adultsCount').textContent;
+                    // alert(adults);
+                    // const children = document.getElementById('childrenCount').textContent;
+                    // alert(children);
+                    const children = 0;
+                    // alert(children);
+                    const infants = document.getElementById('infantsCount').textContent;
+                    
+                    
+                    const rooms = document.getElementById('roomsCount').textContent;
+
+                    fetch('/search-hotels', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            destination: destination,
+                            checkin: checkin,
+                            checkout: checkout,
+                            passenger: passenger,
+                            rooms: rooms,
+                            adults: adults,
+                            children: children,
+                            infants: infants,
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // If search successful, redirect to result page
+                            window.location.href = '/search-result';
+                        } else {
+                            alert('Error searching hotels: ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                }
+
+
     </script>

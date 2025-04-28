@@ -18,6 +18,10 @@ use CodeIgniter\Router\RouteCollection;
 
     $routes->get('get-city-suggestions', 'Home\HomeController::getCitySuggestions');
 
+    $routes->post('search-hotels', 'Home\HomeController::searchHotels');
+
+    $routes->get('search-result', 'Home\HomeController::searchResult');
+
     
 
 

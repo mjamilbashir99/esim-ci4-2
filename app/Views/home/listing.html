@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paris Hotels Search</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <style>
+    .card-title {
+      font-size: 17px;
+      color: gray;
+    }
+    label,
+    option,
+    .form-select {
+      font-size: 14px;
+      color: gray;
+    }
+  </style>
+  <body>
+    <nav class="navbar navbar-expand-lg py-4">
+      <div class="container-fluid d-flex justify-content-between p-0">
+        <a class="navbar-brand text-white mx-3" href="/index.html">Navbar</a>
+        <button
+          class="navbar-toggler"
+          style="box-shadow: none !important"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav" style="gap: 20px">
+            <li class="nav-item">
+              <a
+                class="nav-link active text-white nav-text-black"
+                aria-current="page"
+                href="/index.html"
+                >About Us</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white nav-text-black" href="/listing.html"
+                >Listing</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-white nav-text-black"
+                href="/singlepage.html"
+                >Singlepage</a
+              >
+            </li>
+          </ul>
+          <!-- Add a button after the list items -->
+          <button
+            class="bookbtn btn btn-danger mx-3 border border-danger rounded-0"
+          >
+            Book Online
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section
+      class="w-100 position-relative"
+      style="
+        background-image: url('/images/bg.jpg');
+        height: 350px;
+        background-size: cover;
+      "
+    >
+      <div
+        class="z-3 position-absolute top-0 p-5 w-100 h-100"
+        style="background: rgba(0, 0, 0, 0.7)"
+      >
+        <p
+          class="text-white h3 text-center underline"
+          style="margin-top: 120px"
+        >
+          Book Online
+        </p>
+      </div>
+    </section>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="filter-section">
+            <div class="header-search-listing">
+              <div class="container">
+                <h5 class="text-center">Paris, France</h5>
+                <p class="mb-0 text-center" style="font-size: 14px">
+                  1,788 hotels found
+                </p>
+              </div>
+            </div>
+            <h5 class="card-title">Sort By</h5>
+            <select class="form-select sort-dropdown mb-3">
+              <option selected>Recommended</option>
+              <option value="percent">Biggest Percent Savings</option>
+              <option value="dollar">Biggest Dollar Savings</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating-low">Rating: Low to High</option>
+              <option value="rating-high">Rating: High to Low</option>
+              <option value="name">Hotel Name (A-Z)</option>
+            </select>
+            <h5 class="mt-4 card-title">Filters</h5>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="freeCancellation"
+              />
+              <label class="form-check-label" for="freeCancellation">
+                Free Cancellation
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="breakfast" />
+              <label class="form-check-label" for="breakfast">
+                Breakfast Included
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="wifi" />
+              <label class="form-check-label" for="wifi"> Free WiFi </label>
+            </div>
+
+            <div class="form-group mt-3">
+              <h5 class="card-title">Hotel Name</h5>
+              <input
+                type="text"
+                class="form-control input-focus-remove"
+                placeholder="enter hotel name"
+              />
+            </div>
+            <div class="container mt-5 p-0">
+              <div class="card" style="border: none !important">
+                <div class="card-body" style="padding: 0px !important">
+                  <h5 class="card-title">Price Range</h5>
+                  <div class="price-range-options">
+                    <div class="price-range-header">
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input toggle-custom"
+                          type="checkbox"
+                          role="switch"
+                          id="customPriceToggle"
+                        />
+                      </div>
+                      <label for="customPriceToggle">Set your own budget</label>
+                    </div>
+
+                    <div class="custom-price-input" id="customPriceInput">
+                      <div class="custom-price-fields">
+                        <div class="form-group">
+                          <label>Min Price ($)</label>
+                          <input
+                            type="number"
+                            class="form-control input-focus-remove"
+                            placeholder="Min"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label>Max Price ($)</label>
+                          <input
+                            type="number"
+                            class="form-control input-focus-remove"
+                            placeholder="Max"
+                          />
+                        </div>
+                      </div>
+                      <button class="btn btn-danger btn-sm mt-2 btn-apply">
+                        Apply
+                      </button>
+                    </div>
+
+                    <div id="priceRangeOptions">
+                      <div class="price-range-item">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="below100"
+                          />
+                          <label class="form-check-label" for="below100"
+                            >Below $100</label
+                          >
+                        </div>
+                        <span class="price-count">(0)</span>
+                      </div>
+                      <div class="price-range-item">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="101-300"
+                          />
+                          <label class="form-check-label" for="101-300"
+                            >$101 - $300</label
+                          >
+                        </div>
+                        <span class="price-count">(217)</span>
+                      </div>
+                      <div class="price-range-item">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="301-500"
+                          />
+                          <label class="form-check-label" for="301-500"
+                            >$301 - $500</label
+                          >
+                        </div>
+                        <span class="price-count">(327)</span>
+                      </div>
+                      <div class="price-range-item">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="501-1000"
+                          />
+                          <label class="form-check-label" for="501-1000"
+                            >$501 - $1000</label
+                          >
+                        </div>
+                        <span class="price-count">(809)</span>
+                      </div>
+                      <div class="price-range-item">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="above1000"
+                          />
+                          <label class="form-check-label" for="above1000"
+                            >Above $1000</label
+                          >
+                        </div>
+                        <span class="price-count">(435)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="mt-4 card-title">Star Rating</h5>
+            <div class="star-rating">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="rating5" />
+                <label class="form-check-label" for="rating5">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="rating4" />
+                <label class="form-check-label" for="rating4">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="rating3" />
+                <label class="form-check-label" for="rating3">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="rating3" />
+                <label class="form-check-label" for="rating3">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="rating3" />
+                <label class="form-check-label" for="rating3">
+                  <i class="fas fa-star text-warning"></i>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="hotel-card">
+            <div class="row g-0 hotel-info-wrapper">
+              <div class="col-md-4 col-md-tab">
+                <div
+                  class="hotel-image"
+                  style="
+                    background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+                  "
+                ></div>
+              </div>
+              <div class="col-md-8 col-md-tab">
+                <div class="hotel-info">
+                  <div
+                    class="d-flex justify-content-between hotel-info-container"
+                  >
+                    <div
+                      class="w-50 d-flex flex-column gap-3 hotel-info-child-1"
+                    >
+                      <div>
+                        <h4>Villa Montparnasse</h4>
+                        <div class="d-flex gap-2" style="height: 30px">
+                          <p class="district mb-2">14th arr., Paris, France</p>
+                        </div>
+                        <div class="pb-2">
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                          <div class="share-deal-btn">
+                            <i class="fa-solid fa-share-from-square"></i>
+                            <p class="m-0">Share Deal</p>
+                          </div>
+                          <i
+                            class="fa-regular fa-heart"
+                            style="color: #007bff"
+                          ></i>
+                        </div>
+                      </div>
+
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="rating-circle">8.6</div>
+                        <div>
+                          <div class="rating-label">Good</div>
+                          <div class="vote-count">
+                            <span class="vote-up">▲ 8,166</span>
+                            <span class="vote-down ms-2">▼ 608</span>
+                          </div>
+                          <div class="feelter-text">
+                            Click to
+                            <span class="f-red">f</span>
+                            <span class="f-orange">e</span>
+                            <span class="f-yellowgreen">e</span>
+                            <span class="f-green">l</span>
+                            <span class="f-green">t</span>
+                            <span class="f-green">e</span>
+                            <span class="f-green">r</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="card w-50 hotel-info-child-2"
+                      style="border: none"
+                    >
+                      <div class="highlight-banner">
+                        EARN 688 TRAVEL CREDITS
+                      </div>
+
+                      <div class="d-flex justify-content-between mt-1">
+                        <span class="price-label">Regular Price</span>
+                        <span class="price-value">$1406</span>
+                      </div>
+
+                      <div class="d-flex justify-content-between">
+                        <span class="savings">Member Savings</span>
+                        <span class="savings">$615</span>
+                      </div>
+
+                      <hr />
+
+                      <div class="d-flex justify-content-between mb-1">
+                        <span class="price-label">Total with tax</span>
+                        <span class="total-price">$791</span>
+                      </div>
+
+                      <button class="select-room-btn">SELECT ROOM</button>
+
+                      <div class="loyalty-text">
+                        Apply up to 53 Loyalty Points
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
+                  >Previous</a
+                >
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="w-100" style="background-color: #001c34">
+      <ul
+        class="navbar-nav d-flex flex-row justify-content-center py-2 fontSize mobile-col"
+        style="gap: 20px; list-style: none; padding-left: 0"
+      >
+        <li class="nav-item">
+          <p
+            class="nav-link active text-white m-0 fontSize"
+            aria-current="page"
+          >
+            COPYRIGHT © 2025 HOTEL ROOM DISCOUNT&nbsp;
+            <span class="slash">|</span>
+          </p>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link active text-white fontSize"
+            aria-current="page"
+            href="#"
+            >About Us <span class="slash">|</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fontSize" href="#"
+            >Why Booking With Us <span class="slash"> |</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fontSize" href="#">Airport Transfer</a>
+        </li>
+      </ul>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sortDropdown = document.querySelector(".sort-dropdown");
+        const checkboxes = document.querySelectorAll(".form-check-input");
+        const priceRange = document.getElementById("priceRange");
+
+        sortDropdown.addEventListener("change", function () {
+          console.log("Sorting by:", this.value);
+        });
+
+        checkboxes.forEach((checkbox) => {
+          checkbox.addEventListener("change", function () {
+            console.log("Filter changed:", this.id, this.checked);
+          });
+        });
+
+        priceRange.addEventListener("input", function () {
+          console.log("Price range:", this.value);
+        });
+      });
+
+      document
+        .getElementById("customPriceToggle")
+        .addEventListener("change", function () {
+          const customPriceInput = document.getElementById("customPriceInput");
+          const priceRangeOptions =
+            document.getElementById("priceRangeOptions");
+
+          if (this.checked) {
+            customPriceInput.style.display = "block";
+            priceRangeOptions.style.display = "none";
+
+            // Uncheck all price range checkboxes when custom price is enabled
+            document
+              .querySelectorAll("#priceRangeOptions .form-check-input")
+              .forEach((checkbox) => {
+                checkbox.checked = false;
+              });
+          } else {
+            customPriceInput.style.display = "none";
+            priceRangeOptions.style.display = "block";
+
+            // Clear custom price inputs when switching back to predefined ranges
+            document
+              .querySelectorAll(".custom-price-input input")
+              .forEach((input) => {
+                input.value = "";
+              });
+          }
+        });
+    </script>
+    <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfCbftxo702c9RT_Vn-jEDMiwAR6LPB3g"
+    ></script>
+  </body>
+</html>
