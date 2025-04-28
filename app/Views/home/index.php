@@ -2,7 +2,7 @@
 
     <main class="py-5">
         <div class="container">
-            <h3 class="h3 py-5">Search Flights</h3>
+            <h3 class="h3 py-5">Search Hotels</h3>
             <form id="searchForm" onsubmit="handleSubmit(event)">
                 <div class="search-box p-4">
                     <div class="row g-2 align-items-center">
