@@ -1,23 +1,4 @@
-<section
-      class="w-100 position-relative"
-      style="
-        background-image: url('/images/bg.jpg');
-        height: 350px;
-        background-size: cover;
-      "
-    >
-      <div
-        class="z-3 position-absolute top-0 p-5 w-100 h-100"
-        style="background: rgba(0, 0, 0, 0.7)"
-      >
-        <p
-          class="text-white h3 text-center underline"
-          style="margin-top: 120px"
-        >
-          Book Online
-        </p>
-      </div>
-    </section>
+
 
     <main class="py-5">
         <div class="container">

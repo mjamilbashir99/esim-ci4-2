@@ -1,5 +1,5 @@
-    <div class="container mt-5">
-      <div class="row">
+    <div class="mt-5 px-5">
+      <div class="row ">
         <div class="col-md-3">
           <div class="filter-section">
             <div class="header-search-listing">
@@ -169,7 +169,7 @@
                                     </div>
                                 </div>
 
-                                <div class="card w-50 hotel-info-child-2" style="border: none">
+                                <div class="card w-50 hotel-info-child-2" style="border: none;justify-content:end">
                                     <?php helper('generic_helper'); ?>
                                     <div class="d-flex justify-content-between mt-1">
                                         <span class="price-label">Regular Price</span> 
@@ -179,7 +179,7 @@
                                             // Calculate profit price
                                             $sellingPrice = $netPrice !== '' ? calculateProfitPrice($netPrice) : '';
                                         ?>
-                                        <span class="price-value"><?= esc($sellingPrice) ?></span>
+                                        <span class="price-value">$<?= esc($sellingPrice) ?></span>
                                     </div>
                                 <hr />
                                 <button class="select-room-btn">SELECT ROOM</button>
@@ -194,6 +194,8 @@
                 <p>No hotels found.</p>
             <?php endif; ?>
       </div>
+    </div>
+    </div>
     </div>
     </div>
     
@@ -257,6 +259,7 @@ noResultsMessage.textContent = 'No results found for the selected price range.';
 noResultsMessage.style.color = 'red';
 noResultsMessage.style.textAlign = 'center';
 noResultsMessage.style.fontWeight = 'bold';
+noResultsMessage.style.marginTop = '30px';
 
 priceFilters.forEach(filter => {
     filter.addEventListener('change', function () {

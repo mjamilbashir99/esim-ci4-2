@@ -472,9 +472,9 @@ body {
 }
 
 .price-value {
-    font-size: 16px;
+    font-size: 1.4rem;
     font-weight: 500;
-    color: #4a4a4a;
+    color: black;
 }
 
 .savings {
@@ -576,8 +576,9 @@ body {
 }
 
 .price-label {
-    color: #6c757d;
-    font-size: 0.9rem;
+    color: black;
+    font-size: 1.4rem;
+    font-weight: 500;
 }
 
 .total-price {

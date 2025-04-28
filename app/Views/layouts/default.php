@@ -78,12 +78,32 @@
         </div>
       </div>
     </nav>
+    <section
+      class="w-100 position-relative"
+      style="
+        background-image: url('/images/bg.jpg');
+        height: 350px;
+        background-size: cover;
+      "
+    >
+      <div
+        class="z-3 position-absolute top-0 p-5 w-100 h-100"
+        style="background: rgba(0, 0, 0, 0.7)"
+      >
+        <p
+          class="text-white h3 text-center underline"
+          style="margin-top: 120px"
+        >
+          Book Online
+        </p>
+      </div>
+    </section>
 
     <div class="content">
         <?= $content ?>
     </div>
 
-    <footer class="w-100" style="background-color: #001c34">
+    <footer class="w-100 container-fluid" style="background-color: #001c34">
       <ul
         class="navbar-nav d-flex flex-row justify-content-center py-2 fontSize mobile-col"
         style="gap: 20px; list-style: none; padding-left: 0"
