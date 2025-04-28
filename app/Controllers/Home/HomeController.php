@@ -210,9 +210,20 @@ class HomeController extends BaseController
             $responseBody = json_decode($response->getBody(), true);
         
             log_message('debug', 'Hotel Search Response: ' . json_encode($responseBody));
+
+            $maxPrice = 0;
+            if (isset($responseBody['hotels']) && !empty($responseBody['hotels'])) {
+                foreach ($responseBody['hotels'] as $hotel) {
+                    $rate = isset($hotel['rooms'][0]['rates'][0]['net']) ? $hotel['rooms'][0]['rates'][0]['net'] : 0;
+                    $sellingPrice = calculateProfitPrice($rate); // Calculate with 10% markup
+                    $maxPrice = max($maxPrice, $sellingPrice);
+                }
+            }
         
             // savr to session
             $session->set('hotel_search_results', $responseBody);
+             $session->set('maxPrice', $maxPrice);
+             
         
             return $this->response->setJSON([
                 'success' => true

@@ -46,6 +46,17 @@ if (!function_exists('fetch_hotelbeds_hotels')) {
 
 
 
+    if (!function_exists('calculateProfitPrice')) {
+        function calculateProfitPrice($netPrice)
+        {
+            $profitMultiplier = 1;
+            return round($netPrice * $profitMultiplier, 2);
+        }
+    }
+
+
+
+
 
 
    

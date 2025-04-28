@@ -55,50 +55,51 @@
                 }
 
                 $maxPrice = !empty($prices) ? max($prices) : 0;
-            ?>
+                $rangeStep = 100;
+                $nextRangeEnd = ceil($maxPrice / $rangeStep) * $rangeStep;
+                ?>
 
-            <div class="container mt-5 p-0">
-                <div class="card" style="border: none !important">
-                    <div class="card-body" style="padding: 0px !important">
-                        <h5 class="card-title">Price Range</h5>
-                        <div class="price-range-options">
-                            <div id="priceRangeOptions">
-                                <?php
-                                if ($maxPrice > 0) {
-                                    $rangeStep = 100; // You can adjust step if needed
-                                    for ($i = 0; $i < $maxPrice; $i += $rangeStep) {
-                                        $start = $i;
-                                        $end = $i + $rangeStep;
-                                        if ($end > $maxPrice) {
-                                            $end = ceil($maxPrice);
-                                        }
-                                        $label = $start == 0 ? "Below $$end" : "\$$start - \$$end";
-                                        $value = "$start-$end";
-                                        ?>
-                                        <div class="price-range-item">
-                                            <div class="form-check">
-                                                <input
-                                                    class="form-check-input price-filter"
-                                                    type="checkbox"
-                                                    id="price<?= $start ?>"
-                                                    value="<?= $value ?>"
-                                                />
-                                                <label class="form-check-label" for="price<?= $start ?>">
-                                                    <?= $label ?>
-                                                </label>
-                                            </div>
-                                        </div>
+                <div class="container mt-5 p-0">
+                    <div class="card" style="border: none !important">
+                        <div class="card-body" style="padding: 0px !important">
+                            <h5 class="card-title">Price Range</h5>
+                            <div class="price-range-options">
+                                <div id="priceRangeOptions">
                                     <?php
+                                    if ($maxPrice > 0) {
+                                        for ($i = 0; $i < $nextRangeEnd; $i += $rangeStep) {
+                                            $start = $i;
+                                            $end = $i + $rangeStep;
+                                            if ($end > $nextRangeEnd) {
+                                                $end = $nextRangeEnd;
+                                            }
+                                            $label = $start == 0 ? "Below $$end" : "\$$start - \$$end";
+                                            $value = "$start-$end";
+                                            ?>
+                                            <div class="price-range-item">
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input price-filter"
+                                                        type="checkbox"
+                                                        id="price<?= $start ?>"
+                                                        value="<?= $value ?>"
+                                                    />
+                                                    <label class="form-check-label" for="price<?= $start ?>">
+                                                        <?= $label ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        <?php
+                                        }
+                                    } else {
+                                        echo '<p>No prices available</p>';
                                     }
-                                } else {
-                                    echo '<p>No prices available</p>';
-                                }
-                                ?>
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
           </div>
         </div>
@@ -169,13 +170,17 @@
                                 </div>
 
                                 <div class="card w-50 hotel-info-child-2" style="border: none">
-                                <div class="d-flex justify-content-between mt-1">
-                                    <span class="price-label">Regular Price</span> 
-                                    <?php 
-                                        $netPrice = isset($hotel['rooms'][0]['rates'][0]['net']) ? $hotel['rooms'][0]['rates'][0]['net'] : '';
+                                    <?php helper('generic_helper'); ?>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <span class="price-label">Regular Price</span> 
+                                        <?php 
+                                            $netPrice = isset($hotel['rooms'][0]['rates'][0]['net']) ? $hotel['rooms'][0]['rates'][0]['net'] : '';
+
+                                            // Calculate profit price
+                                            $sellingPrice = $netPrice !== '' ? calculateProfitPrice($netPrice) : '';
                                         ?>
-                                        <span class="price-value"><?= esc($netPrice) ?></span>
-                                </div>
+                                        <span class="price-value"><?= esc($sellingPrice) ?></span>
+                                    </div>
                                 <hr />
                                 <button class="select-room-btn">SELECT ROOM</button>
                                 </div>
@@ -191,6 +196,7 @@
       </div>
     </div>
     </div>
+    
     <!-- </div> -->
     <script>
         document.getElementById('sortHotels').addEventListener('change', function () {
@@ -245,6 +251,12 @@
 
 <script>
 const priceFilters = document.querySelectorAll('.price-filter');
+const hotelListing = document.getElementById('hotelList');
+const noResultsMessage = document.createElement('p');
+noResultsMessage.textContent = 'No results found for the selected price range.';
+noResultsMessage.style.color = 'red';
+noResultsMessage.style.textAlign = 'center';
+noResultsMessage.style.fontWeight = 'bold';
 
 priceFilters.forEach(filter => {
     filter.addEventListener('change', function () {
@@ -257,10 +269,10 @@ function applyPriceFilters() {
         .map(input => input.value);
 
     const hotels = document.querySelectorAll('.hotel-card');
+    let resultsFound = false;  // Track if we find any matching hotels
 
     hotels.forEach(hotel => {
         const price = parseFloat(hotel.dataset.price || 0);
-
         let show = selectedRanges.length === 0;
 
         selectedRanges.forEach(range => {
@@ -271,9 +283,33 @@ function applyPriceFilters() {
             }
         });
 
-        hotel.style.display = show ? 'block' : 'none';
+        if (show) {
+            hotel.style.display = 'block';
+        } else {
+            hotel.style.display = 'none';
+        }
+
+        // Check if any hotel matches the selected filter
+        if (show) {
+            resultsFound = true;
+        }
     });
+
+    // If no hotels matched the filters, show the "No results found" message
+    if (!resultsFound) {
+        // If message is not already shown, append it to the hotel list section
+        if (!document.body.contains(noResultsMessage)) {
+            hotelListing.appendChild(noResultsMessage);
+        }
+    } else {
+        // If there are results, remove the "No results found" message
+        if (document.body.contains(noResultsMessage)) {
+            noResultsMessage.remove();
+        }
+    }
 }
+
+
 </script>
    
 
