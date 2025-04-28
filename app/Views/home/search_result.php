@@ -198,8 +198,7 @@
     </div>
     </div>
     </div>
-    
-    <!-- </div> -->
+
     <script>
         document.getElementById('sortHotels').addEventListener('change', function () {
             const sortBy = this.value;
@@ -216,10 +215,9 @@
                 if (sortBy === 'price-high') {
                     return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
                 }
-                return 0; // recommended (no sorting)
+                return 0;
             });
 
-            // Clear and re-append hotels in sorted order
             hotels.forEach(hotel => hotelList.appendChild(hotel));
         });
     </script>
@@ -251,69 +249,65 @@
         }
     </script>
 
-<script>
-    const priceFilters = document.querySelectorAll('.price-filter');
-    const hotelListing = document.getElementById('hotelList');
-    const noResultsMessage = document.createElement('p');
-    noResultsMessage.textContent = 'No results found for the selected price range.';
-    noResultsMessage.style.color = 'red';
-    noResultsMessage.style.textAlign = 'center';
-    noResultsMessage.style.fontWeight = 'bold';
-    noResultsMessage.style.marginTop = '30px';
+    <script>
+        const priceFilters = document.querySelectorAll('.price-filter');
+        const hotelListing = document.getElementById('hotelList');
+        const noResultsMessage = document.createElement('p');
+        noResultsMessage.textContent = 'No results found for the selected price range.';
+        noResultsMessage.style.color = 'red';
+        noResultsMessage.style.textAlign = 'center';
+        noResultsMessage.style.fontWeight = 'bold';
+        noResultsMessage.style.marginTop = '30px';
 
-    priceFilters.forEach(filter => {
-        filter.addEventListener('change', function () {
-            applyPriceFilters();
+        priceFilters.forEach(filter => {
+            filter.addEventListener('change', function () {
+                applyPriceFilters();
+            });
         });
-    });
 
-    function applyPriceFilters() {
-        const selectedRanges = Array.from(document.querySelectorAll('.price-filter:checked'))
-            .map(input => input.value);
+        function applyPriceFilters() {
+            const selectedRanges = Array.from(document.querySelectorAll('.price-filter:checked'))
+                .map(input => input.value);
 
-        const hotels = document.querySelectorAll('.hotel-card');
-        let resultsFound = false;  // Track if we find any matching hotels
+            const hotels = document.querySelectorAll('.hotel-card');
+            let resultsFound = false;
 
-        hotels.forEach(hotel => {
-            const price = parseFloat(hotel.dataset.price || 0);
-            let show = selectedRanges.length === 0;
+            hotels.forEach(hotel => {
+                const price = parseFloat(hotel.dataset.price || 0);
+                let show = selectedRanges.length === 0;
 
-            selectedRanges.forEach(range => {
-                const [min, max] = range.split('-').map(parseFloat);
+                selectedRanges.forEach(range => {
+                    const [min, max] = range.split('-').map(parseFloat);
 
-                if (price >= min && price <= max) {
-                    show = true;
+                    if (price >= min && price <= max) {
+                        show = true;
+                    }
+                });
+
+                if (show) {
+                    hotel.style.display = 'block';
+                } else {
+                    hotel.style.display = 'none';
+                }
+
+                if (show) {
+                    resultsFound = true;
                 }
             });
 
-            if (show) {
-                hotel.style.display = 'block';
+            if (!resultsFound) {
+                if (!document.body.contains(noResultsMessage)) {
+                    hotelListing.appendChild(noResultsMessage);
+                }
             } else {
-                hotel.style.display = 'none';
-            }
-
-            // Check if any hotel matches the selected filter
-            if (show) {
-                resultsFound = true;
-            }
-        });
-
-        // If no hotels matched the filters, show the "No results found" message
-        if (!resultsFound) {
-            // If message is not already shown, append it to the hotel list section
-            if (!document.body.contains(noResultsMessage)) {
-                hotelListing.appendChild(noResultsMessage);
-            }
-        } else {
-            // If there are results, remove the "No results found" message
-            if (document.body.contains(noResultsMessage)) {
-                noResultsMessage.remove();
+                if (document.body.contains(noResultsMessage)) {
+                    noResultsMessage.remove();
+                }
             }
         }
-    }
 
 
-</script>
+    </script>
    
 
 
