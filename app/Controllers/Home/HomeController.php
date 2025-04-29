@@ -192,7 +192,7 @@ class HomeController extends BaseController
 
         $timestamp = time();
         $signature = hash('sha256', $apiKey . $secret . $timestamp);
-        // dd($signature);die();
+        dd($signature);die();
 
         $url = 'https://api.test.hotelbeds.com/hotel-api/1.0/hotels';
         $client = \Config\Services::curlrequest();

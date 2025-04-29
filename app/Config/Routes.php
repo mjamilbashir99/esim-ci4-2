@@ -21,6 +21,7 @@ use CodeIgniter\Router\RouteCollection;
     $routes->post('search-hotels', 'Home\HomeController::searchHotels');
 
     $routes->get('search-result', 'Home\HomeController::searchResult');
+    $routes->get('admin/dashboard', 'Admin\AdminController::index');
 
     
 
