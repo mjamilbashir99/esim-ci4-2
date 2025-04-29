@@ -33,6 +33,25 @@ class AuthController extends BaseController
         return $this->template->render('auth/register', $data);
     }
 
+
+
+    private function sendOtpToUser($email, $userId)
+    {
+        $otp = rand(100000, 999999);
+
+        $userModel = new \App\Models\UserModel();
+        $userModel->update($userId, ['otp' => $otp]);
+
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setSubject('Your OTP Code');
+        $emailService->setMessage("Your OTP for email verification is: <b>$otp</b>");
+        $emailService->setMailType('html');
+
+        return $emailService->send();
+    }
+
+
     // public function submit()
     // {
     //     $validation = \Config\Services::validation();
@@ -63,6 +82,52 @@ class AuthController extends BaseController
     //     return redirect()->to('/login')->with('success', 'Registration successful!');
     // }
 
+    // public function submit()
+    // {
+    //     $validation = \Config\Services::validation();
+
+    //     $rules = [
+    //         'name'            => 'required|min_length[3]',
+    //         'email'           => 'required|valid_email|is_unique[users.email]',
+    //         'phone'           => 'required|min_length[10]',
+    //         'password'        => 'required|min_length[6]',
+    //         'confirm_password'=> 'required|matches[password]',
+    //     ];
+
+    //     if (!$this->validate($rules)) {
+    //         return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+    //     }
+
+    //     $otp = rand(100000, 999999);
+
+    //     $userModel = new \App\Models\UserModel();
+
+    //     $data = [
+    //         'name'     => $this->request->getPost('name'),
+    //         'email'    => $this->request->getPost('email'),
+    //         'phone'    => $this->request->getPost('phone'),
+    //         'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+    //         'otp'      => $otp,
+    //         'is_verified' => 0,
+    //     ];
+
+    //     $userModel->insert($data);
+
+    //     $email = \Config\Services::email();
+    //     $email->setTo($data['email']);
+    //     $email->setSubject('Email Verification');
+    //     $email->setMessage("Your OTP for email verification is: <b>$otp</b>");
+        
+    //     if ($email->send()) {
+    //         return redirect()->to('verify-otp?email=' . urlencode($data['email']));
+    //     } else {
+    //         return redirect()->back()->with('error', 'Failed to send verification email.');
+    //     }
+        
+    // }
+
+
+
     public function submit()
     {
         $validation = \Config\Services::validation();
@@ -79,32 +144,25 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
 
-        $otp = rand(100000, 999999);
-
-        $userModel = new \App\Models\UserModel();
+        $userModel = new UserModel();
 
         $data = [
-            'name'     => $this->request->getPost('name'),
-            'email'    => $this->request->getPost('email'),
-            'phone'    => $this->request->getPost('phone'),
-            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-            'otp'      => $otp,
-            'is_verified' => 0,
+            'name'         => $this->request->getPost('name'),
+            'email'        => $this->request->getPost('email'),
+            'phone'        => $this->request->getPost('phone'),
+            'password'     => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'otp'          => 0, // placeholder
+            'is_verified'  => 0,
         ];
 
         $userModel->insert($data);
+        $userId = $userModel->getInsertID();
 
-        $email = \Config\Services::email();
-        $email->setTo($data['email']);
-        $email->setSubject('Email Verification');
-        $email->setMessage("Your OTP for email verification is: <b>$otp</b>");
-        
-        if ($email->send()) {
+        if ($this->sendOtpToUser($data['email'], $userId)) {
             return redirect()->to('verify-otp?email=' . urlencode($data['email']));
         } else {
             return redirect()->back()->with('error', 'Failed to send verification email.');
         }
-        
     }
 
 
@@ -364,10 +422,81 @@ class AuthController extends BaseController
             return $this->template->render('auth/login', $data);
     }
 
+    // public function loginSubmit()
+    // {
+    //     $session = session();
+    //     $userModel = new \App\Models\UserModel();
+
+    //     $email = $this->request->getPost('email');
+    //     $password = $this->request->getPost('password');
+
+    //     $user = $userModel->where('email', $email)->first();
+
+    //     if ($user && password_verify($password, $user['password'])) {
+    //         $session->set([
+    //             'user_id' => $user['id'],
+    //             'user_name' => $user['name'],
+    //             'user_email' => $user['email'],
+    //             'logged_in' => true,
+    //         ]);
+    //         return redirect()->to('/home');
+    //     } else {
+    //         return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
+    //     }
+    // }
+
+
+    // public function loginSubmit()
+    // {
+    //     $session = session();
+    //     $userModel = new \App\Models\UserModel();
+
+    //     $email = $this->request->getPost('email');
+    //     $password = $this->request->getPost('password');
+
+    //     $user = $userModel->where('email', $email)->first();
+
+    //     if ($user && password_verify($password, $user['password'])) {
+
+    //         // If user is not verified
+    //         if ($user['is_verified'] == 0) {
+    //             // Generate new OTP
+    //             $otp = rand(100000, 999999);
+
+    //             // Save OTP to database
+    //             $userModel->update($user['id'], ['otp' => $otp]);
+
+    //             // Send OTP to user email
+    //             $emailService = \Config\Services::email();
+    //             $emailService->setTo($email);
+    //             $emailService->setSubject('Your OTP Code');
+    //             $emailService->setMessage("Your OTP for email verification is: <b>$otp</b>");
+    //             $emailService->setMailType('html');
+    //             $emailService->send();
+
+    //             // Redirect to OTP verification page with email in URL
+    //             return redirect()->to('/verify-otp?email=' . urlencode($email));
+    //         }
+
+    //         // If verified, set session and redirect to home
+    //         $session->set([
+    //             'user_id'    => $user['id'],
+    //             'user_name'  => $user['name'],
+    //             'user_email' => $user['email'],
+    //             'logged_in'  => true,
+    //         ]);
+    //         return redirect()->to('/home');
+    //     } else {
+    //         return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
+    //     }
+    // }
+
+
+
     public function loginSubmit()
     {
         $session = session();
-        $userModel = new \App\Models\UserModel();
+        $userModel = new UserModel();
 
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
@@ -375,17 +504,26 @@ class AuthController extends BaseController
         $user = $userModel->where('email', $email)->first();
 
         if ($user && password_verify($password, $user['password'])) {
+
+            if ($user['is_verified'] == 0) {
+                $this->sendOtpToUser($email, $user['id']);
+                return redirect()->to('/verify-otp?email=' . urlencode($email));
+            }
+
             $session->set([
-                'user_id' => $user['id'],
-                'user_name' => $user['name'],
+                'user_id'    => $user['id'],
+                'user_name'  => $user['name'],
                 'user_email' => $user['email'],
-                'logged_in' => true,
+                'logged_in'  => true,
             ]);
+
             return redirect()->to('/home');
         } else {
             return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
         }
     }
+
+
 
 
     public function logout()
@@ -415,6 +553,38 @@ class AuthController extends BaseController
 
 
 
+    // public function resendOtp()
+    // {
+    //     $email = $this->request->getGet('email');
+    //     if (!$email) {
+    //         return redirect()->to('register')->with('error', 'Invalid request.');
+    //     }
+
+    //     $userModel = new \App\Models\UserModel();
+    //     $user = $userModel->where('email', $email)->first();
+
+    //     if (!$user) {
+    //         return redirect()->to('register')->with('error', 'User not found.');
+    //     }
+    //     $otp = random_int(100000, 999999);
+
+    //     $userModel->update($user['id'], ['otp' => $otp]);
+    //     $emailService = \Config\Services::email();
+    //     $emailService->setTo($email);
+    //     $emailService->setSubject('Your OTP Code');
+    //     $emailService->setMessage("Your OTP for email verification is: <b>$otp</b>");
+
+    //     if ($emailService->send()) {
+    //         return redirect()->to('verify-otp?email=' . urlencode($email))
+    //                         ->with('success', 'OTP has been resent to your email.');
+    //     } else {
+    //         return redirect()->to('verify-otp?email=' . urlencode($email))
+    //                         ->with('error', 'Failed to resend OTP. Please try again.');
+    //     }
+    // }
+
+
+
     public function resendOtp()
     {
         $email = $this->request->getGet('email');
@@ -422,21 +592,16 @@ class AuthController extends BaseController
             return redirect()->to('register')->with('error', 'Invalid request.');
         }
 
-        $userModel = new \App\Models\UserModel();
+        $userModel = new UserModel();
         $user = $userModel->where('email', $email)->first();
 
         if (!$user) {
             return redirect()->to('register')->with('error', 'User not found.');
         }
-        $otp = random_int(100000, 999999);
 
-        $userModel->update($user['id'], ['otp' => $otp]);
-        $emailService = \Config\Services::email();
-        $emailService->setTo($email);
-        $emailService->setSubject('Your OTP Code');
-        $emailService->setMessage("Your OTP for email verification is: <b>$otp</b>");
+        $success = $this->sendOtpToUser($email, $user['id']);
 
-        if ($emailService->send()) {
+        if ($success) {
             return redirect()->to('verify-otp?email=' . urlencode($email))
                             ->with('success', 'OTP has been resent to your email.');
         } else {
