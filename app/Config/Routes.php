@@ -40,15 +40,15 @@ use CodeIgniter\Router\RouteCollection;
     
 
 
-   //  Admin Routes
-    $routes->get('admin/dashboard', 'Admin\AdminController::index');
-    $routes->get('admin/all-users', 'Admin\AdminController::listUsers');
-    
-
-    
-
-
-    
-
-    
+  // Admin routes
+$routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($routes) {
+   $routes->get('login', 'AuthController::login');
+   $routes->post('login/submit', 'AuthController::loginSubmit');
+   $routes->get('logout', 'AuthController::logout');
    
+   // Protected admin routes
+   $routes->group('', ['filter' => 'adminauth'], function($routes) {
+       $routes->get('dashboard', 'AdminController::index');
+       $routes->get('all-users', 'AdminController::listUsers');
+   });
+});

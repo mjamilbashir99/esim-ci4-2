@@ -1,22 +1,31 @@
 <?php
-
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
 
 class AdminController extends BaseController
 {
-    public function index()
+    public function __construct()
     {
-        return view('admin/index');
-        //
+        // Check if user is logged in AND is admin
+        if (!session()->get('admin_logged_in') || session()->get('admin_data')['is_admin'] != 1) {
+            return redirect()->to('/admin/login');
+        }
     }
 
-    
+    public function index()
+    {
+        $data = [
+            'admin' => session()->get('admin_data')
+        ];
+        return view('admin/index', $data);
+    }
+
     public function listUsers()
     {
-        return view('admin/all-users');
-        //
+        $data = [
+            'admin' => session()->get('admin_data')
+        ];
+        return view('admin/all-users', $data);
     }
 }
