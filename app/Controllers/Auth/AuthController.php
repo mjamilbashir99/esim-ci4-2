@@ -33,6 +33,36 @@ class AuthController extends BaseController
         return $this->template->render('auth/register', $data);
     }
 
+    // public function submit()
+    // {
+    //     $validation = \Config\Services::validation();
+
+    //     $rules = [
+    //         'name'            => 'required|min_length[3]',
+    //         'email'           => 'required|valid_email|is_unique[users.email]',
+    //         'phone'           => 'required|min_length[10]',
+    //         'password'        => 'required|min_length[6]',
+    //         'confirm_password'=> 'required|matches[password]',
+    //     ];
+
+    //     if (!$this->validate($rules)) {
+    //         return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+    //     }
+
+    //     $userModel = new UserModel();
+
+    //     $data = [
+    //         'name'     => $this->request->getPost('name'),
+    //         'email'    => $this->request->getPost('email'),
+    //         'phone'    => $this->request->getPost('phone'),
+    //         'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+    //     ];
+
+    //     $userModel->insert($data);
+
+    //     return redirect()->to('/login')->with('success', 'Registration successful!');
+    // }
+
     public function submit()
     {
         $validation = \Config\Services::validation();
@@ -49,22 +79,103 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
 
-        $userModel = new UserModel();
+        $otp = rand(100000, 999999);
+
+        $userModel = new \App\Models\UserModel();
 
         $data = [
             'name'     => $this->request->getPost('name'),
             'email'    => $this->request->getPost('email'),
             'phone'    => $this->request->getPost('phone'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'otp'      => $otp,
+            'is_verified' => 0,
         ];
 
         $userModel->insert($data);
 
-        return redirect()->to('/login')->with('success', 'Registration successful!');
+        $email = \Config\Services::email();
+        $email->setTo($data['email']);
+        $email->setSubject('Email Verification');
+        $email->setMessage("Your OTP for email verification is: <b>$otp</b>");
+        
+        if ($email->send()) {
+            return redirect()->to('verify-otp?email=' . urlencode($data['email']));
+        } else {
+            return redirect()->back()->with('error', 'Failed to send verification email.');
+        }
+        
     }
 
 
-    // fetching correct info but not storing into db 
+    // public function verifyOtpSubmit()
+    // {
+    //     $email = $this->request->getPost('email');
+    //     $otp = $this->request->getPost('otp');
+
+    //     $userModel = new \App\Models\UserModel();
+    //     $user = $userModel->where('email', $email)->first();
+
+    //     if ($user && $user['otp'] === $otp) {
+    //         $userModel->update($user['id'], [
+    //             'otp' => null,
+    //             'is_verified' => 1
+    //         ]);
+
+    //         $session = session();
+    //         $session->set([
+    //             'user_id' => $user['id'],
+    //             'user_name' => $user['name'],
+    //             'user_email' => $user['email'],
+    //             'logged_in' => true,
+    //         ]);
+            
+    //         return redirect()->to('/home')->with('success', 'Email verified and logged in successfully.');
+    //     }
+
+    //     return redirect()->to('verify-otp?email=' . urlencode($email))
+    //                     ->with('error', 'Invalid OTP. Please try again.');
+    // }
+
+
+    public function verifyOtpSubmit()
+    {
+        $email = $this->request->getPost('email');
+        $otpArray = $this->request->getPost('otp');
+        $otp = implode('', $otpArray);
+
+        $userModel = new \App\Models\UserModel();
+        $user = $userModel->where('email', $email)->first();
+
+        if ($user && $user['otp'] === $otp) {
+            $userModel->update($user['id'], [
+                'otp' => null,
+                'is_verified' => 1
+            ]);
+
+            session()->set([
+                'user_id' => $user['id'],
+                'user_name' => $user['name'],
+                'user_email' => $user['email'],
+                'logged_in' => true,
+            ]);
+
+            return redirect()->to('/home')->with('success', 'Email verified successfully.');
+        }
+
+        return redirect()->to('verify-otp?email=' . urlencode($email))
+                        ->with('error', 'Invalid OTP. Please try again.');
+    }
+
+
+
+    public function verifyOtpView()
+    {
+        // return view('auth/verify_otp');
+        return $this->template->render('auth/verify_otp');
+    }
+
+
     public function hotelBedsApi(): ResponseInterface
     {
         helper('generic_helper');
@@ -188,9 +299,8 @@ class AuthController extends BaseController
     public function searchNearbyHotels(): ResponseInterface
     {
         helper('generic_helper');
-        $request = $this->request->getJSON(true); // Get POST body as array
+        $request = $this->request->getJSON(true);
     
-        // Validate input
         if (
             !isset($request['stay'], $request['occupancies'], $request['geolocation']) ||
             !isset($request['stay']['checkIn'], $request['stay']['checkOut']) ||
@@ -207,7 +317,6 @@ class AuthController extends BaseController
         $radius = $request['geolocation']['radius'] ?? 20;
         $unit = $request['geolocation']['unit'] ?? 'km';
     
-        // For now, just return the request data + mock response
         $mockResponse = [
             'search_summary' => [
                 'check_in' => $checkIn,
@@ -247,50 +356,50 @@ class AuthController extends BaseController
 
 
     public function login()
-{
-    // return view('auth/login');
-    $data = [
-            'title' => 'Login',
-        ];
-        return $this->template->render('auth/login', $data);
-}
-
-public function loginSubmit()
-{
-    $session = session();
-    $userModel = new \App\Models\UserModel();
-
-    $email = $this->request->getPost('email');
-    $password = $this->request->getPost('password');
-
-    $user = $userModel->where('email', $email)->first();
-
-    if ($user && password_verify($password, $user['password'])) {
-        $session->set([
-            'user_id' => $user['id'],
-            'user_name' => $user['name'],
-            'user_email' => $user['email'],
-            'logged_in' => true,
-        ]);
-        return redirect()->to('/home');
-    } else {
-        return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
+    {
+        // return view('auth/login');
+        $data = [
+                'title' => 'Login',
+            ];
+            return $this->template->render('auth/login', $data);
     }
-}
 
+    public function loginSubmit()
+    {
+        $session = session();
+        $userModel = new \App\Models\UserModel();
 
-public function logout()
-{
-    session()->destroy();
-    return redirect()->to('/login')->with('success', 'Logged out successfully.');
-}
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
 
-private function checkLogin()
-{
-    if (!session()->get('logged_in')) {
-        return redirect()->to('/login')->with('error', 'Please login to continue.');
+        $user = $userModel->where('email', $email)->first();
+
+        if ($user && password_verify($password, $user['password'])) {
+            $session->set([
+                'user_id' => $user['id'],
+                'user_name' => $user['name'],
+                'user_email' => $user['email'],
+                'logged_in' => true,
+            ]);
+            return redirect()->to('/home');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
+        }
     }
-}
+
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to('/login')->with('success', 'Logged out successfully.');
+    }
+
+    private function checkLogin()
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login')->with('error', 'Please login to continue.');
+        }
+    }
 
 
     

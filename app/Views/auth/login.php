@@ -22,7 +22,7 @@
 
 
 <div
-      class="container d-flex justify-content-center align-items-center min-vh-100"
+      class="container d-flex justify-content-center align-items-center my-4"
     >
     
       <div class="card p-4 shadow-lg" style="width: 100%; max-width: 400px">
@@ -32,6 +32,15 @@
             <?php if (session()->getFlashdata('error')): ?>
                 <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
             <?php endif; ?>
+             <?php if (session()->has('errors')): ?>
+              <div class="alert alert-danger">
+                  <ul class="mb-0">
+                      <?php foreach (session('errors') as $error): ?>
+                          <li><?= esc($error) ?></li>
+                      <?php endforeach; ?>
+                  </ul>
+              </div>
+          <?php endif; ?>
           <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
             <input type="email" class="form-control" name="email" id="email" required />

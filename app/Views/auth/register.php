@@ -1,12 +1,4 @@
-<?php if (session()->has('errors')): ?>
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            <?php foreach (session('errors') as $error): ?>
-                <li><?= esc($error) ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-<?php endif; ?>
+
 
 <!-- <div class="container mt-5">
   <h2 class="text-center mb-4">Register</h2>
@@ -44,13 +36,25 @@
 <div
       class="container d-flex justify-content-center align-items-center min-vh-100"
     >
-      <div class="card p-4 shadow-lg" style="width: 100%; max-width: 500px">
+      <div class="card p-4 shadow-lg my-4" style="width: 100%; max-width: 500px">
         <h3 class="text-center mb-4">Register</h3>
+        <?php if (session()->has('errors')): ?>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            <?php foreach (session('errors') as $error): ?>
+                <li><?= esc($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+ <?php if (session()->getFlashdata('error')): ?>
+                <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+            <?php endif; ?>
         <form class="needs-validation" action="<?= site_url('register/submit') ?>" method="post" id="registerForm">
         <!-- <form class="needs-validation" novalidate id="registerForm"> -->
           <div class="mb-3">
             <label for="fullname" class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="fullname" name="name" required />
+            <input type="text" class="form-control" id="fullname" name="name" value="<?= old('name') ?>" required />
             <div class="invalid-feedback">Please enter your full name.</div>
           </div>
 
@@ -61,7 +65,7 @@
               class="form-control"
               id="number"
               name="phone"
-              
+              value="<?= old('phone') ?>"
               required
             />
             <div class="invalid-feedback">
@@ -71,7 +75,7 @@
 
           <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="email" name="email" required />
+            <input type="email" class="form-control" id="email" name="email" value="<?= old('email') ?>" required />
             <div class="invalid-feedback">Please enter a valid email.</div>
           </div>
 
@@ -84,6 +88,7 @@
               name="password"
               minlength="6"
               required
+              value="<?= old('password') ?>"
             />
             <div class="invalid-feedback">
               Password must be at least 6 characters long.
@@ -99,6 +104,7 @@
               class="form-control"
               id="confirmPassword"
               name="confirm_password" 
+              value="<?= old('confirm_password') ?>"
               required
             />
             <div class="invalid-feedback" id="confirmFeedback">
@@ -119,7 +125,7 @@
         <div class="text-center mt-3">
           <p>
             Already have an account?
-            <a href="login.html">Login here</a>
+            <a href="<?= site_url('login') ?>">Login here</a>
           </p>
         </div>
       </div>

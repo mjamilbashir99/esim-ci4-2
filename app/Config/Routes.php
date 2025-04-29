@@ -26,6 +26,14 @@ use CodeIgniter\Router\RouteCollection;
     $routes->get('login', 'Auth\AuthController::login');
     $routes->post('login/submit', 'Auth\AuthController::loginSubmit');
 
+
+
+    $routes->get('verify-otp', 'Auth\AuthController::verifyOtpView');
+$routes->post('verify-otp/submit', 'Auth\AuthController::verifyOtpSubmit');
+
+
+
+
     $routes->get('logout', 'Auth\AuthController::logout');
     
 
