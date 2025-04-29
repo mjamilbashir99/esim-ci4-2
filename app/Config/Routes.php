@@ -22,6 +22,7 @@ use CodeIgniter\Router\RouteCollection;
 
     $routes->get('search-result', 'Home\HomeController::searchResult');
     $routes->get('admin/dashboard', 'Admin\AdminController::index');
+    $routes->get('admin/all-users', 'Admin\AdminController::listUsers');
 
     
 

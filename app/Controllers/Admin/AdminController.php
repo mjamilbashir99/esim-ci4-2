@@ -12,4 +12,11 @@ class AdminController extends BaseController
         return view('admin/index');
         //
     }
+
+    
+    public function listUsers()
+    {
+        return view('admin/all-users');
+        //
+    }
 }
