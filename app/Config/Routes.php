@@ -21,8 +21,19 @@ use CodeIgniter\Router\RouteCollection;
     $routes->post('search-hotels', 'Home\HomeController::searchHotels');
 
     $routes->get('search-result', 'Home\HomeController::searchResult');
+    $routes->post('register/submit', 'Auth\AuthController::submit');
+
+    $routes->get('login', 'Auth\AuthController::login');
+    $routes->post('login/submit', 'Auth\AuthController::loginSubmit');
+
+    $routes->get('logout', 'Auth\AuthController::logout');
+    
+
+
+   //  Admin Routes
     $routes->get('admin/dashboard', 'Admin\AdminController::index');
     $routes->get('admin/all-users', 'Admin\AdminController::listUsers');
+    
 
     
 

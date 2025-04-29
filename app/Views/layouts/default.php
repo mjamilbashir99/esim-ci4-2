@@ -75,13 +75,23 @@
           <button class="bookbtn btn btn-danger mx-3 rounded-0">
             Book Online
           </button>
+          <div class="d-flex">
+            <?php if (session()->get('logged_in')): ?>
+              <a href="<?= site_url('logout') ?>" class="btn btn-outline-danger">Logout</a>
+            <?php else: ?>
+              <a href="<?= site_url('login') ?>" class="btn btn-outline-primary me-2">Login</a>
+              <a href="<?= site_url('register') ?>" class="btn btn-primary">Register</a>
+            <?php endif; ?>
+          </div>
         </div>
       </div>
     </nav>
     <section
       class="w-100 position-relative"
       style="
-        background-image: url('/images/bg.jpg');
+        
+        background-image: url('<?= base_url('assets/img/bg.jpg'); ?>');
+
         height: 350px;
         background-size: cover;
       "

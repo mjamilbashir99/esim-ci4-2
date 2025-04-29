@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Libraries\Template;
 use App\Models\HotelModel;
+use App\Models\UserModel;
 
 
 class AuthController extends BaseController
@@ -30,6 +31,36 @@ class AuthController extends BaseController
             'title' => 'Register Page',
         ];
         return $this->template->render('auth/register', $data);
+    }
+
+    public function submit()
+    {
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'name'            => 'required|min_length[3]',
+            'email'           => 'required|valid_email|is_unique[users.email]',
+            'phone'           => 'required|min_length[10]',
+            'password'        => 'required|min_length[6]',
+            'confirm_password'=> 'required|matches[password]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
+
+        $userModel = new UserModel();
+
+        $data = [
+            'name'     => $this->request->getPost('name'),
+            'email'    => $this->request->getPost('email'),
+            'phone'    => $this->request->getPost('phone'),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+        ];
+
+        $userModel->insert($data);
+
+        return redirect()->to('/login')->with('success', 'Registration successful!');
     }
 
 
@@ -211,6 +242,57 @@ class AuthController extends BaseController
     
         return $this->response->setJSON($mockResponse);
     }
+
+
+
+
+    public function login()
+{
+    // return view('auth/login');
+    $data = [
+            'title' => 'Login',
+        ];
+        return $this->template->render('auth/login', $data);
+}
+
+public function loginSubmit()
+{
+    $session = session();
+    $userModel = new \App\Models\UserModel();
+
+    $email = $this->request->getPost('email');
+    $password = $this->request->getPost('password');
+
+    $user = $userModel->where('email', $email)->first();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $session->set([
+            'user_id' => $user['id'],
+            'user_name' => $user['name'],
+            'user_email' => $user['email'],
+            'logged_in' => true,
+        ]);
+        return redirect()->to('/home');
+    } else {
+        return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
+    }
+}
+
+
+public function logout()
+{
+    session()->destroy();
+    return redirect()->to('/login')->with('success', 'Logged out successfully.');
+}
+
+private function checkLogin()
+{
+    if (!session()->get('logged_in')) {
+        return redirect()->to('/login')->with('error', 'Please login to continue.');
+    }
+}
+
+
     
 
 
@@ -221,6 +303,7 @@ class AuthController extends BaseController
     //     $result = fetch_hotelbeds_hotels();
     //     return $this->response->setJSON($result);
     // }
+
 
 
 }
