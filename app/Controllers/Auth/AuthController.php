@@ -415,4 +415,37 @@ class AuthController extends BaseController
 
 
 
+    public function resendOtp()
+    {
+        $email = $this->request->getGet('email');
+        if (!$email) {
+            return redirect()->to('register')->with('error', 'Invalid request.');
+        }
+
+        $userModel = new \App\Models\UserModel();
+        $user = $userModel->where('email', $email)->first();
+
+        if (!$user) {
+            return redirect()->to('register')->with('error', 'User not found.');
+        }
+        $otp = random_int(100000, 999999);
+
+        $userModel->update($user['id'], ['otp' => $otp]);
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setSubject('Your OTP Code');
+        $emailService->setMessage("Your OTP for email verification is: <b>$otp</b>");
+
+        if ($emailService->send()) {
+            return redirect()->to('verify-otp?email=' . urlencode($email))
+                            ->with('success', 'OTP has been resent to your email.');
+        } else {
+            return redirect()->to('verify-otp?email=' . urlencode($email))
+                            ->with('error', 'Failed to resend OTP. Please try again.');
+        }
+    }
+
+
+
+
 }

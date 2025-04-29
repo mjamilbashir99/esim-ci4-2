@@ -29,7 +29,9 @@ use CodeIgniter\Router\RouteCollection;
 
 
     $routes->get('verify-otp', 'Auth\AuthController::verifyOtpView');
-$routes->post('verify-otp/submit', 'Auth\AuthController::verifyOtpSubmit');
+    $routes->post('verify-otp/submit', 'Auth\AuthController::verifyOtpSubmit');
+
+    $routes->get('resend-otp', 'Auth\AuthController::resendOtp');
 
 
 

@@ -47,6 +47,9 @@
             <?php if (session()->getFlashdata('error')): ?>
                 <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
             <?php endif; ?>
+             <?php if (session()->getFlashdata('success')): ?>
+                <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
+            <?php endif; ?>
             <?php if (session()->has('errors')): ?>
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -85,8 +88,9 @@
             </form>
 
 
-            <p class="mt-3 text-muted">
-            Didn't receive the code? <a href="#">Resend</a>
+           <p class="mt-3 text-muted">
+              Didn't receive the code?
+              <a href="<?= site_url('resend-otp?email=' . urlencode($_GET['email'] ?? '')) ?>">Resend</a>
             </p>
       </div>
     </div>
