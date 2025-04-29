@@ -40,7 +40,7 @@ class AuthController extends BaseController
         $otp = rand(100000, 999999);
 
         $userModel = new \App\Models\UserModel();
-        $userModel->update($userId, ['otp' => $otp]);
+        $userModel->update($userId, ['otp' => $otp,'otp_created_at' => date('Y-m-d H:i:s')]);
 
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
@@ -196,6 +196,36 @@ class AuthController extends BaseController
     // }
 
 
+    // public function verifyOtpSubmit()
+    // {
+    //     $email = $this->request->getPost('email');
+    //     $otpArray = $this->request->getPost('otp');
+    //     $otp = implode('', $otpArray);
+
+    //     $userModel = new \App\Models\UserModel();
+    //     $user = $userModel->where('email', $email)->first();
+
+    //     if ($user && $user['otp'] === $otp) {
+    //         $userModel->update($user['id'], [
+    //             'otp' => null,
+    //             'is_verified' => 1
+    //         ]);
+
+    //         session()->set([
+    //             'user_id' => $user['id'],
+    //             'user_name' => $user['name'],
+    //             'user_email' => $user['email'],
+    //             'logged_in' => true,
+    //         ]);
+
+    //         return redirect()->to('/home')->with('success', 'Email verified successfully.');
+    //     }
+
+    //     return redirect()->to('verify-otp?email=' . urlencode($email))
+    //                     ->with('error', 'Invalid OTP. Please try again.');
+    // }
+
+
     public function verifyOtpSubmit()
     {
         $email = $this->request->getPost('email');
@@ -205,17 +235,30 @@ class AuthController extends BaseController
         $userModel = new \App\Models\UserModel();
         $user = $userModel->where('email', $email)->first();
 
-        if ($user && $user['otp'] === $otp) {
+        if (!$user) {
+            return redirect()->to('register')->with('error', 'User not found.');
+        }
+
+        // Check if OTP is expired (60 seconds validity)
+        $otpCreatedAt = strtotime($user['otp_created_at']);
+        if (!$otpCreatedAt || (time() - $otpCreatedAt > 60)) {
+            return redirect()->to('verify-otp?email=' . urlencode($email))
+                            ->with('error', 'OTP has expired. Please request a new one.');
+        }
+
+        // Verify OTP
+        if ($user['otp'] === $otp) {
             $userModel->update($user['id'], [
                 'otp' => null,
+                'otp_created_at' => null,
                 'is_verified' => 1
             ]);
 
             session()->set([
-                'user_id' => $user['id'],
-                'user_name' => $user['name'],
+                'user_id'    => $user['id'],
+                'user_name'  => $user['name'],
                 'user_email' => $user['email'],
-                'logged_in' => true,
+                'logged_in'  => true,
             ]);
 
             return redirect()->to('/home')->with('success', 'Email verified successfully.');
@@ -224,6 +267,7 @@ class AuthController extends BaseController
         return redirect()->to('verify-otp?email=' . urlencode($email))
                         ->with('error', 'Invalid OTP. Please try again.');
     }
+
 
 
 

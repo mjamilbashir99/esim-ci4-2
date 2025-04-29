@@ -1,17 +1,3 @@
-<!--  
-<div class="container mt-5">
-  <h2>Email Verification</h2>
-  <form action="<?= site_url('verify-otp/submit') ?>" method="post">
-    <input type="text" name="email" value="<?= esc($_GET['email'] ?? '') ?>">
-    <div class="mb-3">
-      <label for="otp" class="form-label">Enter OTP</label>
-      <input type="text" class="form-control" name="otp" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Verify</button>
-  </form>
-</div> -->
-
-
 <style>
     .otp-inputs input {
       width: 40px;
