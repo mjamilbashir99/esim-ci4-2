@@ -444,12 +444,19 @@
                         })
                     })
                     .then(response => response.json())
+                    // .then(data => {
+                    //     if (data.success) {
+                    //         // If search successful, redirect to result page
+                    //         window.location.href = '/search-result';
+                    //     } else {
+                    //         alert('Error searching hotels: ' + data.error);
+                    //     }
+                    // })
                     .then(data => {
                         if (data.success) {
-                            // If search successful, redirect to result page
                             window.location.href = '/search-result';
                         } else {
-                            alert('Error searching hotels: ' + data.error);
+                            alert('Error searching hotels: ' + (data.error || 'Unknown error'));
                         }
                     })
                     .catch(error => {

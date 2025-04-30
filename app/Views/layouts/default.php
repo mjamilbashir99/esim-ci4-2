@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($title) ? $title : 'My Website' ?></title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <!DOCTYPE html>
@@ -25,6 +27,20 @@
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
       rel="stylesheet"
     />
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        />
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+        <link
+        href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+        rel="stylesheet"
+        />
     <!-- <link href="./style.css" rel="stylesheet" /> -->
     <link href="<?= base_url('assets/css/style.css') ?>" rel="stylesheet" />
   </head>
@@ -71,16 +87,11 @@
               >
             </li>
           </ul>
-          <!-- Add a button after the list items -->
-          <button class="bookbtn btn btn-danger mx-3 rounded-0">
-            Book Online
-          </button>
           <div class="d-flex">
             <?php if (session()->get('logged_in')): ?>
-              <a href="<?= site_url('logout') ?>" class="btn btn-outline-danger">Logout</a>
+              <a href="<?= site_url('logout') ?>" class="bookbtn btn btn-danger mx-3 rounded-0">Sign-Out</a>
             <?php else: ?>
-              <a href="<?= site_url('login') ?>" class="btn btn-outline-primary me-2">Login</a>
-              <a href="<?= site_url('register') ?>" class="btn btn-primary">Register</a>
+              <a href="<?= site_url('login') ?>" class="bookbtn btn btn-danger mx-3 rounded-0">Sign-In</a>
             <?php endif; ?>
           </div>
         </div>
@@ -146,6 +157,8 @@
       </ul>
     </footer>
    
+    <!-- Bootstrap Bundle JS (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
 
