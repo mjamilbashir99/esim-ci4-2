@@ -192,7 +192,7 @@ class HomeController extends BaseController
 
         $timestamp = time();
         $signature = hash('sha256', $apiKey . $secret . $timestamp);
-        dd($signature);die();
+        // dd($signature);die();
 
         $url = 'https://api.test.hotelbeds.com/hotel-api/1.0/hotels';
         $client = \Config\Services::curlrequest();
@@ -258,9 +258,65 @@ class HomeController extends BaseController
     
         return $this->template->render('Home/search_result', ['hotels' => $hotels]);
     }
-    
 
 
+
+
+
+
+
+    public function fetchHotelData()
+    {
+        $client = \Config\Services::curlrequest();
+
+        $apiKey = getenv('HOTELBEDS_API_KEY');
+        $secret = getenv('HOTELBEDS_SECRET');
+        $timestamp = time();
+        $signature = hash('sha256', $apiKey . $secret . $timestamp);
+
+        $url = 'https://api.test.hotelbeds.com/hotel-content-api/1.0/hotels/681970/details';
+
+        $headers = [
+            'Accept'       => 'application/json',
+            'Api-Key'      => $apiKey,
+            'X-Signature'  => $signature
+        ];
+
+        try {
+            $response = $client->get($url, ['headers' => $headers]);
+            $body = $response->getBody();
+
+            $filePath = WRITEPATH . 'cache/hotel_681970.json';
+            file_put_contents($filePath, $body);
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data fetched and saved.',
+                'file' => $filePath
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ])->setStatusCode(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+    // public function useHotelData()
+    // {
+    //     $filePath = WRITEPATH . 'cache/hotel_681970.json';
+
+    //     if (file_exists($filePath)) {
+    //         $data = json_decode(file_get_contents($filePath), true);
+    //         // Do what you want with $data
+    //         return view('hotel_details', ['hotel' => $data]);
+    //     }
+
+    //     return 'Hotel data not found. Please fetch it first.';
+    // }
 
 
 }

@@ -32,6 +32,10 @@ use CodeIgniter\Router\RouteCollection;
     $routes->post('verify-otp/submit', 'Auth\AuthController::verifyOtpSubmit');
 
     $routes->get('resend-otp', 'Auth\AuthController::resendOtp');
+    
+    $routes->get('hotel-details', 'Home\HomeController::fetchHotelData');
+
+    
 
 
 
