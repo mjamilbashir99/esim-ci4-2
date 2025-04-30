@@ -695,9 +695,13 @@ body {
 }
 
 .content-section {
-    min-height: 300px;
+    /* min-height: 300px;
     padding: 20px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eee; */
+    border: 1px solid lightgray;
+    padding: 20px;
+    border-radius: 27px;
+    margin-bottom: 13px;
 }
 
 .property-image {
@@ -719,8 +723,12 @@ body {
 }
 
 .content-section {
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray;
     padding: 5px;
     border-radius: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 10px; */
+    border: 1px solid lightgray;
+    padding: 20px;
+    border-radius: 27px;
+    margin-bottom: 13px;
 }

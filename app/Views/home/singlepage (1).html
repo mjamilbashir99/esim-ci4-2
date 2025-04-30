@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Villa Montparnasse</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg py-4">
+      <div class="container-fluid d-flex justify-content-between p-0">
+        <a class="navbar-brand text-white mx-3" href="/index.html">Navbar</a>
+        <button
+          class="navbar-toggler"
+          style="box-shadow: none !important"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav" style="gap: 20px">
+            <li class="nav-item">
+              <a
+                class="nav-link active text-white nav-text-black"
+                aria-current="page"
+                href="/index.html"
+                >About Us</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white nav-text-black" href="/listing.html"
+                >Listing</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-white nav-text-black"
+                href="/singlepage.html"
+                >Singlepage</a
+              >
+            </li>
+          </ul>
+          <!-- Add a button after the list items -->
+          <button
+            class="bookbtn btn btn-danger mx-3 border border-danger rounded-0"
+          >
+            Book Online
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section
+      class="w-100 position-relative"
+      style="
+        background-image: url('/images/bg.jpg');
+        height: 350px;
+        background-size: cover;
+      "
+    >
+      <div
+        class="z-3 position-absolute top-0 p-5 w-100 h-100"
+        style="background: rgba(0, 0, 0, 0.7)"
+      >
+        <p
+          class="text-white h3 text-center underline"
+          style="margin-top: 120px"
+        >
+          Book Online
+        </p>
+      </div>
+    </section>
+    <div class="container mt-4">
+      <div class="card">
+        <div
+          class="card-body d-flex flex-sm-column flex-md-column flex-lg-row flex-wrap"
+        >
+          <div class="col-md-8 col-12 mb-3">
+            <div class="d-flex justify-content-between mbl-flex-col">
+              <div class="">
+                <div class="mb-3">
+                  <h1 class="card-title h3">Villa Montparnasse</h1>
+                  <div>2 Rue Boulard, Paris, 75014, France</div>
+                  <a href="#" class="address-link">Show on map</a>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                  <div class="rating-circle">8.6</div>
+                  <div>
+                    <div class="rating-label">Good</div>
+                    <div class="vote-count">
+                      <span class="vote-up">▲ 8,166</span>
+                      <span class="vote-down ms-2">▼ 608</span>
+                    </div>
+                    <div class="feelter-text">
+                      Click to
+                      <span class="f-red">f</span>
+                      <span class="f-orange">e</span>
+                      <span class="f-yellowgreen">e</span>
+                      <span class="f-green">l</span>
+                      <span class="f-green">t</span>
+                      <span class="f-green">e</span>
+                      <span class="f-green">r</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="d-flex flex-column pt-4 py-sm-0 justify-content-md-between justify-content-sm-start"
+              >
+                <div
+                  class="d-flex gap-2 align-items-center justify-content-xs-start justify-content-md-between mobile-flex-sart"
+                >
+                  <div class="share-deal-btn">
+                    <i class="fa-solid fa-share-from-square"></i>
+                    <p class="m-0">Share Deal</p>
+                  </div>
+                  <p class="heart-icon m-0">♡</p>
+                </div>
+                <div class="form-check w-100 pl-0">
+                  <label
+                    class="form-check-label d-flex justify-content-md-between justify-content-start gap-2"
+                    for="rating5"
+                  >
+                    <i
+                      class="fas fa-star text-warning"
+                      style="font-size: 20px"
+                    ></i>
+                    <i
+                      class="fas fa-star text-warning"
+                      style="font-size: 20px"
+                    ></i>
+                    <i
+                      class="fas fa-star text-warning"
+                      style="font-size: 20px"
+                    ></i>
+                    <i
+                      class="fas fa-star text-warning"
+                      style="font-size: 20px"
+                    ></i>
+                    <i
+                      class="fas fa-star text-warning"
+                      style="font-size: 20px"
+                    ></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="my-3">
+              <div
+                class="d-flex flex-wrap gap-3 justify-content-evenly"
+                style="background-color: rgb(247, 238, 228)"
+              >
+                <a
+                  href="#photos"
+                  class="section-link text-decoration-none text-secondary py-2"
+                  >Photos</a
+                >
+                <a
+                  href="#details"
+                  class="section-link text-decoration-none text-secondary py-2"
+                  >Details</a
+                >
+                <a
+                  href="#rooms"
+                  class="section-link text-decoration-none text-secondary py-2"
+                  >Rooms</a
+                >
+                <a
+                  href="#amenities"
+                  class="section-link text-decoration-none text-secondary py-2"
+                  >Amenities</a
+                >
+                <a
+                  href="#policies"
+                  class="section-link text-decoration-none text-secondary py-2"
+                  >Policies</a
+                >
+              </div>
+            </div>
+            <div id="photos" class="d-flex gap-2">
+              <img
+                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                alt="Villa Montparnasse"
+                class="property-image w-100 rounded mb-3"
+              />
+
+              <div class="d-flex flex-wrap gap-2 flex-column mbl-flex-row">
+                <img
+                  src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                  class="image-thumbnail rounded"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                  class="image-thumbnail rounded"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                  class="image-thumbnail rounded"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                  class="image-thumbnail rounded"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                  class="image-thumbnail rounded"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-4 col-sm-12 mt-4 container d-flex justify-content-center"
+          >
+            <div class="booking-card col-12">
+              <div class="travel-credits text-center">
+                EARN 824 TRAVEL CREDITS
+              </div>
+
+              <div class="price-label text-center">Total with tax</div>
+              <div class="total-price text-center">$784</div>
+
+              <div class="booking-dates text-center">
+                Booking from<br />
+                <span class="date-range text-center bg-white rounded-3 px-2"
+                  >05/14/2025 to 05/17/2025</span
+                >
+              </div>
+
+              <button class="btn-select text-center">SELECT ROOM</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container my-4">
+      <!-- Navigation Links -->
+
+      <!-- Content Sections -->
+      <div class="container my-4">
+        <!-- Search Bar -->
+        <form class="border border-warning rounded-3 mb-4 p-2">
+          <div class="row g-2 align-items-center">
+            <div class="col-md-5 col-12 d-flex align-items-center border-end">
+              <i class="fas fa-calendar-alt me-2 text-secondary"></i>
+              <input
+                type="text"
+                id="dateRange"
+                class="form-control border-0 shadow-none"
+                placeholder="Check-in date — Check-out date"
+              />
+            </div>
+            <div
+              class="col-md-5 col-12 d-flex align-items-center border-end pt-2 pt-md-0"
+            >
+              <i class="fas fa-user me-2 text-secondary"></i>
+              <span>2 adults · 0 children · 1 room</span>
+              <i class="fas fa-chevron-down ms-auto"></i>
+            </div>
+            <div class="col-md-2 col-12 text-md-end pt-2 pt-md-0">
+              <button type="submit" class="btn btn-primary w-100">
+                Search
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Room Table -->
+        <div class="table-responsive">
+          <table
+            class="table table-bordered align-middle"
+            style="overflow-x: scroll; width: 1240px"
+          >
+            <thead class="table-light">
+              <tr>
+                <th>Room Type</th>
+                <th>Beds</th>
+                <th>Occupancy</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="#" class="text-primary fw-bold"
+                    >Comfort Double Room Garden side</a
+                  >
+                </td>
+                <td>1 queen bed <i class="fas fa-bed"></i></td>
+                <td><i class="fas fa-user"></i><i class="fas fa-user"></i></td>
+                <td>
+                  <button class="btn btn-primary btn-sm">Show prices</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#" class="text-primary fw-bold"
+                    >Business Single Room</a
+                  >
+                </td>
+                <td>1 twin bed <i class="fas fa-bed"></i></td>
+                <td><i class="fas fa-user"></i></td>
+                <td>
+                  <button class="btn btn-primary btn-sm">Show prices</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#" class="text-primary fw-bold"
+                    >Comfort Twin Room Garden side</a
+                  >
+                </td>
+                <td>2 twin beds <i class="fas fa-bed"></i></td>
+                <td><i class="fas fa-user"></i><i class="fas fa-user"></i></td>
+                <td>
+                  <button class="btn btn-primary btn-sm">Show prices</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#" class="text-primary fw-bold"
+                    >Penthouse Suite with Garden View</a
+                  >
+                </td>
+                <td>1 queen bed <i class="fas fa-bed"></i></td>
+                <td><i class="fas fa-user"></i><i class="fas fa-user"></i></td>
+                <td>
+                  <button class="btn btn-primary btn-sm">Show prices</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#" class="text-primary fw-bold"
+                    >Deluxe Double Room Garden side</a
+                  >
+                </td>
+                <td>
+                  1 sofa bed <i class="fas fa-couch"></i> and 1 queen bed
+                  <i class="fas fa-bed"></i>
+                </td>
+                <td>
+                  <i class="fas fa-user"></i><i class="fas fa-user"></i
+                  ><i class="fas fa-user-plus"></i>
+                </td>
+                <td>
+                  <button class="btn btn-primary btn-sm">Show prices</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#" class="text-primary fw-bold"
+                    >Comfort Single Room Garden side</a
+                  >
+                </td>
+                <td>1 twin bed <i class="fas fa-bed"></i></td>
+                <td><i class="fas fa-user"></i></td>
+                <td>
+                  <button class="btn btn-primary btn-sm">Show prices</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#" class="text-primary fw-bold"
+                    >Business Double Room City side</a
+                  >
+                </td>
+                <td>1 queen bed <i class="fas fa-bed"></i></td>
+                <td><i class="fas fa-user"></i><i class="fas fa-user"></i></td>
+                <td>
+                  <button class="btn btn-primary btn-sm">Show prices</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#" class="text-primary fw-bold"
+                    >Comfort Family Room</a
+                  >
+                </td>
+                <td>
+                  1 sofa bed <i class="fas fa-couch"></i> and 1 queen bed
+                  <i class="fas fa-bed"></i>
+                </td>
+                <td>
+                  <i class="fas fa-user"></i><i class="fas fa-user"></i
+                  ><i class="fas fa-user-plus"></i>
+                </td>
+                <td>
+                  <button class="btn btn-primary btn-sm">Show prices</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="photos" class="content-section">
+        <h2>Photos</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+          auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget
+          ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies
+          tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+        <p>
+          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+          posuere cubilia Curae; Donec euismod, nisl eget ultricies tincidunt,
+          nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+      </div>
+      <div id="details" class="content-section">
+        <h2>Details</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+          auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget
+          ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies
+          tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+        <p>
+          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+          posuere cubilia Curae; Donec euismod, nisl eget ultricies tincidunt,
+          nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+      </div>
+
+      <div id="rooms" class="content-section">
+        <h2>Rooms</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+          auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget
+          ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies
+          tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+        <p>
+          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+          posuere cubilia Curae; Donec euismod, nisl eget ultricies tincidunt,
+          nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+      </div>
+
+      <div id="amenities" class="content-section">
+        <h2>Amenities</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+          auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget
+          ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies
+          tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+        <p>
+          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+          posuere cubilia Curae; Donec euismod, nisl eget ultricies tincidunt,
+          nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+      </div>
+
+      <div id="policies" class="content-section">
+        <h2>Policies</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+          auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget
+          ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies
+          tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+        <p>
+          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+          posuere cubilia Curae; Donec euismod, nisl eget ultricies tincidunt,
+          nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.
+        </p>
+      </div>
+    </div>
+    <footer class="w-100" style="background-color: #001c34">
+      <ul
+        class="navbar-nav d-flex flex-row justify-content-center py-2 fontSize mobile-col"
+        style="gap: 20px; list-style: none; padding-left: 0"
+      >
+        <li class="nav-item">
+          <p
+            class="nav-link active text-white m-0 fontSize"
+            aria-current="page"
+          >
+            COPYRIGHT © 2025 HOTEL ROOM DISCOUNT&nbsp;
+            <span class="slash">|</span>
+          </p>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link active text-white fontSize"
+            aria-current="page"
+            href="#"
+            >About Us <span class="slash">|</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fontSize nav-text-white" href="#"
+            >Why Booking With Us <span class="slash"> |</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fontSize" href="#">Airport Transfer</a>
+        </li>
+      </ul>
+    </footer>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      // Simple image thumbnail click handler
+      document.querySelectorAll(".image-thumbnail").forEach((thumb) => {
+        thumb.addEventListener("click", function () {
+          const mainImage = document.querySelector(".property-image");
+          mainImage.src = this.src.replace("w=200", "w=1000");
+        });
+      });
+
+      flatpickr("#dateRange", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        minDate: "today",
+      });
+    </script>
+  </body>
+</html>

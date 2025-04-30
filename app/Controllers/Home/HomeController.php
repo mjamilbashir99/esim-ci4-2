@@ -133,6 +133,7 @@ class HomeController extends BaseController
 
     public function searchHotels()
     {
+        helper('generic_helper');
         $session = session();
 
         $destination = $this->request->getPost('destination');
@@ -173,8 +174,8 @@ class HomeController extends BaseController
                 [
                     "rooms" => $rooms,
                     "adults" => $adults,
-                    "children" => $children,
-                    "infants" => $infants,
+                    "children" => 0,
+                    // "infants" => $infants,
                 ]
             ],
             "geolocation" => [
@@ -192,7 +193,7 @@ class HomeController extends BaseController
 
         $timestamp = time();
         $signature = hash('sha256', $apiKey . $secret . $timestamp);
-        dd($signature);die();
+        // dd($signature);die();
 
         $url = 'https://api.test.hotelbeds.com/hotel-api/1.0/hotels';
         $client = \Config\Services::curlrequest();
@@ -208,6 +209,8 @@ class HomeController extends BaseController
             ]);
         
             $responseBody = json_decode($response->getBody(), true);
+
+            file_put_contents(WRITEPATH . 'hotelbeds_search_response.json', json_encode($responseBody, JSON_PRETTY_PRINT));
         
             log_message('debug', 'Hotel Search Response: ' . json_encode($responseBody));
 
@@ -231,9 +234,13 @@ class HomeController extends BaseController
         
         } catch (\Exception $e) {
             log_message('error', 'Hotel Search Error: ' . $e->getMessage());
+            // return $this->response->setJSON([
+            //     'success' => false,
+            //     'error' => $e->getMessage()
+            // ]);
             return $this->response->setJSON([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage() ?: 'Something went wrong'
             ]);
         }
     
@@ -258,7 +265,204 @@ class HomeController extends BaseController
     
         return $this->template->render('Home/search_result', ['hotels' => $hotels]);
     }
-    
+
+
+
+
+
+
+
+    public function fetchHotelData()
+    {
+        $client = \Config\Services::curlrequest();
+
+        $apiKey = getenv('HOTELBEDS_API_KEY');
+        $secret = getenv('HOTELBEDS_SECRET');
+        $timestamp = time();
+        $signature = hash('sha256', $apiKey . $secret . $timestamp);
+
+        $url = 'https://api.test.hotelbeds.com/hotel-content-api/1.0/hotels/681970/details';
+
+        $headers = [
+            'Accept'       => 'application/json',
+            'Api-Key'      => $apiKey,
+            'X-Signature'  => $signature
+        ];
+
+        try {
+            $response = $client->get($url, ['headers' => $headers]);
+            $body = $response->getBody();
+
+            $filePath = WRITEPATH . 'cache/hotel_681970.json';
+            file_put_contents($filePath, $body);
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data fetched and saved.',
+                'file' => $filePath
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ])->setStatusCode(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+    // public function useHotelData()
+    // {
+    //     $filePath = WRITEPATH . 'cache/hotel_681970.json';
+
+    //     if (file_exists($filePath)) {
+    //         $data = json_decode(file_get_contents($filePath), true);
+    //         // Do what you want with $data
+    //         return view('hotel_details', ['hotel' => $data]);
+    //     }
+
+    //     return 'Hotel data not found. Please fetch it first.';
+    // }
+
+
+
+    // public function hotelDetails($code)
+    // {
+    //     $cacheFile = WRITEPATH . "cache/hotel_{$code}_details.json";
+
+    //     if (file_exists($cacheFile)) {
+    //         $responseBody = json_decode(file_get_contents($cacheFile), true);
+    //     } else {
+    //         $apiKey = getenv('HOTELBEDS_API_KEY');
+    //         $secret = getenv('HOTELBEDS_SECRET');
+    //         $timestamp = time();
+    //         $signature = hash('sha256', $apiKey . $secret . $timestamp);
+        
+
+    //         $url = "https://api.test.hotelbeds.com/hotel-content-api/1.0/hotels/{$code}/details";
+
+    //         $client = \Config\Services::curlrequest();
+
+    //         try {
+    //             $response = $client->get($url, [
+    //                 'headers' => [
+    //                     'Api-Key' => $apiKey,
+    //                     'X-Signature' => $signature,
+    //                     'Accept' => 'application/json',
+    //                 ]
+    //             ]);
+
+    //             $responseBody = json_decode($response->getBody(), true);
+
+    //             file_put_contents($cacheFile, json_encode($responseBody));
+
+    //         } catch (\Exception $e) {
+    //             return $this->response->setJSON(['error' => $e->getMessage()]);
+    //         }
+    //     }
+
+    //     return view('Home/hotel_details', ['hotelDetails' => $responseBody]);
+    // }
+
+
+//     public function hotelDetails($code)
+// {
+
+//     $session = session();
+//     $search_results_session = $session->get('hotel_search_results');
+//     var_dump($search_results_session);die();
+//     $cacheFile = WRITEPATH . "cache/hotel_{$code}_details.json";
+
+//     if (file_exists($cacheFile)) {
+//         $responseBody = json_decode(file_get_contents($cacheFile), true);
+//     } else {
+//         $apiKey = getenv('HOTELBEDS_API_KEY');
+//         $secret = getenv('HOTELBEDS_SECRET');
+//         $timestamp = time();
+//         $signature = hash('sha256', $apiKey . $secret . $timestamp);
+
+//         $url = "https://api.test.hotelbeds.com/hotel-content-api/1.0/hotels/{$code}/details";
+
+//         $client = \Config\Services::curlrequest();
+
+//         try {
+//             $response = $client->get($url, [
+//                 'headers' => [
+//                     'Api-Key' => $apiKey,
+//                     'X-Signature' => $signature,
+//                     'Accept' => 'application/json',
+//                 ]
+//             ]);
+
+//             $responseBody = json_decode($response->getBody(), true);
+
+//             file_put_contents($cacheFile, json_encode($responseBody));
+//         } catch (\Exception $e) {
+//             return $this->response->setJSON(['error' => $e->getMessage()]);
+//         }
+//     }
+
+//     return $this->template->render('Home/hotel_details', ['hotelDetails' => $responseBody]);
+// }
+
+
+
+
+
+    public function hotelDetails($code)
+    {
+        $session = session();
+        $searchResults = $session->get('hotel_search_results');
+        $cacheFile = WRITEPATH . "cache/hotel_{$code}_details.json";
+
+        $hotelRates = null;
+        
+            if (isset($searchResults['hotels']['hotels'])) {
+                foreach ($searchResults['hotels']['hotels'] as $hotel) {
+                    if ((int)$hotel['code'] === (int)$code) {
+                        $hotelRates = $hotel;
+                        break;
+                    }
+                }
+            }
+        // var_dump($hotelRates);die();
+
+        if (file_exists($cacheFile)) {
+            $responseBody = json_decode(file_get_contents($cacheFile), true);
+        } else {
+            $apiKey = getenv('HOTELBEDS_API_KEY');
+            $secret = getenv('HOTELBEDS_SECRET');
+            $timestamp = time();
+            $signature = hash('sha256', $apiKey . $secret . $timestamp);
+
+            $url = "https://api.test.hotelbeds.com/hotel-content-api/1.0/hotels/{$code}/details";
+
+            $client = \Config\Services::curlrequest();
+
+            try {
+                $response = $client->get($url, [
+                    'headers' => [
+                        'Api-Key' => $apiKey,
+                        'X-Signature' => $signature,
+                        'Accept' => 'application/json',
+                    ]
+                ]);
+
+                $responseBody = json_decode($response->getBody(), true);
+                file_put_contents($cacheFile, json_encode($responseBody));
+            } catch (\Exception $e) {
+                return $this->response->setJSON(['error' => $e->getMessage()]);
+            }
+        }
+
+        
+        return $this->template->render('Home/hotel_details', [
+            'hotelDetails' => $responseBody,
+            'rateData' => $hotelRates
+        ]);
+    }
+
 
 
 

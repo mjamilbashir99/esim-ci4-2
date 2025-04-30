@@ -26,12 +26,18 @@ use CodeIgniter\Router\RouteCollection;
     $routes->get('login', 'Auth\AuthController::login');
     $routes->post('login/submit', 'Auth\AuthController::loginSubmit');
 
+    $routes->get('hotel-details/(:num)', 'Home\HomeController::hotelDetails/$1');
+
 
 
     $routes->get('verify-otp', 'Auth\AuthController::verifyOtpView');
     $routes->post('verify-otp/submit', 'Auth\AuthController::verifyOtpSubmit');
 
     $routes->get('resend-otp', 'Auth\AuthController::resendOtp');
+
+    $routes->get('hotel-details', 'Home\HomeController::fetchHotelData');
+
+    
 
 
 

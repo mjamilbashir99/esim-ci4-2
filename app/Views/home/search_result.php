@@ -110,7 +110,7 @@
                 <?php foreach ($hotels['hotels'] as $hotel): ?>
                     <div>
                     
-                    <div class="hotel-card" 
+                    <div class="hotel-card" onclick="viewHotelDetails(<?= esc($hotel['code']) ?>)"
                         data-name="<?= esc($hotel['name'] ?? '') ?>" 
                         data-price="<?= esc($hotel['rooms'][0]['rates'][0]['net'] ?? 0) ?>">
                         <div class="row g-0 hotel-info-wrapper">
@@ -199,6 +199,11 @@
     </div>
     </div>
 
+    <script>
+        function viewHotelDetails(code) {
+            window.location.href = "<?= site_url('hotel-details') ?>/" + code;
+        }
+    </script>
     <script>
         document.getElementById('sortHotels').addEventListener('change', function () {
             const sortBy = this.value;
