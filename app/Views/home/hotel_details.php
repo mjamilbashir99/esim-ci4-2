@@ -246,8 +246,30 @@
                 </tr>
             </thead>
             <tbody>
+
+            
                   
-                <?php foreach ($hotelDetails['hotel']['rooms'] as $room): ?>
+          <?php foreach ($rateData['rooms'] as $room): ?>
+            <?php foreach ($room['rates'] as $rate): ?>
+                <tr>
+                    <td><?= htmlspecialchars($room['name']) ?></td>
+                    <td>Board: <?= $rate['boardName'] ?></td>
+                    <!-- <td>Net Price: <?= $rate['net'] ?> <?= $rateData['currency'] ?? 'EUR' ?></td> -->
+                    <td>RateKey: <small><?= $rate['rateKey'] ?></small></td>
+                    <td>
+                        <form method="post" action="/book-now">
+                            <input type="hidden" name="rateKey" value="<?= $rate['rateKey'] ?>">
+                            <button class="btn btn-primary btn-sm">Select Room</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+
+
+
+
+                <!-- <?php foreach ($hotelDetails['hotel']['rooms'] as $room): ?>
                 <tr>
                     <td>
                     <a href="#" class="text-primary fw-bold">
@@ -273,7 +295,8 @@
                     <button class="btn btn-primary btn-sm">Select Room</button>
                     </td>
                 </tr>
-                <?php endforeach; ?>
+                <?php endforeach; ?> -->
+
             </tbody>
             </table>
         </div>
