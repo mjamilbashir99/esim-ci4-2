@@ -50,5 +50,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($rout
    $routes->group('', ['filter' => 'adminauth'], function($routes) {
        $routes->get('dashboard', 'AdminController::index');
        $routes->get('all-users', 'AdminController::listUsers');
+       $routes->get('all-bookings', 'AdminController::listBookings');
+       $routes->get('hotels', 'AdminController::hotels');
+       $routes->get('delete-user/(:num)', 'AdminController::deleteUser/$1');
    });
 });
