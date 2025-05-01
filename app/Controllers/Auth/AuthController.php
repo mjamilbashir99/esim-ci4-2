@@ -45,8 +45,8 @@ class AuthController extends BaseController
             'otp_created_at' => date('Y-m-d H:i:s')
         ]);
     
-        $user = $userModel->find($userId); // ✅ Get user data
-        $name = $user['name'] ?? 'User';   // ✅ Handle if name not set
+        $user = $userModel->find($userId); // Get user data
+        $name = $user['name'] ?? 'User';   // Handle if name not set
     
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
