@@ -38,19 +38,45 @@ class AuthController extends BaseController
     private function sendOtpToUser($email, $userId)
     {
         $otp = rand(100000, 999999);
-
+    
         $userModel = new \App\Models\UserModel();
-        $userModel->update($userId, ['otp' => $otp,'otp_created_at' => date('Y-m-d H:i:s')]);
-
+        $userModel->update($userId, [
+            'otp' => $otp,
+            'otp_created_at' => date('Y-m-d H:i:s')
+        ]);
+    
+        $user = $userModel->find($userId); // ✅ Get user data
+        $name = $user['name'] ?? 'User';   // ✅ Handle if name not set
+    
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
         $emailService->setSubject('Your OTP Code');
-        $emailService->setMessage("Your OTP for email verification is: <b>$otp</b>");
+    
+        $messageBody = view('emails/otp_template', [
+            'otp' => $otp,
+            'name' => $name
+        ]);
+        $emailService->setMessage($messageBody);
         $emailService->setMailType('html');
-
+    
         return $emailService->send();
     }
+    
 
+// for testing template
+public function previewTemplate()
+{
+    $name = 'John Doe'; // Test user name
+    $fakeOtp = '123456'; // Test OTP value
+    return view('emailTemplates/otp_template', ['name' => $name, 'otp' => $fakeOtp]);
+}
+
+
+    public function previewRegistrationEmail()
+    {
+        $fakeName = 'John Doe'; // Test user name
+        return view('emailTemplates/registration_success', ['name' => $fakeName]);
+    }
 
     // public function submit()
     // {

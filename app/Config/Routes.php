@@ -36,6 +36,8 @@ use CodeIgniter\Router\RouteCollection;
     $routes->get('resend-otp', 'Auth\AuthController::resendOtp');
 
     $routes->get('hotel-details', 'Home\HomeController::fetchHotelData');
+    $routes->get('preview-otp-template', 'Auth\AuthController::previewTemplate');
+    $routes->get('preview-registration-template', 'Auth\AuthController::previewRegistrationEmail');
 
     
 
