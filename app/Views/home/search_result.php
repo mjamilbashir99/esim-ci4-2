@@ -191,7 +191,7 @@
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>No hotels found.</p>
+                <p style="margin-top:20px;">No hotels found.</p>
             <?php endif; ?>
       </div>
     </div>
