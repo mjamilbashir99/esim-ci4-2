@@ -48,18 +48,21 @@ use CodeIgniter\Router\RouteCollection;
     
 
 
-  // Admin routes
+// Admin routes
 $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($routes) {
    $routes->get('login', 'AuthController::login');
    $routes->post('login/submit', 'AuthController::loginSubmit');
    $routes->get('logout', 'AuthController::logout');
-   
+  
    // Protected admin routes
    $routes->group('', ['filter' => 'adminauth'], function($routes) {
        $routes->get('dashboard', 'AdminController::index');
        $routes->get('all-users', 'AdminController::listUsers');
        $routes->get('all-bookings', 'AdminController::listBookings');
-       $routes->get('hotels', 'AdminController::hotels');
+       $routes->get('hotels', 'AdminController::hotels'); // This is the correct route for the hotels page
+       $routes->post('save-hotel', 'AdminController::saveHotel');
        $routes->get('delete-user/(:num)', 'AdminController::deleteUser/$1');
+       $routes->post('delete-hotel', 'AdminController::deleteHotel');
+       $routes->post('update-user', 'AdminController::updateUser');
    });
 });

@@ -52,7 +52,7 @@ class AuthController extends BaseController
         $emailService->setTo($email);
         $emailService->setSubject('Your OTP Code');
     
-        $messageBody = view('emails/otp_template', [
+        $messageBody = view('emailTemplates/otp_template', [
             'otp' => $otp,
             'name' => $name
         ]);
@@ -286,6 +286,9 @@ public function previewTemplate()
                 'user_email' => $user['email'],
                 'logged_in'  => true,
             ]);
+
+            // ✅ Send Welcome Email
+            $this->sendWelcomeEmail($user['email'], $user['name']);
 
             return redirect()->to('/home')->with('success', 'Email verified successfully.');
         }
@@ -681,6 +684,18 @@ public function previewTemplate()
     }
 
 
+    private function sendWelcomeEmail($toEmail, $userName)
+    {
+        $email = \Config\Services::email();
 
+        $email->setTo($toEmail);
+        $email->setSubject('Welcome to Our Platform');
 
+        $message = view('emailTemplates/registration_success', ['name' => $userName]);
+        $email->setMessage($message);
+
+        if (!$email->send()) {
+            log_message('error', 'Failed to send welcome email to ' . $toEmail);
+        }
+    }
 }
