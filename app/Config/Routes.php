@@ -39,6 +39,13 @@ use CodeIgniter\Router\RouteCollection;
     $routes->get('preview-otp-template', 'Auth\AuthController::previewTemplate');
     $routes->get('preview-registration-template', 'Auth\AuthController::previewRegistrationEmail');
 
+    $routes->post('/check-rate', 'Home\HomeController::checkRate');
+
+
+    $routes->post('set-redirect-url', 'Auth\AuthController::setRedirectUrl');
+
+    $routes->get('is-logged-in', 'Auth\AuthController::isLoggedIn');
+
     
 
 

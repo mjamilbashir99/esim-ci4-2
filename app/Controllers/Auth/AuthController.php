@@ -185,6 +185,13 @@ public function previewTemplate()
         $userId = $userModel->getInsertID();
 
         if ($this->sendOtpToUser($data['email'], $userId)) {
+            // return redirect()->to('verify-otp?email=' . urlencode($data['email']));
+
+            $redirectUrl = session()->get('redirect_url') ?? '/home';
+            session()->remove('redirect_url');
+
+            // After OTP verification redirect to $redirectUrl
+            session()->set('post_verification_redirect', $redirectUrl);
             return redirect()->to('verify-otp?email=' . urlencode($data['email']));
         } else {
             return redirect()->back()->with('error', 'Failed to send verification email.');
@@ -287,7 +294,10 @@ public function previewTemplate()
                 'logged_in'  => true,
             ]);
 
-            return redirect()->to('/home')->with('success', 'Email verified successfully.');
+            $redirect = session()->get('post_verification_redirect') ?? '/home';
+            session()->remove('post_verification_redirect');
+            return redirect()->to($redirect);
+            // return redirect()->to('/home')->with('success', 'Email verified successfully.');
         }
 
         return redirect()->to('verify-otp?email=' . urlencode($email))
@@ -587,7 +597,11 @@ public function previewTemplate()
                 'logged_in'  => true,
             ]);
 
-            return redirect()->to('/home');
+            $redirectUrl = session()->get('redirect_url') ?? '/home';
+            session()->remove('redirect_url');
+
+            return redirect()->to($redirectUrl);
+            // return redirect()->to('/home');
         } else {
             return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
         }
@@ -679,6 +693,26 @@ public function previewTemplate()
                             ->with('error', 'Failed to resend OTP. Please try again.');
         }
     }
+
+
+
+       public function isLoggedIn()
+{
+    $session = session();
+    return $this->response->setJSON([
+        'logged_in' => $session->get('logged_in') === true
+    ]);
+}
+
+
+public function setRedirectUrl()
+{
+    $url = $this->request->getPost('url');
+    if ($url) {
+        session()->set('redirect_url', $url);
+    }
+    return $this->response->setJSON(['status' => 'ok']);
+}
 
 
 

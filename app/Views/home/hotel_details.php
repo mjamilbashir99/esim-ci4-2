@@ -234,72 +234,233 @@
         </p>
       </div>
 
+      
+
       <div id="rooms" class="content-section">
         <div class="table-responsive">
-            <table class="table table-bordered align-middle" style="min-width: 1000px;">
-            <thead class="table-light">
-                <tr>
-                <th>Room Type</th>
-                <th>Beds</th>
-                <th>Occupancy</th>
-                <th></th>
-                </tr>
-            </thead>
-            <tbody>
+            <table class="table">
+              <thead>
+                  <tr>
+                      <th>Room Name</th>
+                      <th>Room Description</th>
+                      <th>Characteristics</th>
+                      <th>Guests</th>
+                      <th>Board</th>
+                      <!-- <th>Rate Key</th> -->
+                      <th>Select</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <?php if (!empty($rateData['rooms'])): ?>
+                    <?php foreach ($rateData['rooms'] as $index => $room): ?>
+                        <?php 
+                            $detailsRoom = $hotelDetails['hotel']['rooms'][$index] ?? null;
+                        ?>
+                        <?php foreach ($room['rates'] as $rate): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($room['name']) ?></td>
+                                <td><?= htmlspecialchars($detailsRoom['description'] ?? 'N/A') ?></td>
+                                <td><?= htmlspecialchars($detailsRoom['characteristic']['description']['content'] ?? 'N/A') ?></td>
+                                <td>
+                                    <?php 
+                                        $maxAdults = $detailsRoom['maxAdults'] ?? 0;
+                                        $maxChildren = $detailsRoom['maxChildren'] ?? 0;
+                                    ?>
+                                    <?php for ($i = 0; $i < $maxAdults; $i++): ?>
+                                        <i class="fas fa-user" title="Adult"></i>
+                                    <?php endfor; ?>
+                                    <?php for ($i = 0; $i < $maxChildren; $i++): ?>
+                                        <i class="fas fa-child" title="Child"></i>
+                                    <?php endfor; ?>
+                                </td>
+                                <td><?= htmlspecialchars($rate['boardName']) ?></td>
+                                <!-- <td><small><?= htmlspecialchars($rate['rateKey']) ?></small></td> -->
+                                <td>
+                                    <form onsubmit="return checkRate(this);">
+                                        <input type="hidden" name="rateKey" value="<?= htmlspecialchars($rate['rateKey']) ?>">
+                                        <button type="submit" class="btn btn-primary btn-sm">Select Room</button>
+                                    </form>
+                                    <tr class="rate-info-row" style="display:none;">
+                                        <td colspan="7" class="rate-info-cell"></td>
+                                    </tr>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                  <?php else: ?>
+                      <tr>
+                          <td colspan="7" class="text-center text-muted">No room information available. Please try another hotel or search again.</td>
+                      </tr>
+                  <?php endif; ?>
 
-            
-                  
-          <?php foreach ($rateData['rooms'] as $room): ?>
-            <?php foreach ($room['rates'] as $rate): ?>
-                <tr>
-                    <td><?= htmlspecialchars($room['name']) ?></td>
-                    <td>Board: <?= $rate['boardName'] ?></td>
-                    <!-- <td>Net Price: <?= $rate['net'] ?> <?= $rateData['currency'] ?? 'EUR' ?></td> -->
-                    <td>RateKey: <small><?= $rate['rateKey'] ?></small></td>
-                    <td>
-                        <form method="post" action="/book-now">
-                            <input type="hidden" name="rateKey" value="<?= $rate['rateKey'] ?>">
-                            <button class="btn btn-primary btn-sm">Select Room</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php endforeach; ?>
-
-
-
-
-                <!-- <?php foreach ($hotelDetails['hotel']['rooms'] as $room): ?>
-                <tr>
-                    <td>
-                    <a href="#" class="text-primary fw-bold">
-                        <?= htmlspecialchars($room['description']) ?>
-                    </a>
-                    </td>
-                    <td>
-                    <?= htmlspecialchars($room['characteristic']['description']['content'] ?? 'N/A') ?>
-                    <i class="fas fa-bed"></i>
-                    </td>
-                    <td>
-                   <?php for ($i = 0; $i < $room['maxAdults']; $i++): ?>
-                        <i class="fas fa-user" data-bs-toggle="tooltip" data-bs-placement="top" title="Adult"></i>
-                    <?php endfor; ?>
-                    <?php if (!empty($room['maxChildren'])): ?>
-                        <?php for ($i = 0; $i < $room['maxChildren']; $i++): ?>
-                            <i class="fas fa-child" data-bs-toggle="tooltip" data-bs-placement="top" title="Child"></i>
-                        <?php endfor; ?>
-                    <?php endif; ?>
-
-                    </td>
-                    <td>
-                    <button class="btn btn-primary btn-sm">Select Room</button>
-                    </td>
-                </tr>
-                <?php endforeach; ?> -->
-
-            </tbody>
+              </tbody>
             </table>
+
         </div>
     </div>
     </div>
+<script>
+  // Working fine but error messgaes not good
+// function checkRate(form) {
+//     event.preventDefault();
+
+//     const rateKey = form.querySelector('input[name="rateKey"]').value;
+//     const row = form.closest('tr');
+//     const infoRow = row.nextElementSibling;
+
+//     fetch('/check-rate', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//             'X-Requested-With': 'XMLHttpRequest'
+//         },
+//         body: new URLSearchParams({ rateKey })
+//     })
+//     .then(res => res.json())
+//     .then(data => {
+//         if (data.error) {
+//             infoRow.querySelector('.rate-info-cell').innerHTML = '<div class="text-danger">' + data.error + '</div>';
+//         } else {
+//             const price = data.hotel.rooms[0].rates[0].net;
+//             const currency = data.hotel.currency;
+//             const cancellation = data.hotel.rooms[0].rates[0].cancellationPolicies?.map(p => 
+//                 `Cancel before <strong>${p.from}</strong>: ${p.amount}${currency}`).join('<br>') || 'No policy found.';
+
+//             infoRow.querySelector('.rate-info-cell').innerHTML = `
+//                 <div class="bg-light p-3 rounded border">
+//                     <strong>Net Price:</strong> ${price} ${currency} <br>
+//                     <strong>Cancellation Policy:</strong><br>${cancellation}
+//                     <div class="mt-2">
+                       
+//                         <form onsubmit="return handleBooking(this);">
+//                             <input type="hidden" name="rateKey" value="${rateKey}">
+//                             <button type="submit" class="btn btn-success btn-sm">Book Now</button>
+//                         </form>
+//                     </div>
+//                 </div>`;
+//         }
+
+//         infoRow.style.display = 'table-row';
+//     })
+//     .catch(err => {
+//         infoRow.querySelector('.rate-info-cell').innerHTML = '<div class="text-danger">Error fetching rate details</div>';
+//         infoRow.style.display = 'table-row';
+//     });
+
+//     return false;
+// }
+
+
+
+function checkRate(form) {
+    event.preventDefault();
+
+    const rateKey = form.querySelector('input[name="rateKey"]').value;
+    const row = form.closest('tr');
+    const infoRow = row.nextElementSibling;
+
+    fetch('/check-rate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: new URLSearchParams({ rateKey })
+    })
+    .then(async res => {
+        let data;
+        try {
+            data = await res.json();
+        } catch (e) {
+            throw new Error('Invalid JSON response');
+        }
+
+        let message = '';
+
+        if (!res.ok) {
+            console.log('HTTP error:', res.status, data?.error);
+            if (res.status === 403 || (data?.error && data.error.toLowerCase().includes('quota'))) {
+                message = '<div class="text-warning">There is a technical issue. Please try again later.</div>';
+            } else {
+                message = '<div class="text-danger">Allotments not available. Please try another room.</div>';
+            }
+        } else if (data.error) {
+            console.log('API error:', data.error);
+            if (data.error.toLowerCase().includes('quota')) {
+                message = '<div class="text-danger">There is a technical issue. Please try again later.</div>';
+            } else {
+                message = '<div class="text-danger">Allotments not available. Please try another room.</div>';
+            }
+        } else if (!data.hotel || !data.hotel.rooms || !data.hotel.rooms[0] || !data.hotel.rooms[0].rates) {
+            message = '<div class="text-danger">Allotments not available. Please try another room.</div>';
+        } else {
+            const price = data.hotel.rooms[0].rates[0].net;
+            const currency = data.hotel.currency;
+            const cancellation = data.hotel.rooms[0].rates[0].cancellationPolicies?.map(p =>
+                `Cancel before <strong>${p.from}</strong>: ${p.amount}${currency}`).join('<br>') || 'No policy found.';
+
+            message = `
+                <div class="bg-light p-3 rounded border">
+                    <strong>Net Price:</strong> ${price} ${currency} <br>
+                    <strong>Cancellation Policy:</strong><br>${cancellation}
+                    <div class="mt-2">
+                        <form onsubmit="return handleBooking(this);">
+                            <input type="hidden" name="rateKey" value="${rateKey}">
+                            <button type="submit" class="btn btn-success btn-sm">Book Now</button>
+                        </form>
+                    </div>
+                </div>`;
+        }
+
+        infoRow.querySelector('.rate-info-cell').innerHTML = message;
+        infoRow.style.display = 'table-row';
+    })
+    .catch(err => {
+        console.error('Fetch error:', err);
+        infoRow.querySelector('.rate-info-cell').innerHTML = '<div class="text-danger">There is a technical issue. Please try again later.</div>';
+        infoRow.style.display = 'table-row';
+    });
+
+    return false;
+}
+
+
+
+</script>
+
+<script>
+    function handleBooking(form) {
+        event.preventDefault();
+
+        fetch('/is-logged-in', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.logged_in) {
+                alert('You can now proceed with booking.');
+                // Optionally, open a modal or proceed with booking logic
+            } else {
+                // Save current URL and redirect
+                const currentUrl = window.location.href;
+                fetch('/set-redirect-url', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new URLSearchParams({ url: currentUrl })
+                }).then(() => {
+                    window.location.href = '/login';
+                });
+            }
+        });
+
+        return false;
+    }
+</script>
+
 
