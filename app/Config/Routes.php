@@ -7,7 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 
-    $routes->get('/', 'Home::index');
+    $routes->get('/', 'Auth\AuthController::index');
     // Registeration Form
     $routes->get('register', 'Auth\AuthController::register');
     $routes->get('/testDatabaseConnection', 'Home::testDatabaseConnection');
