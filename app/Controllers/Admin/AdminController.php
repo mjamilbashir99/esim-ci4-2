@@ -6,6 +6,7 @@ use App\Models\UserModel;
 use App\Models\BookingModel;
 use App\Libraries\AdminTemplate;
 use App\Models\MarkupModel;
+use App\Models\EmailTemplateModel;
 
 class AdminController extends BaseController
 {
@@ -23,10 +24,31 @@ class AdminController extends BaseController
 
     public function index()
     {
+        // Load necessary models
+        $userModel = new \App\Models\UserModel();
+        $bookingModel = new \App\Models\BookingModel();
+        $markupModel = new \App\Models\MarkupModel();
+    
+        // Get current month and year for monthly bookings
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+    
+        // Get the latest active markup
+        $markup = $markupModel->where('status', 'enabled')
+                             ->orderBy('created_at', 'DESC')
+                             ->first();
+    
         $data = [
             'admin' => session()->get('admin_data'),
-            'title' => 'Admin Dashboard'
+            'title' => 'Admin Dashboard',
+            'monthly_bookings' => $bookingModel->where('MONTH(created_at)', $currentMonth)
+                                             ->where('YEAR(created_at)', $currentYear)
+                                             ->countAllResults(),
+            'total_bookings' => $bookingModel->countAllResults(),
+            'total_users' => $userModel->countAllResults(),
+            'b2c_percentage' => $markup ? $markup['b2c_markup'] : 0
         ];
+    
         return $this->template->render('admin/index', $data);
     }
 
@@ -75,29 +97,46 @@ public function hotels()
 public function saveHotel()
 {
     $request = service('request');
-    $status = $request->getPost('status');
-    $b2cMarkup = $request->getPost('b2cMarkup');
-    $b2bMarkup = $request->getPost('b2bMarkup');
-    $fromDate = $request->getPost('fromDate');
-    $toDate = $request->getPost('toDate');
-    $moduleId = $request->getPost('moduleId');
-
-    $markupModel = new MarkupModel();
-
+    
+    $validation = \Config\Services::validation();
+    $validation->setRules([
+        'status' => 'required|in_list[enabled,disabled]',
+        'b2cMarkup' => 'required|numeric',
+        'b2bMarkup' => 'required|numeric',
+        'fromDate' => 'required|valid_date',
+        'toDate' => 'required|valid_date',
+        'moduleId' => 'required|in_list[hotel,beds]'
+    ]);
+    
+    if (!$validation->withRequest($request)->run()) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Validation failed: ' . implode(' ', $validation->getErrors())
+        ]);
+    }
+    
     $data = [
-        'status' => $status,
-        'b2c_markup' => $b2cMarkup,
-        'b2b_markup' => $b2bMarkup,
-        'from_date' => $fromDate,
-        'to_date' => $toDate,
-        'module_id' => $moduleId
+        'status' => $request->getPost('status'),
+        'b2c_markup' => $request->getPost('b2cMarkup'),
+        'b2b_markup' => $request->getPost('b2bMarkup'),
+        'from_date' => $request->getPost('fromDate'),
+        'to_date' => $request->getPost('toDate'),
+        'module_id' => $request->getPost('moduleId')
     ];
-
+    
+    $markupModel = new MarkupModel();
+    
     try {
         $markupModel->save($data);
-        return $this->response->setJSON(['status' => 'success', 'message' => 'Markup saved successfully.']);
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Markup saved successfully.'
+        ]);
     } catch (\Exception $e) {
-        return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to save markup.']);
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Failed to save markup: ' . $e->getMessage()
+        ]);
     }
 }
 
@@ -114,6 +153,54 @@ public function deleteHotel()
         }
     } else {
         return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid ID']);
+    }
+}
+
+public function updatehotel()
+{
+    $request = service('request');
+    
+    $validation = \Config\Services::validation();
+    $validation->setRules([
+        'id' => 'required|numeric',
+        'status' => 'required|in_list[enabled,disabled]',
+        'b2cMarkup' => 'required|numeric',
+        'b2bMarkup' => 'required|numeric',
+        'fromDate' => 'required|valid_date',
+        'toDate' => 'required|valid_date',
+        'moduleId' => 'required|in_list[hotel,beds]'
+    ]);
+    
+    if (!$validation->withRequest($request)->run()) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Validation failed: ' . implode(' ', $validation->getErrors())
+        ]);
+    }
+    
+    $id = $request->getPost('id');
+    $data = [
+        'status' => $request->getPost('status'),
+        'b2c_markup' => $request->getPost('b2cMarkup'),
+        'b2b_markup' => $request->getPost('b2bMarkup'),
+        'from_date' => $request->getPost('fromDate'),
+        'to_date' => $request->getPost('toDate'),
+        'module_id' => $request->getPost('moduleId')
+    ];
+    
+    $markupModel = new MarkupModel();
+    
+    try {
+        $markupModel->update($id, $data);
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Markup updated successfully.'
+        ]);
+    } catch (\Exception $e) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Failed to update markup: ' . $e->getMessage()
+        ]);
     }
 }
 

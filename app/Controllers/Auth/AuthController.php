@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Libraries\Template;
 use App\Models\HotelModel;
 use App\Models\UserModel;
+use App\Models\EmailTemplateModel;
 
 
 class AuthController extends BaseController
@@ -37,6 +38,7 @@ class AuthController extends BaseController
 
     private function sendOtpToUser($email, $userId)
     {
+        // Generate OTP
         $otp = rand(100000, 999999);
     
         $userModel = new \App\Models\UserModel();
@@ -45,37 +47,29 @@ class AuthController extends BaseController
             'otp_created_at' => date('Y-m-d H:i:s')
         ]);
     
-        $user = $userModel->find($userId); // Get user data
-        $name = $user['name'] ?? 'User';   // Handle if name not set
+        $user = $userModel->find($userId);
+        $name = $user['name'] ?? 'User';
+    
+        $templateModel = new \App\Models\EmailTemplateModel();
+        $slug = 'OTP-template'; 
+        $template = $templateModel->where('slug', $slug)->first();  
+    
+        if (!$template) {
+            return false; 
+        }
+    
+        $templateContent = $template['content'];
+    
+        $templateContent = str_replace('<?= esc($name) ?>', esc($name), $templateContent);
+        $templateContent = str_replace('<?= esc($otp) ?>', $otp, $templateContent);
     
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
-        $emailService->setSubject('Your OTP Code');
-    
-        $messageBody = view('emailTemplates/otp_template', [
-            'otp' => $otp,
-            'name' => $name
-        ]);
-        $emailService->setMessage($messageBody);
+        $emailService->setSubject($template['subject']);
+        $emailService->setMessage($templateContent);
         $emailService->setMailType('html');
     
         return $emailService->send();
-    }
-    
-
-// for testing template
-public function previewTemplate()
-{
-    $name = 'John Doe'; // Test user name
-    $fakeOtp = '123456'; // Test OTP value
-    return view('emailTemplates/otp_template', ['name' => $name, 'otp' => $fakeOtp]);
-}
-
-
-    public function previewRegistrationEmail()
-    {
-        $fakeName = 'John Doe'; // Test user name
-        return view('emailTemplates/registration_success', ['name' => $fakeName]);
     }
 
     // public function submit()
@@ -699,19 +693,32 @@ public function previewTemplate()
     }
 
 
-    private function sendWelcomeEmail($toEmail, $userName)
+    private function sendWelcomeEmail($email, $name)
     {
-        $email = \Config\Services::email();
-
-        $email->setTo($toEmail);
-        $email->setSubject('Welcome to Our Platform');
-        $message = view('emailTemplates/registration_success', ['name' => $userName]);
-        $email->setMessage($message);
-
-        if (!$email->send()) {
-            log_message('error', 'Failed to send welcome email to ' . $toEmail);
+        $templateModel = new \App\Models\EmailTemplateModel();
+        $slug = 'Welcome-User';
+        $template = $templateModel->where('slug', $slug)->first(); 
+    
+        if (!$template) {
+            return false;
         }
+    
+      
+        $templateContent = $template['content'];
+    
+       
+        $templateContent = str_replace('<?= esc($name) ?>', esc($name), $templateContent);
+        $templateContent = str_replace('<?= base_url("login") ?>', base_url('login'), $templateContent);
+    
+        
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setSubject($template['subject']); 
+        $emailService->setMessage($templateContent);
+        $emailService->setMailType('html');
+        return $emailService->send();
     }
+    
     public function isLoggedIn()
     {
         $session = session();

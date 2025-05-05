@@ -38,7 +38,7 @@
                         <tr>
                             <td><?= esc($user['id']) ?></td>
                             <td><?= esc($user['name']) ?></td>
-                            <td><?= esc($user['email']) ?></td>
+                            <td><a href="mailto:<?= esc($user['email']) ?>"><?= esc($user['email']) ?></a></td>
                             <td><?= esc($user['phone']) ?></td>
                             <td><?= esc($user['is_admin']) == 1 ? 'Admin' : 'User' ?></td>
                             <td><?= esc($user['created_at']) ?></td>
@@ -114,49 +114,52 @@
 </div>
 
 
-<!-- jQuery + Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Ensure Bootstrap JS is loaded for modal support -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<!-- Script -->
 <script>
-$(document).ready(function() {
-    $('.editUserBtn').on('click', function() {
+document.addEventListener('DOMContentLoaded', function() {
+    // Use event delegation for dynamically loaded elements
+    $(document).on('click', '.editUserBtn', function() {
         $('#user_id').val($(this).data('id'));
         $('#user_name').val($(this).data('name'));
         $('#user_email').val($(this).data('email'));
         $('#user_phone').val($(this).data('phone'));
         $('#user_type').val($(this).data('type'));
-        $('#editUserMessage').text('');
+        $('#editUserMessage').text('').removeClass('alert-danger alert-success');
         $('#editUserModal').modal('show');
     });
 
     $('#editUserForm').on('submit', function(e) {
         e.preventDefault();
-        let formData = $(this).serialize();
-
         $.ajax({
             url: "<?= base_url('admin/update-user') ?>",
             method: "POST",
-            data: formData,
+            data: $(this).serialize(),
             dataType: "json",
             success: function(res) {
-                            if (res.status === 'success') {
-                $('#editUserMessage')
-                    .removeClass('d-none alert-danger')
-                    .addClass('alert-success')
-                    .html(' User updated successfully!');
-                setTimeout(() => { location.reload(); }, 1000);
-            } else {
-                $('#editUserMessage')
-                    .removeClass('d-none alert-success')
-                    .addClass('alert-danger')
-                    .html(res.message);
-            }
+                if (res.status === 'success') {
+                    $('#editUserMessage')
+                        .removeClass('alert-danger')
+                        .addClass('alert-success')
+                        .text('User updated successfully!')
+                        .removeClass('d-none');
+                    
+                    setTimeout(() => {
+                        $('#editUserModal').modal('hide');
+                        location.reload();
+                    }, 1000);
+                } else {
+                    $('#editUserMessage')
+                        .removeClass('alert-success')
+                        .addClass('alert-danger')
+                        .text(res.message)
+                        .removeClass('d-none');
+                }
             },
             error: function() {
-                $('#editUserMessage').removeClass('text-success').addClass('text-danger').text('Something went wrong.');
+                $('#editUserMessage')
+                    .removeClass('alert-success')
+                    .addClass('alert-danger')
+                    .text('Something went wrong.')
+                    .removeClass('d-none');
             }
         });
     });

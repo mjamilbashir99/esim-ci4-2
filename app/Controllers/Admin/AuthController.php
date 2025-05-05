@@ -16,7 +16,7 @@ class AuthController extends BaseController
     public function login()
     {
         if ($this->isAdminLoggedIn()) {
-            return redirect()->to('/admin/dashboard');
+            return redirect()->to('/admin/all-bookings');
         }
 
         return view('admin/auth/login');
@@ -45,7 +45,7 @@ class AuthController extends BaseController
 
         $this->setAdminSession($user);
 
-        return redirect()->to('/admin/dashboard');
+        return redirect()->to('/admin/all-bookings');
     }
 
     public function logout()
