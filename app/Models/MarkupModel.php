@@ -4,26 +4,22 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class BookingModel extends Model
+class MarkupModel extends Model
 {
-    protected $table            = 'bookings';
+    protected $table            = 'markups';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'user_id',
-        'hotel_id',
-        'room_id',
-        'booking_reference',
-        'check_in',
-        'check_out',
-        'guests',
-        'total_price',
-        'currency',
+
+    protected $allowedFields = [
         'status',
-        'created_at'
+        'b2c_markup',
+        'b2b_markup',
+        'from_date',
+        'to_date',
+        'module_id'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -33,11 +29,11 @@ class BookingModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = false; // Change to true if you want created_at/updated_at auto-fill
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
-    protected $updatedField  = ''; // not used
-    protected $deletedField  = ''; // not used
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
 
     // Validation
     protected $validationRules      = [];
@@ -55,14 +51,4 @@ class BookingModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function getBookingsWithUser()
-    {
-        return $this->db->table('bookings')
-            ->select('bookings.*, users.name as user_name, users.email as user_email')
-            ->join('users', 'users.id = bookings.user_id', 'left')
-            ->orderBy('bookings.id', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
 }
