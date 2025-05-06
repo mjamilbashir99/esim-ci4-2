@@ -345,28 +345,29 @@ function checkRate(form) {
         } else if (!data.hotel || !data.hotel.rooms || !data.hotel.rooms[0] || !data.hotel.rooms[0].rates) {
             message = '<div class="text-danger">Allotments not available. Please try another room.</div>';
         } else {
+            const hotelName = data.hotel.name; // get hotel name
             const price = data.hotel.rooms[0].rates[0].net;
             const currency = data.hotel.currency;
+            // const price = data.hotel.rooms[0].rates[0].net;
+            // const currency = data.hotel.currency;
             const cancellation = data.hotel.rooms[0].rates[0].cancellationPolicies?.map(p =>
                 `Cancel before <strong>${p.from}</strong>: ${p.amount}${currency}`).join('<br>') || 'No policy found.';
 
-            message = `
-                <div class="bg-light p-3 rounded border">
-                    <strong>Net Price:</strong> ${price} ${currency} <br>
-                    <strong>Cancellation Policy:</strong><br>${cancellation}
-                    <div class="mt-2">
-                        
+          message = `
+            <div class="bg-light p-3 rounded border">
+                <strong>Net Price:</strong> ${price} ${currency} <br>
+                <strong>Cancellation Policy:</strong><br>${cancellation}
+                <div class="mt-2">
+                    <form action="/checkout" method="GET">
+                        <input type="hidden" name="rateKey" value="${encodeURIComponent(rateKey)}">
+                        <input type="hidden" name="hotelName" value="${encodeURIComponent(hotelName)}">
+                        <input type="hidden" name="price" value="${encodeURIComponent(price)}">
+                        <input type="hidden" name="currency" value="${encodeURIComponent(currency)}">
+                        <button type="submit" class="btn btn-success btn-sm">Book Now</button>
+                    </form>
+                </div>
+            </div>`;
 
-                        <?php foreach ($rateData['rooms'] as $index => $room): ?>
-                             <?php foreach ($room['rates'] as $rate): ?>
-    <form onsubmit="return redirectToCheckout(this)">
-        <input type="hidden" name="rateKey" value="<?= esc($rate['rateKey']) ?>">
-        <button type="submit">Book Now</button>
-    </form>
-<?php endforeach; ?>
-<?php endforeach; ?>
-                    </div>
-                </div>`;
         }
 
         infoRow.querySelector('.rate-info-cell').innerHTML = message;

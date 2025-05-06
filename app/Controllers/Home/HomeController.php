@@ -458,6 +458,7 @@ class HomeController extends BaseController
     public function hotelDetails($code)
     {
         $session = session();
+        
         $searchResults = $session->get('hotel_search_results');
         // var_dump($searchResults);
         $cacheFile = WRITEPATH . "cache/hotel_{$code}_details.json";
@@ -476,6 +477,7 @@ class HomeController extends BaseController
 
         if (file_exists($cacheFile)) {
             $responseBody = json_decode(file_get_contents($cacheFile), true);
+            $session->set('hotel_details', $responseBody);
         } else {
             $apiKey = getenv('HOTELBEDS_API_KEY');
             $secret = getenv('HOTELBEDS_SECRET');
@@ -496,6 +498,7 @@ class HomeController extends BaseController
                 ]);
 
                 $responseBody = json_decode($response->getBody(), true);
+                $session->set('hotel_details', $responseBody);
                 file_put_contents($cacheFile, json_encode($responseBody));
             } catch (\Exception $e) {
                 return $this->response->setJSON(['error' => $e->getMessage()]);
@@ -676,10 +679,12 @@ public function bookRoom()
             return $this->response->setJSON(['error' => $body['error'] ?? 'Booking failed']);
         }
 
-        return $this->response->setJSON([
-            'success' => true,
-            'booking' => $body
-        ]);
+        // return $this->response->setJSON([
+        //     'success' => true,
+        //     'booking' => $body
+        // ]);
+
+        return $this->template->render('home/thankyou', ['booking' => $body['booking']]);
 
     } catch (\Exception $e) {
         return $this->response->setJSON(['error' => $e->getMessage()]);
@@ -692,12 +697,42 @@ public function bookRoom()
 
 public function checkout()
 {
-    $rateKey = $this->request->getGet('rateKey');
+    $session = session();
+    $searchResults = $session->get('hotel_search_results');
+    $hotelDetails = $session->get('hotel_details');
+
+    $imageUrl = '';
+
+    if (!empty($hotelDetails['hotel']['images'][0]['path'])) {
+        $imageUrl = $hotelDetails['hotel']['images'][0]['path'];
+    }
+    // var_dump($hotelDetails);die();
+    
+    // var_dump($searchResults);die();
+    $rateKey = urldecode($this->request->getGet('rateKey'));
+    $hotelName = urldecode($this->request->getGet('hotelName'));
+    $price = $this->request->getGet('price');
+    $currency = $this->request->getGet('currency');
+
+    $address = '';
+    if (!empty($hotelDetails['hotel']['address']['content'])) {
+        $address = $hotelDetails['hotel']['address']['content'];
+    }
+// var_dump($address);die();
+
     if (!$rateKey) {
         return redirect()->to('/')->with('error', 'Missing rate key.');
     }
 
-    return view('home/checkout_form', ['rateKey' => $rateKey]);
+    // return $this->template->render('Home/search_result', ['hotels' => $hotels]);
+    return $this->template->render('home/checkout_form', [
+        'rateKey' => $rateKey,
+        'hotelName' => $hotelName,
+        'price' => $price,
+        'currency' => $currency,
+        'imageUrl' => $imageUrl,
+        'address' => $address
+    ]);
 }
 
 
