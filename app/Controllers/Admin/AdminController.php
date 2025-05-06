@@ -102,9 +102,9 @@ public function saveHotel()
     $validation->setRules([
         'status' => 'required|in_list[enabled,disabled]',
         'b2cMarkup' => 'required|numeric',
-        'b2bMarkup' => 'required|numeric',
-        'fromDate' => 'required|valid_date',
-        'toDate' => 'required|valid_date',
+        // 'b2bMarkup' => 'required|numeric',
+        // 'fromDate' => 'required|valid_date',
+        // 'toDate' => 'required|valid_date',
         'moduleId' => 'required|in_list[hotel,beds]'
     ]);
     
@@ -118,9 +118,9 @@ public function saveHotel()
     $data = [
         'status' => $request->getPost('status'),
         'b2c_markup' => $request->getPost('b2cMarkup'),
-        'b2b_markup' => $request->getPost('b2bMarkup'),
-        'from_date' => $request->getPost('fromDate'),
-        'to_date' => $request->getPost('toDate'),
+        // 'b2b_markup' => $request->getPost('b2bMarkup'),
+        // 'from_date' => $request->getPost('fromDate'),
+        // 'to_date' => $request->getPost('toDate'),
         'module_id' => $request->getPost('moduleId')
     ];
     
@@ -165,9 +165,9 @@ public function updatehotel()
         'id' => 'required|numeric',
         'status' => 'required|in_list[enabled,disabled]',
         'b2cMarkup' => 'required|numeric',
-        'b2bMarkup' => 'required|numeric',
-        'fromDate' => 'required|valid_date',
-        'toDate' => 'required|valid_date',
+        // 'b2bMarkup' => 'required|numeric',
+        // 'fromDate' => 'required|valid_date',
+        // 'toDate' => 'required|valid_date',
         'moduleId' => 'required|in_list[hotel,beds]'
     ]);
     
@@ -182,9 +182,9 @@ public function updatehotel()
     $data = [
         'status' => $request->getPost('status'),
         'b2c_markup' => $request->getPost('b2cMarkup'),
-        'b2b_markup' => $request->getPost('b2bMarkup'),
-        'from_date' => $request->getPost('fromDate'),
-        'to_date' => $request->getPost('toDate'),
+        // 'b2b_markup' => $request->getPost('b2bMarkup'),
+        // 'from_date' => $request->getPost('fromDate'),
+        // 'to_date' => $request->getPost('toDate'),
         'module_id' => $request->getPost('moduleId')
     ];
     
