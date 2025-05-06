@@ -14,9 +14,9 @@
                             <th>#</th>
                             <th>STATUS</th>
                             <th>B2C MARKUP</th>
-                            <th>B2B MARKUP</th>
+                            <!-- <th>B2B MARKUP</th>
                             <th>FROM DATE</th>
-                            <th>TO DATE</th>
+                            <th>TO DATE</th> -->
                             <th>MODULE ID</th>
                             <th>ACTIONS</th>
                         </tr>
@@ -26,9 +26,9 @@
                             <th>#</th>
                             <th>STATUS</th>
                             <th>B2C MARKUP</th>
-                            <th>B2B MARKUP</th>
+                            <!-- <th>B2B MARKUP</th>
                             <th>FROM DATE</th>
-                            <th>TO DATE</th>
+                            <th>TO DATE</th> -->
                             <th>MODULE ID</th>
                             <th>ACTIONS</th>
                         </tr>
@@ -44,9 +44,9 @@
                                 </label>
                             </td>
                             <td><?= $markup['b2c_markup'] ?> %</td>
-                            <td><?= $markup['b2b_markup'] ?> %</td>
+                            <!-- <td><?= $markup['b2b_markup'] ?> %</td>
                             <td><?= $markup['from_date'] ?></td>
-                            <td><?= $markup['to_date'] ?></td>
+                            <td><?= $markup['to_date'] ?></td> -->
                             <td><?= $markup['module_id'] ?></td>
                             <td>
                                 <a href="#" class="btn btn-primary edit-button" data-id="<?= $markup['id'] ?>"
@@ -90,7 +90,7 @@
                         <label for="b2cMarkup">B2C MARKUP</label>
                         <input type="number" class="form-control" id="b2cMarkup" name="b2cMarkup" value="10" step="0.01" min="0">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="b2bMarkup">B2B MARKUP</label>
                         <input type="number" class="form-control" id="b2bMarkup" name="b2bMarkup" value="10" step="0.01" min="0">
                     </div>
@@ -101,7 +101,7 @@
                     <div class="form-group">
                         <label for="toDate">To Date</label>
                         <input type="date" class="form-control" id="toDate" name="toDate">
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="moduleId">Module Id</label>
                         <select class="form-control" id="moduleId" name="moduleId">
@@ -199,9 +199,9 @@ $(document).ready(function() {
         $('#markupId').val($button.data('id'));
         $('#status').val($button.data('status'));
         $('#b2cMarkup').val($button.data('b2c'));
-        $('#b2bMarkup').val($button.data('b2b'));
-        $('#fromDate').val($button.data('from'));
-        $('#toDate').val($button.data('to'));
+        // $('#b2bMarkup').val($button.data('b2b'));
+        // $('#fromDate').val($button.data('from'));
+        // $('#toDate').val($button.data('to'));
         $('#moduleId').val($button.data('module'));
 
         $('#markupModalLabel').text('Edit Markup Settings');
