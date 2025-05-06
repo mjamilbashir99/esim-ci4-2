@@ -1,4 +1,14 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Animated Booking Form</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
       body {
         background-color: #f5f5f5;
       }
@@ -76,64 +86,24 @@
         animation-delay: 1.2s;
       }
     </style>
-<!-- <h2>Enter your details</h2>
-<h2><?= esc($hotelName) ?></h2>
-<p><strong>Price:</strong> <?= esc($price) ?> <?= esc($currency) ?></p>
-<form action="/book-room" method="POST">
-    <input type="hidden" name="rateKey" value="<?= esc($rateKey) ?>">
-    
-    <label>Name:</label>
-    <input type="text" name="name" required>
-
-    <label>Surname:</label>
-    <input type="text" name="surname" required>
-
-
-    <button type="submit">Confirm Booking</button>
-</form> -->
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Animated Booking Form</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    
   </head>
   <body>
     <div class="col-md-6 mx-auto">
       <!-- Header Section -->
       <div class="booking-header row fade-up fade-delay-1">
         <div class="col-md-3">
-          <!-- <img
+          <img
             src="https://via.placeholder.com/200x130"
             class="img-fluid rounded"
             alt="Hotel"
-          /> -->
-          <?php if (!empty($imageUrl)): ?>
-            <?php
-                $baseUrl = "https://photos.hotelbeds.com/giata/";
-                $fullImageUrl = $baseUrl . $imageUrl;
-                ?>
-                <img src="<?= htmlspecialchars($fullImageUrl) ?>" alt="<?= htmlspecialchars($hotelName) ?>" class="img-fluid" style="max-height:300px;">
-          <?php endif; ?>
-          
+          />
         </div>
         <div class="col-md-9">
-          <h4><?= esc($hotelName) ?></h4>
-          <?php
-            // $address = isset($hotel['hotel']['address']['content']) ? $hotel['hotel']['address']['content'] : 'Address not available';
-            ?>
-
-            <p><?= htmlspecialchars($address) ?></p>
-          <span class="badge bg-success">Price <?= esc($price) ?> <?= esc($currency) ?></span>
+          <h4>Aparthotel Stare Miasto</h4>
+          <p class="mb-1">
+            <strong>city center</strong>
+          </p>
+          <span class="badge bg-success">Price 4500</span>
         </div>
       </div>
 
@@ -143,8 +113,33 @@
           Almost done! Just fill in the * required info
         </p>
 
-        <form action="/book-room" method="POST">
-         
+        <form>
+          <!-- Work Question -->
+          <div class="mb-3 fade-up fade-delay-2">
+            <label class="form-label">Are you traveling for work?</label><br />
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="work"
+                id="workYes"
+                value="yes"
+              />
+              <label class="form-check-label" for="workYes">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="work"
+                id="workNo"
+                value="no"
+                checked
+              />
+              <label class="form-check-label" for="workNo">No</label>
+            </div>
+          </div>
+
           <!-- Name Fields -->
           <div class="row g-3 fade-up fade-delay-3">
             <div class="col-md-2">
@@ -155,18 +150,13 @@
                 <option>Mrs</option>
               </select>
             </div>
-
-
-             <input type="hidden" name="rateKey" value="<?= esc($rateKey) ?>">
-    
-   
             <div class="col-md-5">
-              <label for="fname" class="form-label">Full Name *</label>
-              <input type="text" class="form-control" name="name" required />
+              <label for="fname" class="form-label">First Name *</label>
+              <input type="text" class="form-control" id="fname" required />
             </div>
             <div class="col-md-5">
-              <label for="lname" class="form-label">Sur Name *</label>
-              <input type="text" class="form-control" name="surname"  required />
+              <label for="lname" class="form-label">Last Name *</label>
+              <input type="text" class="form-control" id="lname" required />
             </div>
           </div>
           <div class="row mt-3 align-items-end fade-up fade-delay-5">
@@ -177,35 +167,31 @@
               <input type="tel" class="form-control" id="phone" required />
             </div>
           </div>
+          <!-- Email Fields -->
+          <div class="row mt-3 fade-up fade-delay-4">
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email Address *</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="Double-check for typos"
+                required
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="confirmEmail" class="form-label"
+                >Confirm Email Address *</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="confirmEmail"
+                required
+              />
+            </div>
+          </div>
 
-
-          <!-- Card Details Section -->
-        <div class="row mt-4 fade-up fade-delay-6">
-        <div class="col-md-12">
-            <h5 class="mb-3">Card Details</h5>
-        </div>
-
-        <div class="col-md-6">
-            <label for="card_number" class="form-label">Card Number *</label>
-            <input type="text" class="form-control" name="card_number" id="card_number" placeholder="•••• •••• •••• ••••" required />
-        </div>
-
-        <div class="col-md-3">
-            <label for="card_expiry" class="form-label">Expiry Date *</label>
-            <input type="text" class="form-control" name="card_expiry" id="card_expiry" placeholder="MM/YY" required />
-        </div>
-
-        <div class="col-md-3">
-            <label for="card_cvc" class="form-label">CVC *</label>
-            <input type="text" class="form-control" name="card_cvc" id="card_cvc" placeholder="123" required />
-        </div>
-
-        <div class="col-md-4 mt-3">
-            <label for="card_zip" class="form-label">ZIP / Postal Code *</label>
-            <input type="text" class="form-control" name="card_zip" id="card_zip" required />
-        </div>
-        </div>
-          
           <!-- Button -->
           <div class="text-end next-btn fade-up fade-delay-6">
             <button type="submit" class="btn btn-success btn-lg">
@@ -220,4 +206,3 @@
     </div>
   </body>
 </html>
-
