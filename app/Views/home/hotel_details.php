@@ -300,55 +300,6 @@
     </div>
     </div>
 <script>
-  // Working fine but error messgaes not good
-// function checkRate(form) {
-//     event.preventDefault();
-
-//     const rateKey = form.querySelector('input[name="rateKey"]').value;
-//     const row = form.closest('tr');
-//     const infoRow = row.nextElementSibling;
-
-//     fetch('/check-rate', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded',
-//             'X-Requested-With': 'XMLHttpRequest'
-//         },
-//         body: new URLSearchParams({ rateKey })
-//     })
-//     .then(res => res.json())
-//     .then(data => {
-//         if (data.error) {
-//             infoRow.querySelector('.rate-info-cell').innerHTML = '<div class="text-danger">' + data.error + '</div>';
-//         } else {
-//             const price = data.hotel.rooms[0].rates[0].net;
-//             const currency = data.hotel.currency;
-//             const cancellation = data.hotel.rooms[0].rates[0].cancellationPolicies?.map(p => 
-//                 `Cancel before <strong>${p.from}</strong>: ${p.amount}${currency}`).join('<br>') || 'No policy found.';
-
-//             infoRow.querySelector('.rate-info-cell').innerHTML = `
-//                 <div class="bg-light p-3 rounded border">
-//                     <strong>Net Price:</strong> ${price} ${currency} <br>
-//                     <strong>Cancellation Policy:</strong><br>${cancellation}
-//                     <div class="mt-2">
-                       
-//                         <form onsubmit="return handleBooking(this);">
-//                             <input type="hidden" name="rateKey" value="${rateKey}">
-//                             <button type="submit" class="btn btn-success btn-sm">Book Now</button>
-//                         </form>
-//                     </div>
-//                 </div>`;
-//         }
-
-//         infoRow.style.display = 'table-row';
-//     })
-//     .catch(err => {
-//         infoRow.querySelector('.rate-info-cell').innerHTML = '<div class="text-danger">Error fetching rate details</div>';
-//         infoRow.style.display = 'table-row';
-//     });
-
-//     return false;
-// }
 
 
 
@@ -404,10 +355,16 @@ function checkRate(form) {
                     <strong>Net Price:</strong> ${price} ${currency} <br>
                     <strong>Cancellation Policy:</strong><br>${cancellation}
                     <div class="mt-2">
-                        <form onsubmit="return handleBooking(this);">
-                            <input type="hidden" name="rateKey" value="${rateKey}">
-                            <button type="submit" class="btn btn-success btn-sm">Book Now</button>
-                        </form>
+                        
+
+                        <?php foreach ($rateData['rooms'] as $index => $room): ?>
+                             <?php foreach ($room['rates'] as $rate): ?>
+    <form onsubmit="return redirectToCheckout(this)">
+        <input type="hidden" name="rateKey" value="<?= esc($rate['rateKey']) ?>">
+        <button type="submit">Book Now</button>
+    </form>
+<?php endforeach; ?>
+<?php endforeach; ?>
                     </div>
                 </div>`;
         }
@@ -429,38 +386,116 @@ function checkRate(form) {
 </script>
 
 <script>
-    function handleBooking(form) {
-        event.preventDefault();
+    // function handleBooking(form) {
+    //     event.preventDefault();
 
-        fetch('/is-logged-in', {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.logged_in) {
-                alert('You can now proceed with booking.');
-                // Optionally, open a modal or proceed with booking logic
-            } else {
-                // Save current URL and redirect
-                const currentUrl = window.location.href;
-                fetch('/set-redirect-url', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: new URLSearchParams({ url: currentUrl })
-                }).then(() => {
-                    window.location.href = '/login';
-                });
-            }
-        });
+    //     fetch('/is-logged-in', {
+    //         method: 'GET',
+    //         headers: {
+    //             'X-Requested-With': 'XMLHttpRequest'
+    //         }
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         if (data.logged_in) {
+    //             alert('You can now proceed with booking.');
+    //             // Optionally, open a modal or proceed with booking logic
+    //         } else {
+    //             // Save current URL and redirect
+    //             const currentUrl = window.location.href;
+    //             fetch('/set-redirect-url', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/x-www-form-urlencoded',
+    //                     'X-Requested-With': 'XMLHttpRequest'
+    //                 },
+    //                 body: new URLSearchParams({ url: currentUrl })
+    //             }).then(() => {
+    //                 window.location.href = '/login';
+    //             });
+    //         }
+    //     });
 
-        return false;
-    }
+    //     return false;
+    // }
+
+// function handleBooking(form) {
+//     event.preventDefault();
+
+//     const rateKey = form.querySelector('input[name="rateKey"]').value;
+
+//     fetch('/book-room', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//             'X-Requested-With': 'XMLHttpRequest'
+//         },
+//         body: new URLSearchParams({ rateKey })
+//     })
+//     .then(res => res.json())
+//     .then(data => {
+//         if (data.success) {
+//             alert('Booking successful! Booking reference: ' + data.booking.booking.reference);
+//             // Optionally redirect to a booking summary page
+//             // window.location.href = '/booking-confirmation/' + data.booking.booking.reference;
+//         } else {
+//             alert('Booking failed: ' + (typeof data.error === 'object' ? JSON.stringify(data.error) : data.error || 'Unknown error'));
+
+//         }
+//     })
+//     .catch(err => {
+//         console.error('Booking error:', err);
+//         alert('Technical error occurred during booking.');
+//     });
+
+//     return false;
+// }
+
+
+
+function handleBooking(form) {
+    event.preventDefault();
+
+    const rateKey = form.querySelector('input[name="rateKey"]').value;
+
+    fetch('/book-room', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: new URLSearchParams({ rateKey })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('Booking successful! Booking reference: ' + data.booking.booking.reference);
+            // Optionally redirect to a booking summary page
+            // window.location.href = '/booking-confirmation/' + data.booking.booking.reference;
+        } else {
+            alert('Booking failed: ' + (typeof data.error === 'object' ? JSON.stringify(data.error) : data.error || 'Unknown error'));
+
+        }
+    })
+    .catch(err => {
+        console.error('Booking error:', err);
+        alert('Technical error occurred during booking.');
+    });
+
+    return false;
+}
+
+
+function redirectToCheckout(form) {
+    event.preventDefault();
+
+    const rateKey = form.querySelector('input[name="rateKey"]').value;
+
+    // Redirect to a new page where user can fill out their details
+    window.location.href = '/checkout?rateKey=' + encodeURIComponent(rateKey);
+    return false;
+}
+
 </script>
 
 

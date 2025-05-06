@@ -234,20 +234,20 @@ class HomeController extends BaseController
             ]);
         
             // remove nichy wala to get real data and uncomment this
-            // $responseBody = json_decode($response->getBody(), true);
+            $responseBody = json_decode($response->getBody(), true);
 
-            $filePath = WRITEPATH . 'cache/hotel_472781_details.json';
+            // $filePath = WRITEPATH . 'cache/hotel_472781_details.json';
 
-            if (file_exists($filePath)) {
-                $jsonData = file_get_contents($filePath);
-                $responseBody = json_decode($jsonData, true);
-                // var_dump($responseBody);
-            } else {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'error' => 'Hotel details file not found.'
-                ]);
-            }
+            // if (file_exists($filePath)) {
+            //     $jsonData = file_get_contents($filePath);
+            //     $responseBody = json_decode($jsonData, true);
+            //     // var_dump($responseBody);
+            // } else {
+            //     return $this->response->setJSON([
+            //         'success' => false,
+            //         'error' => 'Hotel details file not found.'
+            //     ]);
+            // }
 
             // var_dump($responseBody);
             file_put_contents(WRITEPATH . 'hotelbeds_search_response.json', json_encode($responseBody, JSON_PRETTY_PRINT));
@@ -510,77 +510,6 @@ class HomeController extends BaseController
     }
 
 
-
-
-
-    // working but not good error messgaes
-
-    // public function checkRate()
-    // {
-    //     $rateKey = $this->request->getPost('rateKey');
-
-    //     if (!$rateKey) {
-    //         return $this->response->setJSON(['error' => 'RateKey is required']);
-    //     }
-
-    //     $hash = md5($rateKey);
-    //     $cacheFile = WRITEPATH . "logs/check_rate_cache_{$hash}.json";
-
-    //     if (file_exists($cacheFile)) {
-    //         $cached = file_get_contents($cacheFile);
-    //         return $this->response->setJSON(json_decode($cached, true));
-    //     }
-
-    //     $apiKey = getenv('HOTELBEDS_API_KEY');
-    //     $secret = getenv('HOTELBEDS_SECRET');
-    //     $timestamp = time();
-    //     $signature = hash('sha256', $apiKey . $secret . $timestamp);
-
-    //     $url = 'https://api.test.hotelbeds.com/hotel-api/1.0/checkrates';
-    //     $client = \Config\Services::curlrequest();
-
-    //     $payload = [
-    //         'rooms' => [
-    //             [
-    //                 'rateKey' => $rateKey
-    //             ]
-    //         ]
-    //     ];
-
-    //     try {
-    //         $response = $client->post($url, [
-    //             'headers' => [
-    //                 'Api-Key' => $apiKey,
-    //                 'X-Signature' => $signature,
-    //                 'Accept' => 'application/json',
-    //                 'Content-Type' => 'application/json'
-    //             ],
-    //             'body' => json_encode($payload)
-    //         ]);
-
-    //         $result = json_decode($response->getBody(), true);
-
-    //         $timestampedFile = WRITEPATH . 'logs/check_rate_' . date('Ymd_His') . '.json';
-    //         file_put_contents($timestampedFile, json_encode($result, JSON_PRETTY_PRINT));
-    //         file_put_contents($cacheFile, json_encode($result, JSON_PRETTY_PRINT));
-
-    //         return $this->response->setJSON($result);
-    //     } catch (\Exception $e) {
-    //         $errorLog = [
-    //             'error' => $e->getMessage(),
-    //             'rateKey' => $rateKey,
-    //             'timestamp' => date('Y-m-d H:i:s')
-    //         ];
-
-    //         $errorFile = WRITEPATH . 'logs/check_rate_error_' . date('Ymd_His') . '.json';
-    //         file_put_contents($errorFile, json_encode($errorLog, JSON_PRETTY_PRINT));
-
-    //         return $this->response->setJSON($errorLog);
-    //     }
-    // }
-
-
-
     public function checkRate()
     {
         $rateKey = $this->request->getPost('rateKey');
@@ -656,6 +585,120 @@ class HomeController extends BaseController
             return $this->response->setJSON(['error' => 'Unexpected server error']);
         }
     }
+
+
+
+
+
+
+
+
+
+//     public function bookHotel()
+// {
+//     if (!$this->request->isAJAX()) {
+//         return $this->response->setJSON(['error' => 'Invalid request.']);
+//     }
+
+//     $rateKey = $this->request->getPost('rateKey');
+//     if (!$rateKey) {
+//         return $this->response->setJSON(['error' => 'RateKey is required.']);
+//     }
+
+//     // Here you'd perform the actual booking with HotelBeds' API
+//     // For now, simulate booking:
+//     // TODO: Call /book endpoint on HotelBeds with POST data
+//     return $this->response->setJSON(['success' => true, 'message' => 'Booking completed.']);
+// }
+
+
+
+
+public function bookRoom()
+{
+    $rateKey = $this->request->getPost('rateKey');
+    //  $rateKey = $this->request->getPost('rateKey');
+    $name = $this->request->getPost('name');
+    $surname = $this->request->getPost('surname');
+
+    if (!$rateKey) {
+        return $this->response->setJSON(['error' => 'RateKey is required']);
+    }
+
+    $apiKey = getenv('HOTELBEDS_API_KEY');
+    $secret = getenv('HOTELBEDS_SECRET');
+    $timestamp = time();
+    $signature = hash('sha256', $apiKey . $secret . $timestamp);
+
+    $url = 'https://api.test.hotelbeds.com/hotel-api/1.0/bookings';
+    $client = \Config\Services::curlrequest();
+
+    // $payload = [
+    //     'holder' => [
+    //         'name' => 'John',   // Should be from user input
+    //         'surname' => 'Doe'
+    //     ],
+    //     'rooms' => [
+    //         ['rateKey' => $rateKey]
+    //     ],
+    //     'clientReference' => substr(bin2hex(random_bytes(10)), 0, 20),
+    //     'remark' => 'Booking via site'
+    // ];
+
+     $payload = [
+        'holder' => [
+            'name' => $name,
+            'surname' => $surname
+        ],
+        'rooms' => [
+            ['rateKey' => $rateKey]
+        ],
+        'clientReference' => substr(bin2hex(random_bytes(10)), 0, 20),
+        'remark' => 'Booking via site'
+    ];
+
+    try {
+        $response = $client->post($url, [
+            'headers' => [
+                'Api-Key' => $apiKey,
+                'X-Signature' => $signature,
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode($payload),
+            'http_errors' => false
+        ]);
+
+        $status = $response->getStatusCode();
+        $body = json_decode($response->getBody(), true);
+
+        if ($status !== 200) {
+            return $this->response->setJSON(['error' => $body['error'] ?? 'Booking failed']);
+        }
+
+        return $this->response->setJSON([
+            'success' => true,
+            'booking' => $body
+        ]);
+
+    } catch (\Exception $e) {
+        return $this->response->setJSON(['error' => $e->getMessage()]);
+    }
+}
+
+
+
+
+
+public function checkout()
+{
+    $rateKey = $this->request->getGet('rateKey');
+    if (!$rateKey) {
+        return redirect()->to('/')->with('error', 'Missing rate key.');
+    }
+
+    return view('home/checkout_form', ['rateKey' => $rateKey]);
+}
 
 
 

@@ -48,6 +48,12 @@ use CodeIgniter\Router\RouteCollection;
 
     
 
+    $routes->post('/book-hotel', 'Home\HomeController::bookHotel');
+    $routes->post('/book-room', 'Home\HomeController::bookRoom');
+
+    $routes->get('checkout', 'Home\HomeController::checkout');
+
+    
 
 
 
