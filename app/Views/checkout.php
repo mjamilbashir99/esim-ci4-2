@@ -51,11 +51,11 @@
                 </div>
 
                 <?php 
-        $grandTotal = 0;
-        foreach ($cart as $item): 
-            $totalPrice = $item['price'] * $item['quantity'];
-            $grandTotal += $totalPrice;
-        ?>
+                    $grandTotal = 0;
+                    foreach ($cart as $item): 
+                        $totalPrice = $item['price'] * $item['quantity'];
+                        $grandTotal += $totalPrice;
+                ?>
                 <div class="row align-items-center mb-3">
                     <div class="col-5 d-flex align-items-center gap-2">
                         <span><?= esc($item['name']) ?></span>
@@ -68,7 +68,7 @@
                             <span><?= esc($item['quantity']) ?></span>
                         </div>
                     </div>
-                    <div class="col-2 text-end fw-semibold">$<?= number_format($totalPrice, 2) ?></div>
+                    <div class="col-2 text-end fw-semibold"><?= convertCurrency(number_format($totalPrice, 2)); ?></div>
                 </div>
                 <!-- ✅ ICCID Input(s) for this item -->
                 <div class="mb-3">
@@ -94,7 +94,7 @@
                 <hr />
                 <div class="d-flex justify-content-between fw-bold">
                     <span>Total</span>
-                    <span>$<?= number_format($grandTotal, 2) ?></span>
+                    <span><?= convertCurrency(number_format($grandTotal, 2)); ?></span>
                 </div>
 
                 <!-- Card Payment Section -->

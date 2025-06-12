@@ -79,6 +79,7 @@ use CodeIgniter\Router\RouteCollection;
 
    $routes->get('profile/edit', 'Api\EsimController::viewProfile');
    $routes->post('profile/update', 'Api\EsimController::updateProfile');
+   $routes->get('currency/set', 'Api\EsimController::set');
 
 
 

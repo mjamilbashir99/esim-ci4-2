@@ -129,17 +129,18 @@
                                     <p class="h6 fw-normal m-0">
                                         <?= esc($bundle['description']) ?>
                                     </p>
-                                    <!-- <p><strong>Price:</strong> $<?= esc($bundle['price']) ?></p> -->
-                                    <p><strong>Price:</strong> $<?= esc($bundle['selling_price'] ?? $bundle['price']) ?></p>
+                                    <p><strong>Price:</strong> <?= convertCurrency($bundle['selling_price'] ?? $bundle['price']);  ?></p>
+
+                                    <!-- esc($bundle['selling_price'] ?? $bundle['price']) -->
                                     <a href="<?= site_url('bundle/' . $bundle['name']) ?>">View Details</a>
                                 </div>
                             </div>
                             <i class="bi bi-arrow-up-right"></i>
                         </div>
                  <?php endforeach; ?>
-    <?php else: ?>
-        <p>No bundles available.</p>
-    <?php endif; ?>
+                <?php else: ?>
+                    <p>No bundles available.</p>
+                <?php endif; ?>
 
                     </div>
                     

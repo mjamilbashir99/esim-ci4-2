@@ -423,6 +423,17 @@ class EsimController extends BaseController
             'order' => $order
         ];
 
+
+        $logDir = WRITEPATH . 'esim_logs/';
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0777, true);
+        }
+
+        $filename = $logDir . 'payload_' . date('Ymd_His') . '.json';
+
+        file_put_contents($filename, json_encode($postData, JSON_PRETTY_PRINT));
+
+
         // cURL API Call
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.esim-go.com/v2.4/orders');
@@ -437,6 +448,16 @@ class EsimController extends BaseController
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
+        $logDir = WRITEPATH . 'esim_logs/';
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0777, true);
+        }
+
+        $filename = $logDir . 'response_' . date('Ymd_His') . '.json';
+
+        file_put_contents($filename, json_encode($response, JSON_PRETTY_PRINT));
+
 
         if ($httpCode === 200) {
             $responseData = json_decode($response, true);
@@ -515,6 +536,22 @@ class EsimController extends BaseController
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
+
+
+    public function set()
+    {
+        $session = session();
+        $currency = $this->request->getGet('currency');
+
+        $allowed = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'INR', 'CNY', 'JPY', 'SAR', 'AED'];
+
+        if (in_array($currency, $allowed)) {
+            $session->set('currency', $currency);
+        }
+
+        return redirect()->back();
+    }
+
 
 
 }

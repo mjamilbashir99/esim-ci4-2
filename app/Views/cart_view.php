@@ -10,8 +10,8 @@
                     <th>Bundle</th>
                     <th>Country</th>
                     <th>Quantity</th>
-                    <th>Price (USD)</th>
-                    <th>Total (USD)</th>
+                    <th>Price</th>
+                    <th>Total</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -26,8 +26,8 @@
                         <td><?= esc($item['name']) ?></td>
                         <td><?= esc($item['country']) ?></td>
                         <td><?= esc($item['quantity']) ?></td>
-                        <td><?= number_format($item['price'], 2) ?></td>
-                        <td><?= number_format($totalPrice, 2) ?></td>
+                        <td><?= convertCurrency(number_format($item['price'], 2));  ?></td>
+                        <td><?= convertCurrency(number_format($totalPrice, 2)); ?></td>
                         <td>
                             <form method="post" action="<?= site_url('cart/remove') ?>" class="d-inline">
                                 <input type="hidden" name="bundleName" value="<?= esc($item['name']) ?>">
@@ -42,7 +42,7 @@
             <tfoot>
                 <tr>
                     <th colspan="4" class="text-end">Grand Total:</th>
-                    <th><?= number_format($grandTotal, 2) ?> USD</th>
+                    <th><?= convertCurrency(number_format($grandTotal, 2)); ?> </th>
                     <th></th>
                 </tr>
             </tfoot>

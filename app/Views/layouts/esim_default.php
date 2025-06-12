@@ -73,6 +73,27 @@
                 </li>
                 <?php endif; ?>
 
+                <style>
+                    .select_currency option{
+                        background: #00705d;
+                    }
+                </style>
+                <form method="get" action="<?= site_url('currency/set') ?>">
+                    <select name="currency" onchange="this.form.submit()" style="background: transparent;color: #f0f0f0;padding: 5px;font-weight: 700;" class="select_currency">
+                        <option value="USD" <?= session('currency') == 'USD' ? 'selected' : '' ?>>USD</option>
+                        <option value="EUR" <?= session('currency') == 'EUR' ? 'selected' : '' ?>>EUR</option>
+                        <option value="GBP" <?= session('currency') == 'GBP' ? 'selected' : '' ?>>GBP</option>
+                        <option value="CAD" <?= session('currency') == 'CAD' ? 'selected' : '' ?>>CAD</option>
+                        <option value="AUD" <?= session('currency') == 'AUD' ? 'selected' : '' ?>>AUD</option>
+                        <option value="INR" <?= session('currency') == 'INR' ? 'selected' : '' ?>>INR</option>
+                        <option value="CNY" <?= session('currency') == 'CNY' ? 'selected' : '' ?>>CNY</option>
+                        <option value="JPY" <?= session('currency') == 'JPY' ? 'selected' : '' ?>>JPY</option>
+                        <option value="SAR" <?= session('currency') == 'SAR' ? 'selected' : '' ?>>SAR</option>
+                        <option value="AED" <?= session('currency') == 'AED' ? 'selected' : '' ?>>AED</option>
+                    </select>
+                </form>
+
+
                 <!-- Language Dropdown -->
                 <li class="nav-item dropdown d-none d-lg-block">
                     <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button"

@@ -76,8 +76,8 @@
                                         <i class="bi bi-calendar"></i> <?= esc($bundle['duration'] ?? 'N/A') ?> Days
                                     </p>
                                     <h5 class="fw-bold mb-1">
-                                        <?= esc($bundle['selling_price'] ?? $bundle['price']) ?> <small
-                                            class="text-muted">USD</small>
+                                        <?= convertCurrency($bundle['selling_price'] ?? $bundle['price']);  ?>
+                                        <!-- <small class="text-muted">USD</small> -->
                                     </h5>
                                     <p class="mb-3 text-muted">
                                         <i class="bi bi-globe"></i>
@@ -285,9 +285,9 @@
                 " />
                     <div class="text-dark-green">
                         <p class="h6 fw-bold m-0">Canada</p>
-                        <p class="h6 fw-normal m-0">
+                        <!-- <p class="h6 fw-normal m-0">
                             Starting from <small>$ 2.45</small>
-                        </p>
+                        </p> -->
                     </div>
                 </div></a>
                 <i class="bi bi-arrow-up-right"></i>
@@ -305,9 +305,9 @@
                 " />
                     <div class="text-dark-green">
                         <p class="h6 fw-bold m-0">United Arab Emirates</p>
-                        <p class="h6 fw-normal m-0">
+                        <!-- <p class="h6 fw-normal m-0">
                             Starting from <small>$ 2.45</small>
-                        </p>
+                        </p> -->
                     </div>
                 </div></a>
                 <i class="bi bi-arrow-up-right"></i>
@@ -325,9 +325,9 @@
                 " />
                     <div class="text-dark-green">
                         <p class="h6 fw-bold m-0">Australia</p>
-                        <p class="h6 fw-normal m-0">
+                        <!-- <p class="h6 fw-normal m-0">
                             Starting from <small>$ 2.45</small>
-                        </p>
+                        </p> -->
                     </div>
                 </div></a>
                 <i class="bi bi-arrow-up-right"></i>
