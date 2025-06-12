@@ -12,14 +12,12 @@ class BookingModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
+
+    protected $allowedFields = [
         'user_id',
-        'hotel_id',
-        'room_id',
-        'booking_reference',
-        'check_in',
-        'check_out',
-        'guests',
+        'bundle_id',
+        'esim_reference',
+        'quantity',
         'total_price',
         'currency',
         'status',
@@ -28,9 +26,6 @@ class BookingModel extends Model
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -56,13 +51,14 @@ class BookingModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getBookingsWithUser()
-    {
-        return $this->db->table('bookings')
-            ->select('bookings.*, users.name as user_name, users.email as user_email')
-            ->join('users', 'users.id = bookings.user_id', 'left')
-            ->orderBy('bookings.id', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
+    // ✅ Example: Get all esim bookings with user info
+   public function getBookingsWithUser()
+{
+    return $this->db->table('bookings')
+        ->select('bookings.*, users.name as user_name, users.email as user_email')
+        ->join('users', 'users.id = bookings.user_id', 'left')
+        ->orderBy('bookings.id', 'DESC')
+        ->get()
+        ->getResultArray();
+}
 }

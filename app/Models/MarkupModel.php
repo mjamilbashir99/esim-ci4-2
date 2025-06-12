@@ -16,9 +16,6 @@ class MarkupModel extends Model
     protected $allowedFields = [
         'status',
         'b2c_markup',
-        'b2b_markup',
-        'from_date',
-        'to_date',
         'module_id'
     ];
 

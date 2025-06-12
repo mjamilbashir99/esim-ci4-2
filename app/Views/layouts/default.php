@@ -46,57 +46,6 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg py-4">
-      <div class="container-fluid d-flex justify-content-between p-0">
-        <a class="navbar-brand text-white mx-3" href="/index.html">Navbar</a>
-        <button
-          class="navbar-toggler"
-          style="box-shadow: none !important"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse justify-content-end"
-          id="navbarNav"
-        >
-          <ul class="navbar-nav" style="gap: 20px">
-            <li class="nav-item">
-              <a
-                class="nav-link active text-white nav-text-black"
-                aria-current="page"
-                href="/index.html"
-                >About Us</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white nav-text-black" href="/listing.html"
-                >Listing</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-white nav-text-black"
-                href="/singlepage.html"
-                >Singlepage</a
-              >
-            </li>
-          </ul>
-          <div class="d-flex">
-            <?php if (session()->get('logged_in')): ?>
-              <a href="<?= site_url('logout') ?>" class="bookbtn btn btn-danger mx-3 rounded-0">Sign-Out</a>
-            <?php else: ?>
-              <a href="<?= site_url('login') ?>" class="bookbtn btn btn-danger mx-3 rounded-0">Sign-In</a>
-            <?php endif; ?>
-          </div>
-        </div>
-      </div>
-    </nav>
     <section
       class="w-100 position-relative"
       style="
@@ -115,7 +64,7 @@
           class="text-white h3 text-center underline"
           style="margin-top: 120px"
         >
-          Book Online
+          eSIM Booking
         </p>
       </div>
     </section>

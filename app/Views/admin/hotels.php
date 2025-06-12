@@ -44,15 +44,10 @@
                                 </label>
                             </td>
                             <td><?= $markup['b2c_markup'] ?> %</td>
-                            <!-- <td><?= $markup['b2b_markup'] ?> %</td>
-                            <td><?= $markup['from_date'] ?></td>
-                            <td><?= $markup['to_date'] ?></td> -->
                             <td><?= $markup['module_id'] ?></td>
                             <td>
                                 <a href="#" class="btn btn-primary edit-button" data-id="<?= $markup['id'] ?>"
                                     data-status="<?= $markup['status'] ?>" data-b2c="<?= $markup['b2c_markup'] ?>"
-                                    data-b2b="<?= $markup['b2b_markup'] ?>" data-from="<?= $markup['from_date'] ?>"
-                                    data-to="<?= $markup['to_date'] ?>"
                                     data-module="<?= $markup['module_id'] ?>">Edit</a>
                                 <!-- <a href="#" class="btn btn-danger delete-button" data-id="<?= $markup['id'] ?>">Delete</a> -->
                             </td>
@@ -90,23 +85,10 @@
                         <label for="b2cMarkup">B2C MARKUP</label>
                         <input type="number" class="form-control" id="b2cMarkup" name="b2cMarkup" value="10" step="0.01" min="0">
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="b2bMarkup">B2B MARKUP</label>
-                        <input type="number" class="form-control" id="b2bMarkup" name="b2bMarkup" value="10" step="0.01" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="fromDate">From Date</label>
-                        <input type="date" class="form-control" id="fromDate" name="fromDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="toDate">To Date</label>
-                        <input type="date" class="form-control" id="toDate" name="toDate">
-                    </div> -->
                     <div class="form-group">
                         <label for="moduleId">Module Id</label>
                         <select class="form-control" id="moduleId" name="moduleId">
-                            <option value="hotel">Hotel</option>
-                            <option value="beds">Beds</option>
+                            <option value="hotel">esim</option>
                         </select>
                     </div>
                 </form>

@@ -7,7 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 
-    $routes->get('/', 'Auth\AuthController::index');
+    $routes->get('/', 'Api\EsimController::showBundles');
     // Registeration Form
     $routes->get('register', 'Auth\AuthController::register');
     $routes->get('/testDatabaseConnection', 'Home::testDatabaseConnection');
@@ -16,17 +16,17 @@ use CodeIgniter\Router\RouteCollection;
     $routes->post('hotel-api/1.0/hotels', 'Auth\AuthController::searchNearbyHotels');
     $routes->get('home', 'Auth\AuthController::index');
 
-    $routes->get('get-city-suggestions', 'Home\HomeController::getCitySuggestions');
+   //  $routes->get('get-city-suggestions', 'Home\HomeController::getCitySuggestions');
 
-    $routes->post('search-hotels', 'Home\HomeController::searchHotels');
+   //  $routes->post('search-hotels', 'Home\HomeController::searchHotels');
 
-    $routes->get('search-result', 'Home\HomeController::searchResult');
+   //  $routes->get('search-result', 'Home\HomeController::searchResult');
     $routes->post('register/submit', 'Auth\AuthController::submit');
 
     $routes->get('login', 'Auth\AuthController::login');
     $routes->post('login/submit', 'Auth\AuthController::loginSubmit');
 
-    $routes->get('hotel-details/(:num)', 'Home\HomeController::hotelDetails/$1');
+   //  $routes->get('hotel-details/(:num)', 'Home\HomeController::hotelDetails/$1');
 
 
 
@@ -35,11 +35,11 @@ use CodeIgniter\Router\RouteCollection;
 
     $routes->get('resend-otp', 'Auth\AuthController::resendOtp');
 
-    $routes->get('hotel-details', 'Home\HomeController::fetchHotelData');
+   //  $routes->get('hotel-details', 'Home\HomeController::fetchHotelData');
     $routes->get('preview-otp-template', 'Auth\AuthController::previewTemplate');
     $routes->get('preview-registration-template', 'Auth\AuthController::previewRegistrationEmail');
 
-    $routes->post('/check-rate', 'Home\HomeController::checkRate');
+   //  $routes->post('/check-rate', 'Home\HomeController::checkRate');
 
 
     $routes->post('set-redirect-url', 'Auth\AuthController::setRedirectUrl');
@@ -49,16 +49,39 @@ use CodeIgniter\Router\RouteCollection;
     
 
     $routes->post('/book-hotel', 'Home\HomeController::bookHotel');
-    $routes->post('/book-room', 'Home\HomeController::bookRoom');
+   //  $routes->post('/book-room', 'Home\HomeController::bookRoom');
 
-    $routes->get('checkout', 'Home\HomeController::checkout');
-
-    
-
-
-
+   //  $routes->get('checkout', 'Home\HomeController::checkout');
     $routes->get('logout', 'Auth\AuthController::logout');
-    
+
+   //  Esim site 
+   $routes->get('api/info', 'Api\EsimController::getApiInfo');
+   // All bundles
+   $routes->get('api/bundles', 'Api\EsimController::getBundles');
+   // bundle by country
+   $routes->get('api/bundles/(:any)', 'Api\EsimController::getBundlesByCountry/$1');
+   // pagination bundles
+   // $routes->get('api/pagination-bundles', 'Api\EsimController::getPaginatedBundles');
+   // show bundle details in view bundles_list.php
+   $routes->get('esim', 'Api\EsimController::showBundles');
+   $routes->get('bundle/(:segment)', 'Api\EsimController::viewbundle/$1');
+   $routes->get('bundlesview/suggestions', 'Api\EsimController::getCountrySuggestions');
+   $routes->post('cart/add', 'Api\EsimController::addToCart');
+   $routes->get('cart', 'Api\EsimController::viewCart');
+   $routes->post('cart/remove', 'Api\EsimController::removeFromCart');
+   $routes->get('cart/count', 'Api\EsimController::cartCount');
+   $routes->get('eSimcheckout', 'Api\EsimController::checkout');
+
+
+   $routes->post('purchase', 'Api\EsimController::book');
+   $routes->post('payment/process', 'Api\PaymentController::process');
+   $routes->get('getEsims', 'Api\EsimController::getEsims');
+
+   $routes->get('profile/edit', 'Api\EsimController::viewProfile');
+   $routes->post('profile/update', 'Api\EsimController::updateProfile');
+
+
+
 
 
 // Admin routes

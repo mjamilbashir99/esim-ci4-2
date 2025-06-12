@@ -4,7 +4,7 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-use App\Libraries\Template;
+use App\Libraries\EsimTemplate;
 use App\Models\HotelModel;
 use App\Models\UserModel;
 use App\Models\EmailTemplateModel;
@@ -16,7 +16,7 @@ class AuthController extends BaseController
 
     public function __construct()
     {
-        $this->template = new Template();
+        $this->template = new EsimTemplate();
     }
 
     public function index()
@@ -72,82 +72,6 @@ class AuthController extends BaseController
         return $emailService->send();
     }
 
-    // public function submit()
-    // {
-    //     $validation = \Config\Services::validation();
-
-    //     $rules = [
-    //         'name'            => 'required|min_length[3]',
-    //         'email'           => 'required|valid_email|is_unique[users.email]',
-    //         'phone'           => 'required|min_length[10]',
-    //         'password'        => 'required|min_length[6]',
-    //         'confirm_password'=> 'required|matches[password]',
-    //     ];
-
-    //     if (!$this->validate($rules)) {
-    //         return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-    //     }
-
-    //     $userModel = new UserModel();
-
-    //     $data = [
-    //         'name'     => $this->request->getPost('name'),
-    //         'email'    => $this->request->getPost('email'),
-    //         'phone'    => $this->request->getPost('phone'),
-    //         'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-    //     ];
-
-    //     $userModel->insert($data);
-
-    //     return redirect()->to('/login')->with('success', 'Registration successful!');
-    // }
-
-    // public function submit()
-    // {
-    //     $validation = \Config\Services::validation();
-
-    //     $rules = [
-    //         'name'            => 'required|min_length[3]',
-    //         'email'           => 'required|valid_email|is_unique[users.email]',
-    //         'phone'           => 'required|min_length[10]',
-    //         'password'        => 'required|min_length[6]',
-    //         'confirm_password'=> 'required|matches[password]',
-    //     ];
-
-    //     if (!$this->validate($rules)) {
-    //         return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-    //     }
-
-    //     $otp = rand(100000, 999999);
-
-    //     $userModel = new \App\Models\UserModel();
-
-    //     $data = [
-    //         'name'     => $this->request->getPost('name'),
-    //         'email'    => $this->request->getPost('email'),
-    //         'phone'    => $this->request->getPost('phone'),
-    //         'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-    //         'otp'      => $otp,
-    //         'is_verified' => 0,
-    //     ];
-
-    //     $userModel->insert($data);
-
-    //     $email = \Config\Services::email();
-    //     $email->setTo($data['email']);
-    //     $email->setSubject('Email Verification');
-    //     $email->setMessage("Your OTP for email verification is: <b>$otp</b>");
-        
-    //     if ($email->send()) {
-    //         return redirect()->to('verify-otp?email=' . urlencode($data['email']));
-    //     } else {
-    //         return redirect()->back()->with('error', 'Failed to send verification email.');
-    //     }
-        
-    // }
-
-
-
     public function submit()
     {
         $validation = \Config\Services::validation();
@@ -193,65 +117,7 @@ class AuthController extends BaseController
     }
 
 
-    // public function verifyOtpSubmit()
-    // {
-    //     $email = $this->request->getPost('email');
-    //     $otp = $this->request->getPost('otp');
-
-    //     $userModel = new \App\Models\UserModel();
-    //     $user = $userModel->where('email', $email)->first();
-
-    //     if ($user && $user['otp'] === $otp) {
-    //         $userModel->update($user['id'], [
-    //             'otp' => null,
-    //             'is_verified' => 1
-    //         ]);
-
-    //         $session = session();
-    //         $session->set([
-    //             'user_id' => $user['id'],
-    //             'user_name' => $user['name'],
-    //             'user_email' => $user['email'],
-    //             'logged_in' => true,
-    //         ]);
-            
-    //         return redirect()->to('/home')->with('success', 'Email verified and logged in successfully.');
-    //     }
-
-    //     return redirect()->to('verify-otp?email=' . urlencode($email))
-    //                     ->with('error', 'Invalid OTP. Please try again.');
-    // }
-
-
-    // public function verifyOtpSubmit()
-    // {
-    //     $email = $this->request->getPost('email');
-    //     $otpArray = $this->request->getPost('otp');
-    //     $otp = implode('', $otpArray);
-
-    //     $userModel = new \App\Models\UserModel();
-    //     $user = $userModel->where('email', $email)->first();
-
-    //     if ($user && $user['otp'] === $otp) {
-    //         $userModel->update($user['id'], [
-    //             'otp' => null,
-    //             'is_verified' => 1
-    //         ]);
-
-    //         session()->set([
-    //             'user_id' => $user['id'],
-    //             'user_name' => $user['name'],
-    //             'user_email' => $user['email'],
-    //             'logged_in' => true,
-    //         ]);
-
-    //         return redirect()->to('/home')->with('success', 'Email verified successfully.');
-    //     }
-
-    //     return redirect()->to('verify-otp?email=' . urlencode($email))
-    //                     ->with('error', 'Invalid OTP. Please try again.');
-    // }
-
+    
 
     public function verifyOtpSubmit()
     {
@@ -291,19 +157,13 @@ class AuthController extends BaseController
             // ✅ Send Welcome Email
             $this->sendWelcomeEmail($user['email'], $user['name']);
 
-            // return redirect()->to('/home')->with('success', 'Email verified successfully.');
-            $redirect = session()->get('post_verification_redirect') ?? '/home';
-            session()->remove('post_verification_redirect');
-            return redirect()->to($redirect);
-            // return redirect()->to('/home')->with('success', 'Email verified successfully.');
+            // Redirect user to /index.php/esim after verification
+            return redirect()->to('/esim')->with('success', 'Email verified successfully.');
         }
 
         return redirect()->to('verify-otp?email=' . urlencode($email))
                         ->with('error', 'Invalid OTP. Please try again.');
     }
-
-
-
 
     public function verifyOtpView()
     {
@@ -312,263 +172,14 @@ class AuthController extends BaseController
     }
 
 
-    public function hotelBedsApi(): ResponseInterface
-    {
-        helper('generic_helper');
-
-        $result = fetch_hotelbeds_hotels();
-        
-        if (isset($result['error'])) {
-            return $this->response->setJSON(['error' => $result['error']]);
-        }
-
-        $hotelsData = [];
-        
-        if (isset($result['response']['hotels'])) {
-            foreach ($result['response']['hotels'] as $hotel) {
-                // For db insertioon of hotels
-                // $hotelModel = new HotelModel();
-                // $hotelToInsert = [
-                //     'hotel_code' => $hotel['code'],
-                //     'name' => $hotel['name']['content'] ?? '',
-                //     'country_code' => $hotel['countryCode'] ?? '',
-                //     'destination_code' => $hotel['destinationCode'] ?? '',
-                //     'category' => $hotel['categoryCode'] ?? '',
-                //     'latitude' => $hotel['coordinates']['latitude'] ?? '',
-                //     'longitude' => $hotel['coordinates']['longitude'] ?? '',
-                //     'address' => $hotel['address']['content'] ?? '', 
-                //     'description' => $hotel['description']['content'] ?? '',
-                //     'rating' => $hotel['S2C'] ?? '',
-                // ];
-
-                // $hotelModel->insert($hotelToInsert);
-
-                $hotelDetails = [
-                    'code' => $hotel['code'],
-                    'name' => $hotel['name']['content'] ?? '',
-                    'description' => $hotel['description']['content'] ?? '',
-                    'country_code' => $hotel['countryCode'] ?? '',
-                    'state_code' => $hotel['stateCode'] ?? '',
-                    'destination_code' => $hotel['destinationCode'] ?? '',
-                    'coordinates' => [
-                        'latitude' => $hotel['coordinates']['latitude'] ?? '',
-                        'longitude' => $hotel['coordinates']['longitude'] ?? ''
-                    ],
-                    'categoryCode' =>  $hotel['categoryCode'] ?? '',
-                    'address' => [
-                        'content' => $hotel['address']['content'] ?? '',
-                        'street' => $hotel['address']['street'] ?? '',
-                        'number' => $hotel['address']['number'] ?? '',
-                    ],
-                    'postalCode' =>  $hotel['postalCode'] ?? '',
-                    'city' => [
-                        'content' => $hotel['city']['content'] ?? '',
-                    ],
-                    "S2C" => $hotel['S2C'] ?? '',
-
-                ];
-
-
-                $imagesData = [];
-                if (isset($hotel['images'])) {
-                    foreach ($hotel['images'] as $image) {
-                        $imageDetails = [
-                            'image_type_code' => $image['imageTypeCode'] ?? '',
-                            'path' => $image['path'] ?? '',
-                            'order' => $image['order'] ?? '',
-                            'visual_order' => $image['visualOrder'] ?? '',
-                        ];
-
-                        if (isset($image['roomCode'])) {
-                            $imageDetails['room_code'] = $image['roomCode'];
-                            $imageDetails['room_type'] = $image['roomType'];
-                            $imageDetails['characteristic_code'] = $image['characteristicCode'];
-                        }
-
-                        $imagesData[] = $imageDetails;
-                    }
-                }
-
-
-                $roomsData = [];
-                if (isset($hotel['rooms'])) {
-                    foreach ($hotel['rooms'] as $room) {
-                        $roomDetails = [
-                            'room_code' => $room['roomCode'] ?? '',
-                            'is_parent_room' => $room['isParentRoom'] ?? false,
-                            'min_pax' => $room['minPax'] ?? 1,
-                            'max_pax' => $room['maxPax'] ?? 1,
-                            'max_adults' => $room['maxAdults'] ?? 1,
-                            'max_children' => $room['maxChildren'] ?? 0,
-                            'min_adults' => $room['minAdults'] ?? 1,
-                            'room_type' => $room['roomType'] ?? '',
-                            'characteristic_code' => $room['characteristicCode'] ?? ''
-                        ];
-
-                        $roomsData[] = $roomDetails;
-                    }
-                }
-
-                $hotelDetails['rooms'] = $roomsData;
-
-                $hotelDetails['images'] = $imagesData;
-
-                $hotelsData[] = $hotelDetails;
-            }
-        }
-        
-        return $this->response->setJSON([
-            'status_code' => $result['status_code'],
-            'total_hotels' => $result['response']['total'],
-            'hotels' => $hotelsData,
-        ]);
-    }
-
-
-
-
-
-
-
-
-
-    public function searchNearbyHotels(): ResponseInterface
-    {
-        helper('generic_helper');
-        $request = $this->request->getJSON(true);
-    
-        if (
-            !isset($request['stay'], $request['occupancies'], $request['geolocation']) ||
-            !isset($request['stay']['checkIn'], $request['stay']['checkOut']) ||
-            !isset($request['geolocation']['latitude'], $request['geolocation']['longitude'])
-        ) {
-            return $this->response->setStatusCode(400)->setJSON(['error' => 'Invalid request body.']);
-        }
-    
-        $checkIn = $request['stay']['checkIn'];
-        $checkOut = $request['stay']['checkOut'];
-        $occupancies = $request['occupancies'];
-        $lat = $request['geolocation']['latitude'];
-        $lng = $request['geolocation']['longitude'];
-        $radius = $request['geolocation']['radius'] ?? 20;
-        $unit = $request['geolocation']['unit'] ?? 'km';
-    
-        $mockResponse = [
-            'search_summary' => [
-                'check_in' => $checkIn,
-                'check_out' => $checkOut,
-                'guests' => $occupancies,
-                'location' => [
-                    'latitude' => $lat,
-                    'longitude' => $lng,
-                    'radius' => $radius,
-                    'unit' => $unit
-                ]
-            ],
-            'hotels_found' => [
-                [
-                    'hotel_code' => '000001',
-                    'name' => 'Mock Hotel Palma',
-                    'distance' => 1.2,
-                    'category' => '4*',
-                    'latitude' => 39.57125,
-                    'longitude' => 2.64660,
-                ],
-                [
-                    'hotel_code' => '000002',
-                    'name' => 'Sea View Hotel',
-                    'distance' => 3.5,
-                    'category' => '3*',
-                    'latitude' => 39.56800,
-                    'longitude' => 2.64500,
-                ]
-            ]
-        ];
-    
-        return $this->response->setJSON($mockResponse);
-    }
-
-
-
-
     public function login()
     {
         // return view('auth/login');
         $data = [
                 'title' => 'Login',
             ];
-            return $this->template->render('auth/login', $data);
+        return $this->template->render('auth/login', $data);
     }
-
-    // public function loginSubmit()
-    // {
-    //     $session = session();
-    //     $userModel = new \App\Models\UserModel();
-
-    //     $email = $this->request->getPost('email');
-    //     $password = $this->request->getPost('password');
-
-    //     $user = $userModel->where('email', $email)->first();
-
-    //     if ($user && password_verify($password, $user['password'])) {
-    //         $session->set([
-    //             'user_id' => $user['id'],
-    //             'user_name' => $user['name'],
-    //             'user_email' => $user['email'],
-    //             'logged_in' => true,
-    //         ]);
-    //         return redirect()->to('/home');
-    //     } else {
-    //         return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
-    //     }
-    // }
-
-
-    // public function loginSubmit()
-    // {
-    //     $session = session();
-    //     $userModel = new \App\Models\UserModel();
-
-    //     $email = $this->request->getPost('email');
-    //     $password = $this->request->getPost('password');
-
-    //     $user = $userModel->where('email', $email)->first();
-
-    //     if ($user && password_verify($password, $user['password'])) {
-
-    //         // If user is not verified
-    //         if ($user['is_verified'] == 0) {
-    //             // Generate new OTP
-    //             $otp = rand(100000, 999999);
-
-    //             // Save OTP to database
-    //             $userModel->update($user['id'], ['otp' => $otp]);
-
-    //             // Send OTP to user email
-    //             $emailService = \Config\Services::email();
-    //             $emailService->setTo($email);
-    //             $emailService->setSubject('Your OTP Code');
-    //             $emailService->setMessage("Your OTP for email verification is: <b>$otp</b>");
-    //             $emailService->setMailType('html');
-    //             $emailService->send();
-
-    //             // Redirect to OTP verification page with email in URL
-    //             return redirect()->to('/verify-otp?email=' . urlencode($email));
-    //         }
-
-    //         // If verified, set session and redirect to home
-    //         $session->set([
-    //             'user_id'    => $user['id'],
-    //             'user_name'  => $user['name'],
-    //             'user_email' => $user['email'],
-    //             'logged_in'  => true,
-    //         ]);
-    //         return redirect()->to('/home');
-    //     } else {
-    //         return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
-    //     }
-    // }
-
 
 
     public function loginSubmit()
@@ -595,23 +206,19 @@ class AuthController extends BaseController
                 'logged_in'  => true,
             ]);
 
-            $redirectUrl = session()->get('redirect_url') ?? '/home';
+            $redirectUrl = session()->get('redirect_url') ?? '/esim';
             session()->remove('redirect_url');
 
             return redirect()->to($redirectUrl);
-            // return redirect()->to('/home');
         } else {
             return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
         }
     }
 
-
-
-
     public function logout()
     {
         session()->destroy();
-        return redirect()->to('/login')->with('success', 'Logged out successfully.');
+        return redirect()->to('/')->with('success', 'Logged out successfully.');
     }
 
     private function checkLogin()
@@ -620,52 +227,6 @@ class AuthController extends BaseController
             return redirect()->to('/login')->with('error', 'Please login to continue.');
         }
     }
-
-
-    
-
-
-
-    // public function hotelBedsApi(): ResponseInterface
-    // {
-    //     helper('generic_helper');
-    //     $result = fetch_hotelbeds_hotels();
-    //     return $this->response->setJSON($result);
-    // }
-
-
-
-    // public function resendOtp()
-    // {
-    //     $email = $this->request->getGet('email');
-    //     if (!$email) {
-    //         return redirect()->to('register')->with('error', 'Invalid request.');
-    //     }
-
-    //     $userModel = new \App\Models\UserModel();
-    //     $user = $userModel->where('email', $email)->first();
-
-    //     if (!$user) {
-    //         return redirect()->to('register')->with('error', 'User not found.');
-    //     }
-    //     $otp = random_int(100000, 999999);
-
-    //     $userModel->update($user['id'], ['otp' => $otp]);
-    //     $emailService = \Config\Services::email();
-    //     $emailService->setTo($email);
-    //     $emailService->setSubject('Your OTP Code');
-    //     $emailService->setMessage("Your OTP for email verification is: <b>$otp</b>");
-
-    //     if ($emailService->send()) {
-    //         return redirect()->to('verify-otp?email=' . urlencode($email))
-    //                         ->with('success', 'OTP has been resent to your email.');
-    //     } else {
-    //         return redirect()->to('verify-otp?email=' . urlencode($email))
-    //                         ->with('error', 'Failed to resend OTP. Please try again.');
-    //     }
-    // }
-
-
 
     public function resendOtp()
     {
