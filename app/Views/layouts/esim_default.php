@@ -73,13 +73,9 @@
                 </li>
                 <?php endif; ?>
 
-                <style>
-                    .select_currency option{
-                        background: #00705d;
-                    }
-                </style>
+                
                 <form method="get" action="<?= site_url('currency/set') ?>">
-                    <select name="currency" onchange="this.form.submit()" style="background: transparent;color: #f0f0f0;padding: 5px;font-weight: 700;" class="select_currency">
+                    <select name="currency" onchange="this.form.submit()" style="background: transparent;color: #dcfacc;padding: 5px;font-weight: 700;" class="select_currency">
                         <option value="USD" <?= session('currency') == 'USD' ? 'selected' : '' ?>>USD</option>
                         <option value="EUR" <?= session('currency') == 'EUR' ? 'selected' : '' ?>>EUR</option>
                         <option value="GBP" <?= session('currency') == 'GBP' ? 'selected' : '' ?>>GBP</option>
@@ -95,7 +91,7 @@
 
 
                 <!-- Language Dropdown -->
-                <li class="nav-item dropdown d-none d-lg-block">
+                <!-- <li class="nav-item dropdown d-none d-lg-block">
                     <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button"
                         aria-expanded="false">
                         More
@@ -106,13 +102,13 @@
                         <li><a class="dropdown-item" href="#scrollspyHeading4">esim Compatibilty</a></li>
                         <li><a class="dropdown-item" href="#scrollspyHeading5">Fifth</a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <!-- Cart Icon -->
                 <li class="nav-item">
                     <a class="nav-link <?= (current_url() == site_url('cart')) ? 'active' : '' ?>"
                         href="<?= site_url('cart') ?>">
-                        <i class="bi bi-cart2"></i>
+                        <i class="bi bi-cart2" style="font-size:24px;"></i>
                         <span class="position-absolute badge rounded-pill bg-danger" id="cartCountBadge"
                             style="display:none; font-size: 0.7rem;">
                             0
