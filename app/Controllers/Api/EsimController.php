@@ -192,6 +192,8 @@ class EsimController extends BaseController
             return $this->template->render('bundles_list', ['bundles' => [], 'error' => $e->getMessage()]);
         }
     }
+    
+
     public function getCountrySuggestions()
     {
         $searchQuery = $this->request->getGet('query');
@@ -200,10 +202,9 @@ class EsimController extends BaseController
             return $this->response->setJSON([]);
         }
 
-        // List of all available countries from the previous bundles data
         $client = \Config\Services::curlrequest();
         $apiKey = getenv('ESIM_API_KEY');
-        
+
         try {
             $response = $client->get('https://api.esim-go.com/v2.3/catalogue', [
                 'headers' => [
@@ -222,14 +223,13 @@ class EsimController extends BaseController
                 }
             }
 
-            // Filter countries based on search query
+            $countryList = array_unique($countryList);
+
             $matchingCountries = array_filter($countryList, function ($country) use ($searchQuery) {
                 return stripos($country, $searchQuery) !== false;
             });
 
-            // Return unique matching countries and limit to top 10 suggestions
-            $matchingCountries = array_unique($matchingCountries);
-            $matchingCountries = array_slice($matchingCountries, 0, 10); // Limit to top 10
+            $matchingCountries = array_slice(array_values($matchingCountries), 0, 10);
 
             return $this->response->setJSON($matchingCountries);
 
