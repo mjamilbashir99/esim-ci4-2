@@ -133,6 +133,9 @@
                 <a href="/esim">
                     <p class="text-light-green">Home</p>
                 </a>
+                <a href="/api/fetch-bundles">
+                    <p class="text-light-green">eSIM Data Plans</p>
+                </a>
             </div>
         </div>
     </nav>

@@ -6,6 +6,8 @@ use App\Controllers\BaseController;
 use App\Models\MarkupModel;
 use App\Models\UserModel;
 use App\Libraries\EsimTemplate;
+use CodeIgniter\Pager\Pager;
+
 
 class EsimController extends BaseController
 {
@@ -551,6 +553,73 @@ class EsimController extends BaseController
 
         return redirect()->back();
     }
+
+
+
+
+
+
+
+    public function showSingleBundlePerCountry()
+{
+    $apiKey = getenv('ESIM_API_KEY');
+    $client = \Config\Services::curlrequest();
+    $countryPlans = [];
+
+    try {
+        $response = $client->get('https://api.esim-go.com/v2.3/catalogue', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-API-Key' => $apiKey
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+        $bundles = $data['bundles'] ?? [];
+
+        $seenCountries = [];
+
+        foreach ($bundles as $bundle) {
+            $country = $bundle['countries'][0] ?? null;
+            if (!$country) {
+                continue;
+            }
+
+            $iso = $country['iso'] ?? '';
+            if (isset($seenCountries[$iso])) {
+                continue;
+            }
+
+            $bundle['countryName'] = $country['name'] ?? 'Unknown';
+            $bundle['countryIso'] = strtolower($iso);
+            $seenCountries[$iso] = true;
+
+            $countryPlans[] = $bundle;
+        }
+
+    } catch (\Exception $e) {
+        // Optionally log the error
+        return redirect()->back()->with('error', 'An error occurred. Please try again later.');
+    }
+
+    // Handle pagination manually using CI4's Pager
+    $pager = \Config\Services::pager();
+    $page = (int) ($this->request->getGet('page') ?? 1);
+    $perPage = 10;
+    $total = count($countryPlans);
+    $offset = ($page - 1) * $perPage;
+
+    // Paginate the countryPlans array
+    $paginatedPlans = array_slice($countryPlans, $offset, $perPage);
+
+    return $this->template->render('plans/list', [
+        'plans' => $paginatedPlans,
+        'pager' => $pager->makeLinks($page, $perPage, $total, 'custom'), // 'custom' = your pagination template name
+    ]);
+}
+
+
+
 
 
 

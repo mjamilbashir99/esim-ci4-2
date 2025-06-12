@@ -60,6 +60,7 @@ use CodeIgniter\Router\RouteCollection;
    $routes->get('api/bundles', 'Api\EsimController::getBundles');
    // bundle by country
    $routes->get('api/bundles/(:any)', 'Api\EsimController::getBundlesByCountry/$1');
+   $routes->get('api/fetch-bundles', 'Api\EsimController::showSingleBundlePerCountry');
    // pagination bundles
    // $routes->get('api/pagination-bundles', 'Api\EsimController::getPaginatedBundles');
    // show bundle details in view bundles_list.php
